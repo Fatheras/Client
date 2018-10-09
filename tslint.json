@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
@@ -129,3 +130,16 @@
     "directive-class-suffix": true
   }
 }
+=======
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "object-literal-sort-keys": false,
+        "ordered-imports": false
+    },
+    "rulesDirectory": []
+}
+>>>>>>> 162a891c3dce79821b5f9e045f5aa6d5d9573f0a

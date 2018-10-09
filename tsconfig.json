@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
@@ -19,3 +20,25 @@
     ]
   }
 }
+=======
+    "compilerOptions": {
+        "target": "es6",
+        "moduleResolution": "node",
+        "pretty": true,
+        "module": "commonjs",
+        "sourceMap": false,
+        "outDir": "./build/src",
+        "rootDir": "./src"
+    },
+    
+    "include": [
+      "./src/**/*"
+    ],
+
+    "exclude": [
+        "node_modules"
+    ],
+
+   
+}
+>>>>>>> 162a891c3dce79821b5f9e045f5aa6d5d9573f0a

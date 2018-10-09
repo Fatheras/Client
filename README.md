@@ -1,1 +1,0 @@
-Apple team please describe instuctions for launch your app
