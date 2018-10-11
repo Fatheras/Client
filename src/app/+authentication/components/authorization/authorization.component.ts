@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IUser } from 'src/app/user/user';
-import { AuthenticationService } from '../services/authentication.service';
-import { MyErrorStateMatcher } from '../errors/error.matcher';
+import { AuthenticationService } from '../../services/authentication.service';
+import { MyErrorStateMatcher } from '../../models/errors/error.matcher';
 
 @Component({
   selector: 'app-authorization',

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder, ValidatorFn } from '@angular/forms';
-import { AuthenticationService } from '../services/authentication.service';
 import { IUser } from 'src/app/user/user';
-import { MyErrorStateMatcher } from '../errors/error.matcher';
+import { AuthenticationService } from '../../services/authentication.service';
+import { MyErrorStateMatcher } from '../../models/errors/error.matcher';
 
 
 
