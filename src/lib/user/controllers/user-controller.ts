@@ -1,5 +1,7 @@
 import UserService from "../services/user-service";
 import { IUser } from "../models/user";
+// import AuthService from "../../authentication/auth-service";
+// import passport = require("passport");
 
 export class UserController {
 
@@ -25,6 +27,7 @@ export class UserController {
     }
 
     public static async addUser(req, res) {
+
         let user: IUser;
 
         try {

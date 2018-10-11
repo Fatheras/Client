@@ -1,26 +1,4 @@
 {
-<<<<<<< HEAD
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ]
-  }
-}
-=======
     "compilerOptions": {
         "target": "es6",
         "moduleResolution": "node",
@@ -41,4 +19,3 @@
 
    
 }
->>>>>>> 162a891c3dce79821b5f9e045f5aa6d5d9573f0a

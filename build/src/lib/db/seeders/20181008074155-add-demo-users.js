@@ -10,6 +10,7 @@ exports.default = {
                 lastName: faker.name.lastName(),
                 email: faker.internet.email(),
                 phone: faker.phone.phoneNumber(),
+                password: faker.internet.password(),
             });
         }
         return queryInterface.bulkInsert("users", users, {});

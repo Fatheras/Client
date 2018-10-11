@@ -1,4 +1,4 @@
-import {User, IUser} from "../../user/models/user";
+import { User, IUser } from "../../user/models/user";
 
 export default class UserService {
 
@@ -14,10 +14,10 @@ export default class UserService {
         return await User.create(user);
     }
 
-    public static async deleteUser(id: number) {
-        return await User.destroy({
+    public static async deleteUser(userId: string) {
+        return await  User.destroy({
             where: {
-                id,
+                id: parseInt(userId, 10),
             },
         });
     }

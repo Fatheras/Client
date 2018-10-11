@@ -9,6 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_service_1 = require("../services/user-service");
+// import AuthService from "../../authentication/auth-service";
+// import passport = require("passport");
 class UserController {
     static getAllUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

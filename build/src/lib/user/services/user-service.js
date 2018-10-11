@@ -25,11 +25,11 @@ class UserService {
             return yield user_1.User.create(user);
         });
     }
-    static deleteUser(id) {
+    static deleteUser(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield user_1.User.destroy({
                 where: {
-                    id,
+                    id: parseInt(userId, 10),
                 },
             });
         });

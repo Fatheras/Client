@@ -4,7 +4,7 @@ import {User} from "../../user/models/user";
 
 export interface ITask extends  Sequelize.Model<ITask>  {
     id?: number;
-    name: string;
+    title: string;
     cost: number;
     status: string;
     category: string;
@@ -20,7 +20,7 @@ export const Task = db.define<ITask>("task", {
         primaryKey: true,
         autoIncrement: true,
     },
-    name: {
+    title: {
         type: Sequelize.STRING,
         validate: {
             notEmpty: true,

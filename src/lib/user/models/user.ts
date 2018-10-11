@@ -1,12 +1,14 @@
 import Sequelize from "sequelize";
 import db from "../../db/models/db";
+import * as bcrypt from "bcrypt";
 
 export interface IUser extends Sequelize.Model<IUser> {
     id?: number;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     phone: string;
     email: string;
+    password: string;
 }
 
 export const User = db.define<IUser>("user", {
@@ -17,7 +19,6 @@ export const User = db.define<IUser>("user", {
     firstName: {
         type: Sequelize.STRING,
         validate: {
-            notEmpty: true,
             len: [3, 20],
         },
     },
@@ -33,6 +34,29 @@ export const User = db.define<IUser>("user", {
     },
     email: {
         type: Sequelize.STRING,
+        notEmpty: true,
+    },
+    password: {
+        type: Sequelize.STRING,
+        notEmpty: true,
     },
 },
-{ timestamps: false });
+    { timestamps: false });
+
+User.beforeCreate((user, options) => {
+    return bcrypt.hash(user.password, 10)
+        .then((hash) => {
+            user.password = hash;
+        })
+        .catch((err) => {
+            throw new Error();
+        });
+});
+
+User.isValidPassword = async (user, password) => {
+    const foundUser = user;
+    let compare: boolean;
+
+    compare = await bcrypt.compare(password, foundUser.password);
+    return compare;
+};
