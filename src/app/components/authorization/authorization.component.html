@@ -1,0 +1,32 @@
+<form class="authorization-container" [formGroup]="authForm">
+    <h2 class="authorization_title">SIGN IN</h2>
+    
+    <mat-form-field>
+        <input matInput placeholder="Email*" [formControl]="authForm.controls['email']" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="authForm.controls['email'].hasError('required')">
+            This is required.
+        </mat-error>
+        <mat-error *ngIf="authForm.controls['email'].hasError('email')">
+            This should be email.
+        </mat-error>
+        <mat-error *ngIf="authForm.controls['email'].hasError('maxlength')">
+            This is too big length.
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input type="password" matInput placeholder="Password*" [formControl]="authForm.controls['password']" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="authForm.controls['password'].hasError('required')">
+            This is required.
+        </mat-error>
+        <mat-error *ngIf="authForm.controls['password'].hasError('maxlength')">
+            This is too big length.
+        </mat-error>
+    </mat-form-field>
+    
+    <div class="authorization_sign-container">
+        <button class="sign-container_up" mat-button (click)="signUp()">SIGN UP</button>
+        <button class="sign-container_in" mat-button (click)="signIn()">SIGN IN</button>
+    </div>
+    
+</form>
