@@ -1,9 +1,9 @@
 
-.authorization-container {
+  .authorization-container {
     position: relative;
     display: flex;
     width: 400px;
-    height: 290px;
+    height: 350px;
     margin: 200px auto;
     padding: 30px;
     padding-top: 10px;
@@ -28,3 +28,6 @@
     left: 60%;
     top: 85%; 
   }
+
+  
+  

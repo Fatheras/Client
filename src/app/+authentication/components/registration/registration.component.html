@@ -1,0 +1,55 @@
+<form (submit)="signUp()" class="authorization-container" [formGroup]="registForm">
+    <h2 class="authorization_title">SIGN UP</h2>
+
+    <mat-form-field>
+        <input matInput placeholder="Email*" [formControl]="registForm.controls['email']" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="registForm.controls['email'].hasError('required')">
+            This is required.
+        </mat-error>
+        <mat-error *ngIf="registForm.controls['email'].hasError('email')">
+            This should be email.
+        </mat-error>
+        <mat-error *ngIf="registForm.controls['email'].hasError('maxlength')">
+            This is too big length.
+        </mat-error>
+    </mat-form-field>
+   
+    <mat-form-field>
+        <input type="password" matInput placeholder="Password*" [formControl]="registForm.controls['passwords'].controls['password']" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="registForm.controls['passwords'].controls['password'].hasError('required')">
+            This is required.
+        </mat-error>
+        <mat-error *ngIf="registForm.controls['passwords'].controls['password'].hasError('maxlength')">
+            This is too big length.
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input type="password" matInput placeholder="Confirm Password*" [formControl]="registForm.controls['passwords'].controls['repeat']" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="registForm.controls['passwords'].controls['repeat'].hasError('required')">
+            This is required.
+        </mat-error>
+        <mat-error *ngIf="registForm.controls['passwords'].controls['repeat'].hasError('maxlength')">
+            This is too big length.
+        </mat-error>
+        <mat-error *ngIf="registForm.controls['passwords'].controls['repeat'].hasError('equalValue')">
+            Passwords don't match.
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Phone*" [formControl]="registForm.controls['phone']" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="registForm.controls['phone'].hasError('required')">
+            This is required.
+        </mat-error>
+        <mat-error *ngIf="registForm.controls['phone'].hasError('maxlength')">
+            This is too big length.
+        </mat-error>
+    </mat-form-field>
+
+    <div class="authorization_sign-container">
+        <button class="sign-container_up" mat-button (click)="signIn()">SIGN IN</button>
+        <button [disabled]="!registForm.valid" type="submit" class="sign-container_in" mat-button>SIGN UP</button>
+    </div>
+
+</form>

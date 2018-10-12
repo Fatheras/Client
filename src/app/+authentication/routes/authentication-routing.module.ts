@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RegistrationComponent } from '../registration/registration.component';
-import { AuthorizationComponent } from '../authorization/authorization.component';
+import { RegistrationComponent } from '../components/registration/registration.component';
+import { AuthorizationComponent } from '../components/authorization/authorization.component';
 
 
 const authRoutes: Routes = [
@@ -11,13 +11,12 @@ const authRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(authRoutes,
-      { enableTracing: false })
+    RouterModule.forRoot(authRoutes)
   ],
   exports: [
     RouterModule
   ]
 })
-export class AuthentificationRoutingModule {
+export class AuthenticationRoutingModule {
 
 }
