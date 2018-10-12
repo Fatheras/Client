@@ -1,8 +1,8 @@
 import Sequelize from "sequelize";
 import db from "../../db/models/db";
-import {User} from "../../user/models/user";
+import { User } from "../../user/models/user";
 
-export interface ITask extends  Sequelize.Model<ITask>  {
+export interface ITask extends Sequelize.Model<ITask> {
     id?: number;
     title: string;
     cost: number;
@@ -53,11 +53,11 @@ export const Task = db.define<ITask>("task", {
         type: Sequelize.INTEGER,
         references: {
             model: User,
-            key:   "id",
+            key: "id",
         },
-        validate: {notEmpty: true},
+        validate: { notEmpty: true },
     },
 },
-{
-    timestamps: false,
-});
+    {
+        timestamps: false,
+    });

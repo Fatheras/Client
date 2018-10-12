@@ -52,6 +52,7 @@ exports.User.beforeCreate((user, options) => {
 });
 exports.User.isValidPassword = (user, password) => __awaiter(this, void 0, void 0, function* () {
     const foundUser = user;
-    const compare = yield bcrypt.compare(password, foundUser.password);
+    let compare;
+    compare = yield bcrypt.compare(password, foundUser.password);
     return compare;
 });

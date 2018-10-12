@@ -1,6 +1,5 @@
 import TaskService from "../services/task-service";
 import { ITask } from "../models/task";
-import { IUser } from "../../user/models/user";
 
 export class TaskController {
     public static async getAllTasks(req, res) {

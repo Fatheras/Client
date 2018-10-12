@@ -43,7 +43,7 @@ export const User = db.define<IUser>("user", {
 },
     { timestamps: false });
 
-User.beforeCreate((user, options) => {
+User.beforeCreate((user: IUser, options) => {
     return bcrypt.hash(user.password, 10)
         .then((hash) => {
             user.password = hash;
@@ -53,10 +53,9 @@ User.beforeCreate((user, options) => {
         });
 });
 
-User.isValidPassword = async (user, password) => {
+User.isValidPassword = async (user: IUser, password: string) => {
     const foundUser = user;
     let compare: boolean;
-
     compare = await bcrypt.compare(password, foundUser.password);
     return compare;
 };

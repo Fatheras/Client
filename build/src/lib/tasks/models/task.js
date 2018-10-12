@@ -9,7 +9,7 @@ exports.Task = db_1.default.define("task", {
         primaryKey: true,
         autoIncrement: true,
     },
-    name: {
+    title: {
         type: sequelize_1.default.STRING,
         validate: {
             notEmpty: true,

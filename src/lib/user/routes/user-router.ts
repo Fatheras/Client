@@ -15,9 +15,19 @@ class UserRouter {
     public routes() {
         this.router.get("/", UserController.getAllUsers);
         this.router.get("/:id", UserController.getUser);
+        this.router.get("/me", (req, res, next) => {
+
+            res.json({
+                message: "You made it to the secure route",
+                user: req.user,
+                token: req.query.secret_token,
+            });
+        });
+
         this.router.delete("/:id", UserController.deleteUser);
         this.router.put("/:id", UserController.updateUser);
-        this.router.post("/", passport.authenticate("signup", { session: false }),
+        this.router.post("/signup",
+        passport.authenticate("signup", { session: false }),
             async (req, res, next) => {
                 res.json({
                     message: "Signup successful",
@@ -38,16 +48,16 @@ class UserRouter {
 
                         const body = { email: user.email };
 
-                        const token = jwt.sign({ user: body }, "top_secret");
-
-                        return res.json({ token });
+                        const token = jwt.sign({ user: body }, process.env.SECRET, {
+                            expiresIn: 30,
+                        });
+                        return res.json(token);
                     });
                 } catch (error) {
                     return next(error);
                 }
             })(req, res, next);
         });
-
     }
 }
 

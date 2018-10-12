@@ -12,6 +12,8 @@ const passport = require("passport");
 const passport_local_1 = require("passport-local");
 const user_1 = require("../user/models/user");
 const user_service_1 = require("../user/services/user-service");
+const passport_jwt_1 = require("passport-jwt");
+const passport_jwt_2 = require("passport-jwt");
 class AuthService {
     static signUp() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -55,7 +57,20 @@ class AuthService {
             })));
         });
     }
+    static checkAccess() {
+        return __awaiter(this, void 0, void 0, function* () {
+            passport.use(new passport_jwt_1.Strategy({
+                secretOrKey: "top_secret",
+                jwtFromRequest: passport_jwt_2.ExtractJwt.fromUrlQueryParameter("secret_token"),
+            }, (token, done) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    return done(null, token.user);
+                }
+                catch (error) {
+                    done(error);
+                }
+            })));
+        });
+    }
 }
 exports.default = AuthService;
-// AuthService.signUp();
-// AuthService.logIn();

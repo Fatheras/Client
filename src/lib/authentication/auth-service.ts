@@ -1,7 +1,9 @@
 import * as passport from "passport";
 import { Strategy as localStrategy } from "passport-local";
-import {User} from "../user/models/user";
+import { User } from "../user/models/user";
 import UserService from "../user/services/user-service";
+import { Strategy as JWTstrategy } from "passport-jwt";
+import { ExtractJwt as ExtractJWT } from "passport-jwt";
 
 export default class AuthService {
 
@@ -42,6 +44,17 @@ export default class AuthService {
             }
         }));
     }
+    public static async checkAccess() {
+
+        passport.use(new JWTstrategy({
+            secretOrKey: "top_secret",
+            jwtFromRequest: ExtractJWT.fromUrlQueryParameter("secret_token"),
+        }, async (token, done) => {
+            try {
+                return done(null, token.user);
+            } catch (error) {
+                done(error);
+            }
+        }));
+    }
 }
-// AuthService.signUp();
-// AuthService.logIn();

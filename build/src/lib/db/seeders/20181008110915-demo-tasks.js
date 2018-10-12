@@ -6,7 +6,7 @@ exports.default = {
         const tasks = [];
         for (let index = 0; index < 20; index++) {
             tasks.push({
-                name: faker.name.jobTitle(),
+                title: faker.name.jobTitle(),
                 cost: faker.random.number(),
                 status: "done",
                 category: faker.name.title(),

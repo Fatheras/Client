@@ -1,5 +1,4 @@
 import DealService from "../services/deal-service";
-import { IUser } from "../../user/models/user";
 import { IDeal } from "../models/deal";
 
 export class DealController {

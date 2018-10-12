@@ -1,6 +1,4 @@
-import {User, IUser} from "../../user/models/user";
-import {Task, ITask} from "../../tasks/models/task";
-import {Deal, IDeal} from "../models/deal";
+import { Deal, IDeal } from "../models/deal";
 
 export default class DealService {
 
@@ -36,7 +34,5 @@ export default class DealService {
 
             return await this.getDeal(id);
         }
-
     }
-
 }
