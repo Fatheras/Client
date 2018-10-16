@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { UserController } from "../controllers/user-controller";
 import passport = require("passport");
+import { errorLog, successLog } from "../../tools/logger-service";
 import * as jwt from "jsonwebtoken";
 
 class UserRouter {
@@ -26,16 +27,19 @@ class UserRouter {
 
         this.router.delete("/:id", UserController.deleteUser);
         this.router.put("/:id", UserController.updateUser);
-        this.router.post("/signup",
-        passport.authenticate("signup", { session: false }),
-            async (req, res, next) => {
-                res.json({
-                    message: "Signup successful",
-                    user: req.user,
-                });
-            });
+        this.router.post("/signup", async (req, res, next) => {
+            passport.authenticate("signup", (err, user, info) => {
+                if (err) {
+                    errorLog.error("User has already exist");
+                    res.sendStatus(400);
+                } else {
+                    successLog.info("User was added");
+                    res.sendStatus(200);
+                }
+            })(req, res, next);
+        });
         this.router.post("/login", async (req, res, next) => {
-            passport.authenticate("login", async (err, user, info) => {
+            passport.authenticate("login", async (err, user) => {
                 try {
                     if (err || !user) {
                         const error = new Error("An Error occured");

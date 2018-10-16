@@ -1,10 +1,10 @@
 "use strict";
-import * as faker from "faker";
-import { ITask } from "../../tasks/models/task";
+const faker = require("faker");
 
-export default {
+module.exports = {
   up: (queryInterface, Sequelize) => {
-    const tasks: ITask[] = [];
+
+    let tasks = [];
 
     for (let index = 0; index < 20; index++) {
       tasks.push(
@@ -16,7 +16,7 @@ export default {
           countOfUsers: faker.random.number({ min: 0, max: 6 }),
           time: "10:10:10",
           description: faker.name.jobDescriptor(),
-          owner: faker.random.number({ min: 1, max: 3 }),
+          owner: faker.random.number({ min: 2, max: 3 }),
         },
       );
 

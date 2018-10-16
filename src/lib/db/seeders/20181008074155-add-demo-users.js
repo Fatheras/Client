@@ -1,12 +1,11 @@
 "use strict";
-import * as faker from "faker";
-import { IUser } from "../../user/models/user";
+const faker = require("faker");
 
-export default {
+module.exports = {
   up: (queryInterface, Sequelize) => {
-    const users: IUser[] = [];
+    let users = [];
 
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < 10; index++) {
       users.push(
         {
           firstName: faker.name.firstName(),

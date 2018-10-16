@@ -6,7 +6,7 @@
         "module": "commonjs",
         "sourceMap": false,
         "outDir": "./build/src",
-        "rootDir": "./src"
+        "rootDir": "./src",
     },
     
     "include": [

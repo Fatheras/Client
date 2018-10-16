@@ -12,7 +12,7 @@ export default class AuthService {
             usernameField: "email",
             passwordField: "password",
             passReqToCallback: true,
-        }, async (req, email, password, done, error) => {
+        }, async (req, email, password, done) => {
             try {
                 const user = await UserService.addUser({ email, password, phone: req.body.phone });
                 return done(null, user);

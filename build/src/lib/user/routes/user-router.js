@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const user_controller_1 = require("../controllers/user-controller");
 const passport = require("passport");
+const logger_service_1 = require("../../tools/logger-service");
 const jwt = require("jsonwebtoken");
 class UserRouter {
     constructor() {
@@ -29,14 +30,20 @@ class UserRouter {
         });
         this.router.delete("/:id", user_controller_1.UserController.deleteUser);
         this.router.put("/:id", user_controller_1.UserController.updateUser);
-        this.router.post("/signup", passport.authenticate("signup", { session: false }), (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            res.json({
-                message: "Signup successful",
-                user: req.user,
-            });
+        this.router.post("/signup", (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            passport.authenticate("signup", (err, user, info) => {
+                if (err) {
+                    logger_service_1.errorLog.error("User has already exist");
+                    res.sendStatus(400);
+                }
+                else {
+                    logger_service_1.successLog.info("User was added");
+                    res.sendStatus(200);
+                }
+            })(req, res, next);
         }));
         this.router.post("/login", (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            passport.authenticate("login", (err, user, info) => __awaiter(this, void 0, void 0, function* () {
+            passport.authenticate("login", (err, user) => __awaiter(this, void 0, void 0, function* () {
                 try {
                     if (err || !user) {
                         const error = new Error("An Error occured");
@@ -50,7 +57,7 @@ class UserRouter {
                         const token = jwt.sign({ user: body }, process.env.SECRET, {
                             expiresIn: 30,
                         });
-                        return res.json({ token });
+                        return res.json(token);
                     }));
                 }
                 catch (error) {

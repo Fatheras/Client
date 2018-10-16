@@ -21,7 +21,7 @@ class AuthService {
                 usernameField: "email",
                 passwordField: "password",
                 passReqToCallback: true,
-            }, (req, email, password, done, error) => __awaiter(this, void 0, void 0, function* () {
+            }, (req, email, password, done) => __awaiter(this, void 0, void 0, function* () {
                 try {
                     const user = yield user_service_1.default.addUser({ email, password, phone: req.body.phone });
                     return done(null, user);
