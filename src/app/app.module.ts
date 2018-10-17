@@ -9,16 +9,22 @@ import { AuthenticationGuardService } from './+authentication/services/authentic
 import { JwtModule } from '@auth0/angular-jwt';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from '../app/+authentication/models/token.interceptor';
+import { MaterialModule } from './material/material.module';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { ActualTaskModule } from './+actual-tasks/modules/actual-tasks.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavBarComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
     AuthenticationModule,
     MeModule,
+    MaterialModule,
+    ActualTaskModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('token'),

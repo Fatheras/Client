@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterContentInit, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,13 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(public http: HttpClient) {}
+
+
+  public checkUrl() {
+    return !(/\/registration/.test(location.href) || /\/authorization/.test(location.href));
+  }
+
+  constructor(public http: HttpClient, private router: Router) { }
   public ping() {
     this.http.get('https://example.com/api/things')
       .subscribe(

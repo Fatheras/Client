@@ -39,8 +39,9 @@ export class RegistrationComponent {
       phone: this.registForm.controls['phone'].value
     };
 
-    this.authService.signUp(user.email, user.password, user.phone).subscribe(() => {
-      this.router.navigate(['/authorization']);
+    this.authService.signUp(user.email, user.password, user.phone).subscribe((model: IUser) => {
+      console.log(model);
+      this.router.navigate(['/me']);
     });
   }
 
