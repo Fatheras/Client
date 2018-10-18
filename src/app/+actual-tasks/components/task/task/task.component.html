@@ -1,33 +1,9 @@
-<!-- <div class="task-container">
-    <div class="task_description">
-
-        <h2 class="task_title">Make cleanig</h2>
-
-        <span>2/5 people</span>
-
-        <p>
-            daw;d;aw;adw;awd;awdawasdas
-            dsa;das;d;a
-            d;asd;as;das;as
-        </p>
-    </div>
-
-    <div class="task_bottom">
-        <div class="price-time-container">
-            <div class="task_time">time</div>
-            <div class="task_price">price </div>
-        </div>
-
-        <button mat-button class="task_accept">ACCEPT</button>
-    </div>
-</div> -->
-
 <div class="task-container">
     <div class="task_description">
 
         <h2 class="task_title">{{task.title}}</h2>
 
-        <span>{{task.countOfUsers}}</span>
+        <span>{{task.countOfDeals}}/{{task.peoples}}</span>
 
         <p>
             {{task.description}}
@@ -37,7 +13,7 @@
     <div class="task_bottom">
         <div class="price-time-container">
             <div class="task_time">{{task.time}}</div>
-            <div class="task_price">{{task.price}} </div>
+            <div class="task_price">{{task.cost}}$</div>
         </div>
 
         <button mat-button class="task_accept">ACCEPT</button>

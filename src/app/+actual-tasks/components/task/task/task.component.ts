@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ITask } from '../../../models/Task';
 import { TaskService } from '../../../services/task.service';
 
@@ -8,15 +8,15 @@ import { TaskService } from '../../../services/task.service';
   styleUrls: ['./task.component.css']
 })
 export class TaskComponent implements OnInit {
-  @Input() tasks: ITask[];
-  constructor(private taskService: TaskService) { }
 
-  ngOnInit() {
-    this.getTasks();
+  @Input() task: ITask;
+  public countOfUsers: number;
+
+  constructor(private taskService: TaskService) {
+
   }
 
-  getTasks(): void {
-    this.taskService.getTasks()
-      .subscribe((tasks: ITask[]) => { this.tasks = tasks; });
+  ngOnInit(): void {
+
   }
 }

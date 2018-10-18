@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { TaskService } from 'src/app/+actual-tasks/services/task.service';
-import { ITask } from 'src/app/+actual-tasks/models/Task';
+import { Component, OnInit, Input } from '@angular/core';
+import { TaskService } from '../../../services/task.service';
+import { ITask } from '../../../models/task';
 
 @Component({
     selector: 'app-task-list',
@@ -8,11 +8,13 @@ import { ITask } from 'src/app/+actual-tasks/models/Task';
     styleUrls: ['./task-list.component.css']
 })
 
-export class TaskListComponent {}
-/*export class TaskListComponent implements OnInit {
+export class TaskListComponent implements OnInit {
 
-    tasks: ITask[];
-    constructor(private taskService: TaskService) { }
+    @Input() tasks: ITask[];
+
+    constructor(private taskService: TaskService) {
+
+    }
 
     ngOnInit() {
         this.getTasks();
@@ -22,4 +24,4 @@ export class TaskListComponent {}
         this.taskService.getTasks()
             .subscribe((tasks: ITask[]) => { this.tasks = tasks; });
     }
-} */
+}

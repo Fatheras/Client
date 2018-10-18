@@ -4,8 +4,9 @@ export interface ITask {
     cost: number;
     status: string;
     category: string;
-    countOfUsers: number;
+    people: number;
     time: string;
     description: string;
     owner: number;
+    countOfDeals?: number;
 }

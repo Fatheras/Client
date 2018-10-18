@@ -1,8 +1,8 @@
 <div class="wrap-container">
-    <h1>ALL TASKS</h1>
-    <div class="tasks_container">
-
-        <app-task *ngFor="let task of tasks"></app-task>
-        
-    </div>
+<h1>ALL TASKS</h1>
+<mat-grid-list cols="3" gutterSize="50px" rowHeight="5:4">
+    <mat-grid-tile *ngFor="let task of tasks">
+        <app-task class="task-wrap-container" [task]="task"></app-task>
+    </mat-grid-tile>
+</mat-grid-list>
 </div>
