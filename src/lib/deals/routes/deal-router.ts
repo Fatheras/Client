@@ -11,7 +11,7 @@ class DealRouter {
     }
 
     public routes() {
-        this.router.get("/", DealController.getAllDeal);
+        this.router.get("/", DealController.getAllDeals);
         this.router.get("/:id", DealController.getDeal);
         this.router.post("/", DealController.addDeal);
         this.router.put("/:id", DealController.updateDeal);

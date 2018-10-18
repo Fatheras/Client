@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import db from "../../db/models/db";
 import {User} from "../../user/models/user";
+import { Task } from "../../tasks/models/task";
 
 export interface IDeal extends  Sequelize.Model<IDeal>  {
     id?: number;
@@ -25,7 +26,7 @@ export const Deal = db.define<IDeal>("deal", {
     taskId: {
         type: Sequelize.INTEGER,
         references: {
-            model: User,
+            model: Task,
             key:   "id",
         },
         validate: {notEmpty: true},
@@ -34,3 +35,6 @@ export const Deal = db.define<IDeal>("deal", {
 {
     timestamps: false,
 });
+
+Deal.belongsTo(Task, {foreignKey: "taskId"});
+Task.hasMany(Deal);

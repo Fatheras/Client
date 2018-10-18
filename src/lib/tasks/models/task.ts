@@ -8,10 +8,11 @@ export interface ITask extends Sequelize.Model<ITask> {
     cost: number;
     status: string;
     category: string;
-    countOfUsers: number;
     time: string;
     description: string;
     owner: number;
+    peoples: number;
+    countOfDeals?: number;
 }
 
 export const Task = db.define<ITask>("task", {
@@ -40,9 +41,6 @@ export const Task = db.define<ITask>("task", {
     category: {
         type: Sequelize.STRING,
     },
-    countOfUsers: {
-        type: Sequelize.INTEGER,
-    },
     time: {
         type: Sequelize.TIME,
     },
@@ -56,6 +54,13 @@ export const Task = db.define<ITask>("task", {
             key: "id",
         },
         validate: { notEmpty: true },
+    },
+    peoples: {
+        type: Sequelize.INTEGER,
+        validate: {
+            notEmpty: true,
+            len: [1, 5],
+        },
     },
 },
     {
