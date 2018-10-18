@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IUser } from 'src/app/user/user';
@@ -28,13 +28,16 @@ export class AuthorizationComponent {
   }
 
   public signIn() {
-    let user: IUser;
+    let email: string;
+    let password: string;
 
-    user = {
-      email: this.authForm.controls['email'].value,
-      password: this.authForm.controls['password'].value
-    };
+    email = this.authForm.controls['email'].value;
+    password = this.authForm.controls['password'].value;
 
-    this.authService.logIn(user);
+    this.authService.logIn(email, password).subscribe((token: Object) => {
+      localStorage.setItem('token', token['token']);
+      this.router.navigate(['/me']);
+    });
   }
+
 }

@@ -1,4 +1,4 @@
-<form class="authorization-container" [formGroup]="authForm">
+<form (submit)="signIn()" class="authorization-container" [formGroup]="authForm">
     <h2 class="authorization_title">SIGN IN</h2>
     
     <mat-form-field>
@@ -26,7 +26,7 @@
     
     <div class="authorization_sign-container">
         <button class="sign-container_up" mat-button (click)="signUp()">SIGN UP</button>
-        <button class="sign-container_in" mat-button (click)="signIn()">SIGN IN</button>
+        <button [disabled]="!authForm.valid" type="submit" class="sign-container_in" mat-button>SIGN IN</button>
     </div>
     
 </form>

@@ -1,4 +1,4 @@
-<form class="authorization-container" [formGroup]="registForm">
+<form (submit)="signUp()" class="authorization-container" [formGroup]="registForm">
     <h2 class="authorization_title">SIGN UP</h2>
 
     <mat-form-field>
@@ -13,7 +13,7 @@
             This is too big length.
         </mat-error>
     </mat-form-field>
-
+   
     <mat-form-field>
         <input type="password" matInput placeholder="Password*" [formControl]="registForm.controls['passwords'].controls['password']" [errorStateMatcher]="matcher">
         <mat-error *ngIf="registForm.controls['passwords'].controls['password'].hasError('required')">
@@ -49,7 +49,7 @@
 
     <div class="authorization_sign-container">
         <button class="sign-container_up" mat-button (click)="signIn()">SIGN IN</button>
-        <button class="sign-container_in" mat-button (click)="signUp()">SIGN UP</button>
+        <button [disabled]="!registForm.valid" type="submit" class="sign-container_in" mat-button>SIGN UP</button>
     </div>
 
 </form>

@@ -26,8 +26,6 @@ export class RegistrationComponent {
       password: new FormControl('', [Validators.required, Validators.maxLength(255)]),
       repeat: new FormControl('', [Validators.required, Validators.maxLength(255)])
     }, { validator: this.matcher.equalValueValidator('password', 'repeat') }),
-    // password: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-    // confirmPassword: new FormControl('', [Validators.required, Validators.maxLength(255)]),
     phone: new FormControl('', [Validators.required, Validators.maxLength(255)])
   });
 
@@ -37,11 +35,13 @@ export class RegistrationComponent {
 
     user = {
       email: this.registForm.controls['email'].value,
-      password: this.registForm.controls['password'].value,
+      password: this.registForm.value.passwords.password,
       phone: this.registForm.controls['phone'].value
     };
 
-    this.authService.signUp(user);
+    this.authService.signUp(user.email, user.password, user.phone).subscribe(() => {
+      this.router.navigate(['/authorization']);
+    });
   }
 
   public signIn() {
