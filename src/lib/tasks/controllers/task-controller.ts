@@ -1,44 +1,36 @@
 import TaskService from "../services/task-service";
 import { ITask } from "../models/task";
+import CustomError from "../../tools/error";
 
 export class TaskController {
     public static async getAllTasks(req, res) {
-        res.status(200).send(await TaskService.getAllTasks());
+
+        const tasks: ITask[] = await TaskService.getAllTasks();
+
+        res.status(200).send(tasks);
+
     }
 
     public static async getTask(req, res) {
 
-        let task: ITask;
+        const task: ITask = await TaskService.getTask(req.params.id);
 
-        try {
-            task = await TaskService.getTask(req.params.id);
-
-            if (task) {
-                res.status(200).send(task);
-            } else {
-                res.sendStatus(404);
-            }
-
-        } catch (error) {
-            res.sendStatus(400);
+        if (task) {
+            res.status(200).send(task);
+        } else {
+            throw new CustomError(400);
         }
+
     }
 
     public static async deleteTask(req, res) {
 
-        let result: number;
+        const result: number = await TaskService.deleteTask(req.params.id);
 
-        try {
-            result = await TaskService.deleteTask(req.params.id);
-
-            if (result) {
-                res.sendStatus(204);
-            } else {
-                res.sendStatus(404);
-            }
-
-        } catch (error) {
-            res.sendStatus(400);
+        if (result) {
+            res.sendStatus(200);
+        } else {
+            throw new CustomError(400);
         }
 
     }
@@ -47,33 +39,38 @@ export class TaskController {
 
         const taskId = parseInt(req.params.id, 10);
         const model: ITask = req.body;
-        let task: ITask;
+        const task: ITask = await TaskService.updateTask(taskId, model);
 
-        try {
-            task = await TaskService.updateTask(taskId, model);
-
-            if (task) {
-                res.status(200).send(task);
-            } else {
-                res.sendStatus(404);
-            }
-
-        } catch (error) {
-            res.sendStatus(400);
+        if (task) {
+            res.status(200).send(task);
+        } else {
+            throw new CustomError(400);
         }
 
     }
 
     public static async addTask(req, res) {
 
-        let task: ITask;
+        const task: ITask = await TaskService.addTask(req.body);
 
-        try {
-            task = await TaskService.addTask(req.body);
-
+        if (task) {
             res.status(200).send(task);
-        } catch (error) {
-            res.send(error.message);
+        } else {
+            throw new CustomError(400);
+        }
+
+    }
+
+    public static async getTasksByCategory(req, res) {
+
+        const category = parseInt(req.params.name, 10);
+
+        const tasks: ITask[] = await TaskService.getTasksByCategory(category);
+
+        if (tasks) {
+            res.status(200).send(tasks);
+        } else {
+            throw new CustomError(400);
         }
 
     }

@@ -2,7 +2,7 @@ import DealService from "../services/deal-service";
 import { IDeal } from "../models/deal";
 
 export class DealController {
-    public static async getAllDeal(req, res) {
+    public static async getAllDeals(req, res) {
         res.status(200).send(await DealService.getAllDeals());
     }
 
@@ -77,4 +77,5 @@ export class DealController {
         }
 
     }
+
 }

@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { UserController } from "../controllers/user-controller";
 import passport = require("passport");
-import { errorLog, successLog } from "../../tools/logger-service";
-import * as jwt from "jsonwebtoken";
+import { AuthController } from "../../authentication/controllers/auth-controller";
+import { handleError } from "../../tools/handleError";
+import CheckParamsMiddleware from "../../server/models/check-params.middleware";
+import * as joi from "joi";
 
 class UserRouter {
 
@@ -14,9 +16,8 @@ class UserRouter {
     }
 
     public routes() {
-        this.router.get("/", UserController.getAllUsers);
-        this.router.get("/:id", UserController.getUser);
-        this.router.get("/me", (req, res, next) => {
+        this.router.get("/", handleError(UserController.getAllUsers));
+        this.router.get("/me", passport.authenticate("jwt", { session: false }), (req, res) => {
 
             res.json({
                 message: "You made it to the secure route",
@@ -24,44 +25,19 @@ class UserRouter {
                 token: req.query.secret_token,
             });
         });
+        this.router.get("/:id", handleError(UserController.getUser));
 
-        this.router.delete("/:id", UserController.deleteUser);
-        this.router.put("/:id", UserController.updateUser);
-        this.router.post("/signup", async (req, res, next) => {
-            passport.authenticate("signup", (err, user, info) => {
-                if (err) {
-                    errorLog.error("User has already exist");
-                    res.sendStatus(400);
-                } else {
-                    successLog.info("User was added");
-                    res.sendStatus(200);
-                }
-            })(req, res, next);
-        });
-        this.router.post("/login", async (req, res, next) => {
-            passport.authenticate("login", async (err, user) => {
-                try {
-                    if (err || !user) {
-                        const error = new Error("An Error occured");
-                        return next(error);
-                    }
-                    req.login(user, { session: false }, async (error) => {
-                        if (error) {
-                            return next(error);
-                        }
-
-                        const body = { email: user.email };
-
-                        const token = jwt.sign({ user: body }, process.env.SECRET, {
-                            expiresIn: 30,
-                        });
-                        return res.json(token);
-                    });
-                } catch (error) {
-                    return next(error);
-                }
-            })(req, res, next);
-        });
+        this.router.delete("/:id", handleError(UserController.deleteUser));
+        this.router.put("/:id", handleError(UserController.updateUser));
+        this.router.post("/signup", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
+            email: joi.string().email({ minDomainAtoms: 2 }).required(),
+            phone: joi.string().trim().regex(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/).required(),
+            password: joi.string().min(3).max(30).required(),
+        })), handleError(AuthController.signUp));
+        this.router.post("/login", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
+            email: joi.string().email({ minDomainAtoms: 2 }).required(),
+            password: joi.string().min(3).max(30).required(),
+        })), handleError(AuthController.signIn));
     }
 }
 

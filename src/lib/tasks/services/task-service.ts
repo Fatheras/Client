@@ -1,21 +1,31 @@
 import { Task, ITask } from "../models/task";
+import { Deal } from "../../deals/models/deal";
+import sequelize from "sequelize";
 
 export default class TaskService {
 
     public static async addTask(task: ITask) {
-        return await Task.create(task);
+        return Task.create(task);
     }
 
     public static async getTask(id: number) {
-        return await Task.findById(id);
+        return Task.findById(id);
     }
 
     public static async getAllTasks() {
-        return await Task.findAll();
+        return Task.findAll({
+            attributes: {
+                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
+            },
+            include: [{
+                model: Deal, attributes: [],
+            }],
+            group: ["Task.id"],
+        });
     }
 
     public static async deleteTask(id: number) {
-        return await Task.destroy({
+        return Task.destroy({
             where: {
                 id,
             },
@@ -32,7 +42,15 @@ export default class TaskService {
                 },
             });
 
-            return await this.getTask(id);
+            return this.getTask(id);
         }
+    }
+
+    public static async getTasksByCategory(category: number) {
+        return Task.findAll({
+            where: {
+                category,
+            },
+        });
     }
 }

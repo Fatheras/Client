@@ -1,7 +1,6 @@
 import UserService from "../services/user-service";
 import { IUser } from "../models/user";
-// import AuthService from "../../authentication/auth-service";
-// import passport = require("passport");
+import CustomError from "../../tools/error";
 
 export class UserController {
 
@@ -10,69 +9,54 @@ export class UserController {
     }
 
     public static async getUser(req, res) {
-        let user: IUser;
 
-        try {
-            user = await UserService.getUser(req.params.id);
+        const id: number = parseInt(req.params.id, 10);
+        const user: IUser = await UserService.getUser(id);
 
-            if (user) {
-                res.status(200).send(user);
-            } else {
-                res.sendStatus(404);
-            }
-
-        } catch (error) {
-            res.sendStatus(400);
+        if (user) {
+            res.status(200).send(user);
+        } else {
+            throw new CustomError(404);
         }
+
     }
 
     public static async addUser(req, res) {
 
-        let user: IUser;
+        const model: IUser = req.body;
+        const user: IUser = await UserService.addUser(model);
 
-        try {
-            user = await UserService.addUser(req.body);
-
+        if (user) {
             res.status(200).send(user);
-        } catch (error) {
-            res.send(error.message);
+        } else {
+            throw new CustomError(400);
         }
+
     }
 
     public static async deleteUser(req, res) {
-        let result: number;
 
-        try {
-            result = await UserService.deleteUser(req.params.id);
+        const id: number = parseInt(req.params.id, 10);
+        const result: number = await UserService.deleteUser(id);
 
-            if (result) {
-                res.sendStatus(204);
-            } else {
-                res.sendStatus(404);
-            }
-
-        } catch (error) {
-            res.sendStatus(400);
+        if (result) {
+            res.sendStatus(204);
+        } else {
+            throw new CustomError(400);
         }
 
     }
 
     public static async updateUser(req, res) {
-        const userId = parseInt(req.params.id, 10);
+
+        const id: number = parseInt(req.params.id, 10);
         const model: IUser = req.body;
-        let user: IUser;
+        const user: IUser = await UserService.updateUser(id, model);
 
-        try {
-            user = await UserService.updateUser(userId, model);
-
-            if (user) {
-                res.status(200).send(user);
-            } else {
-                res.sendStatus(404);
-            }
-
-        } catch (error) {
-            res.sendStatus(400);
+        if (user) {
+            res.status(200).send(user);
+        } else {
+            throw new CustomError(400);
         }
     }
 

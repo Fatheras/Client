@@ -1,3 +1,97 @@
 2018-10-16T09:40:45.996Z error User has already exist
 2018-10-16T10:35:55.796Z error undefined
 2018-10-16T10:37:19.024Z error User has already exist
+2018-10-16T11:06:58.537Z error uncaughtException: listen EADDRINUSE :::3000
+Error: listen EADDRINUSE :::3000
+    at Server.setupListenHandle [as _listen2] (net.js:1286:14)
+    at listenInCluster (net.js:1334:12)
+    at Server.listen (net.js:1421:7)
+    at Object.<anonymous> (C:\Apple\build\src\app.js:22:58)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Apple\build\src\app.js:4:58)
+2018-10-16T11:08:12.029Z error uncaughtException: listen EADDRINUSE :::3000
+Error: listen EADDRINUSE :::3000
+    at Server.setupListenHandle [as _listen2] (net.js:1286:14)
+    at listenInCluster (net.js:1334:12)
+    at Server.listen (net.js:1421:7)
+    at Object.<anonymous> (C:\Apple\build\src\app.js:22:58)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Apple\build\src\app.js:4:58)
+2018-10-16T11:12:08.776Z error uncaughtException: listen EADDRINUSE :::3000
+Error: listen EADDRINUSE :::3000
+    at Server.setupListenHandle [as _listen2] (net.js:1286:14)
+    at listenInCluster (net.js:1334:12)
+    at Server.listen (net.js:1421:7)
+    at Object.<anonymous> (C:\Apple\src\app.ts:20:32)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Apple\src\app.ts:4:58)
+2018-10-16T11:12:37.448Z error uncaughtException: listen EADDRINUSE :::3000
+Error: listen EADDRINUSE :::3000
+    at Server.setupListenHandle [as _listen2] (net.js:1286:14)
+    at listenInCluster (net.js:1334:12)
+    at Server.listen (net.js:1421:7)
+    at Object.<anonymous> (C:\Apple\src\app.ts:20:32)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Apple\src\app.ts:4:58)
+2018-10-16T11:12:52.226Z error uncaughtException: listen EADDRINUSE :::3000
+Error: listen EADDRINUSE :::3000
+    at Server.setupListenHandle [as _listen2] (net.js:1286:14)
+    at listenInCluster (net.js:1334:12)
+    at Server.listen (net.js:1421:7)
+    at Object.<anonymous> (C:\Apple\src\app.ts:20:32)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Apple\src\app.ts:4:58)
+2018-10-16T11:29:58.058Z error uncaughtException: listen EADDRINUSE :::3000
+Error: listen EADDRINUSE :::3000
+    at Server.setupListenHandle [as _listen2] (net.js:1286:14)
+    at listenInCluster (net.js:1334:12)
+    at Server.listen (net.js:1421:7)
+    at Object.<anonymous> (C:\Apple\build\src\app.js:22:58)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Apple\build\src\app.js:4:58)
+2018-10-16T11:30:17.451Z error uncaughtException: listen EADDRINUSE :::3000
+Error: listen EADDRINUSE :::3000
+    at Server.setupListenHandle [as _listen2] (net.js:1286:14)
+    at listenInCluster (net.js:1334:12)
+    at Server.listen (net.js:1421:7)
+    at Object.<anonymous> (C:\Apple\build\src\app.js:22:58)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Apple\build\src\app.js:4:58)
+2018-10-16T14:27:38.397Z error User has already exist
+2018-10-17T07:06:11.275Z error User has already exist
+2018-10-17T07:13:06.459Z error User has already exist
+2018-10-17T07:31:13.463Z error User has already exist
+2018-10-17T07:53:36.414Z error User has already exist
+2018-10-17T07:54:19.860Z error User has already exist
+2018-10-17T07:55:00.364Z error User has already exist
+2018-10-17T07:58:10.401Z error User has already exist
+2018-10-17T08:02:56.656Z error User has already exist
+2018-10-17T08:03:17.503Z error User has already exist
+2018-10-17T08:05:27.530Z error User has already exist
+2018-10-17T08:06:05.474Z error User has already exist
+2018-10-17T08:08:11.726Z error User has already exist
+2018-10-17T08:08:50.083Z error User has already exist
+2018-10-17T08:08:54.495Z error User has already exist
+2018-10-17T08:08:54.967Z error User has already exist
+2018-10-17T08:08:55.154Z error User has already exist
+2018-10-17T08:08:56.919Z error User has already exist
+2018-10-17T08:08:59.671Z error User has already exist
+2018-10-17T08:09:00.473Z error User has already exist
+2018-10-17T08:09:03.039Z error User has already exist
+2018-10-17T08:09:03.423Z error User has already exist
+2018-10-17T08:09:03.598Z error User has already exist
+2018-10-17T08:09:03.767Z error User has already exist
+2018-10-17T08:09:03.934Z error User has already exist
+2018-10-17T08:09:04.110Z error User has already exist
+2018-10-17T08:09:16.601Z error User has already exist
+2018-10-17T08:09:16.831Z error User has already exist
+2018-10-17T08:09:17.023Z error User has already exist
+2018-10-17T08:10:35.786Z error User has already exist
+2018-10-18T10:17:41.684Z error Database is not found
+2018-10-18T10:18:31.215Z error Database is not found
+2018-10-18T10:25:47.951Z error Database is not found
+2018-10-18T10:32:47.477Z error Database is not found
+2018-10-18T10:33:31.832Z error Database is not found
+2018-10-18T10:35:05.893Z error Database is not found
+2018-10-18T10:35:45.456Z error Database is not found
+2018-10-18T10:36:23.090Z error Database is not found

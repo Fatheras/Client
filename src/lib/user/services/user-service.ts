@@ -3,21 +3,21 @@ import { User, IUser } from "../../user/models/user";
 export default class UserService {
 
     public static async getAllUsers() {
-        return await User.findAll();
+        return User.findAll();
     }
 
     public static async getUser(id: number) {
-        return await User.findById(id);
+        return User.findById(id);
     }
 
     public static async addUser(user: IUser) {
-        return await User.create(user);
+        return User.create(user);
     }
 
-    public static async deleteUser(userId: string) {
-        return await  User.destroy({
+    public static async deleteUser(id: number) {
+        return User.destroy({
             where: {
-                id: parseInt(userId, 10),
+                id,
             },
         });
     }
@@ -32,7 +32,7 @@ export default class UserService {
                 },
             });
 
-            return await this.getUser(id);
+            return this.getUser(id);
         }
     }
 

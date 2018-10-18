@@ -3,19 +3,19 @@ import { Deal, IDeal } from "../models/deal";
 export default class DealService {
 
     public static async addDeal(deal: IDeal) {
-        return await Deal.create(deal);
+        return Deal.create(deal);
     }
 
     public static async getDeal(id: number) {
-        return await Deal.findById(id);
+        return Deal.findById(id);
     }
 
     public static async getAllDeals() {
-        return await Deal.findAll();
+        return Deal.findAll();
     }
 
     public static async deleteDeal(id: number) {
-        return await Deal.destroy({
+        return Deal.destroy({
             where: {
                 id,
             },
@@ -32,7 +32,15 @@ export default class DealService {
                 },
             });
 
-            return await this.getDeal(id);
+            return this.getDeal(id);
         }
+    }
+
+    public static async getDealsByTaskId(taskId: number) {
+        return Deal.findAll({
+            where: {
+                taskId,
+            },
+        });
     }
 }
