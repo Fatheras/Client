@@ -17,10 +17,6 @@ export default class TaskService {
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
-            include: [{
-                model: Deal, attributes: [],
-            }],
-            group: ["Task.id"],
         });
     }
 
