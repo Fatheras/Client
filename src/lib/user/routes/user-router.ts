@@ -18,7 +18,6 @@ class UserRouter {
     public routes() {
         this.router.get("/", handleError(UserController.getAllUsers));
         this.router.get("/me", passport.authenticate("jwt", { session: false }), (req, res) => {
-
             res.json({
                 message: "You made it to the secure route",
                 user: req.user,
@@ -33,11 +32,11 @@ class UserRouter {
             email: joi.string().email({ minDomainAtoms: 2 }).required(),
             phone: joi.string().trim().regex(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/).required(),
             password: joi.string().min(3).max(30).required(),
-        })), handleError(AuthController.signUp));
+        })), AuthController.signUp);
         this.router.post("/login", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             email: joi.string().email({ minDomainAtoms: 2 }).required(),
             password: joi.string().min(3).max(30).required(),
-        })), handleError(AuthController.signIn));
+        })), AuthController.signIn);
     }
 }
 

@@ -1,13 +1,21 @@
 import { Deal, IDeal } from "../models/deal";
+import CustomError from "../../tools/error";
 
 export default class DealService {
 
-    public static async addDeal(deal: IDeal) {
+    public static async addDeal(deal: IDeal): Promise<IDeal> {
         return Deal.create(deal);
     }
 
-    public static async getDeal(id: number) {
-        return Deal.findById(id);
+    public static async getDeal(id: number): Promise<IDeal> {
+
+        const deal: IDeal |null = await Deal.findById(id);
+
+        if (deal) {
+            return deal;
+        } else {
+            throw new CustomError(400);
+        }
     }
 
     public static async getAllDeals() {
@@ -22,7 +30,7 @@ export default class DealService {
         });
     }
 
-    public static async updateDeal(id: number, model: IDeal) {
+    public static async updateDeal(id: number, model: IDeal): Promise<IDeal> {
         if (model) {
             delete model.id;
 
@@ -33,6 +41,8 @@ export default class DealService {
             });
 
             return this.getDeal(id);
+        } else {
+            throw new CustomError(400);
         }
     }
 
@@ -43,4 +53,5 @@ export default class DealService {
             },
         });
     }
+
 }

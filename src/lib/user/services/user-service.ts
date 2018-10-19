@@ -1,13 +1,21 @@
 import { User, IUser } from "../../user/models/user";
+import CustomError from "../../tools/error";
 
 export default class UserService {
 
-    public static async getAllUsers() {
+    public static async getAllUsers(): Promise<IUser[]> {
         return User.findAll();
     }
 
-    public static async getUser(id: number) {
-        return User.findById(id);
+    public static async getUser(id: number): Promise<IUser> {
+        const user: IUser | null = await User.findById(id);
+
+        if (user) {
+            return user;
+        } else {
+            throw new CustomError(400);
+        }
+
     }
 
     public static async addUser(user: IUser) {
@@ -22,7 +30,7 @@ export default class UserService {
         });
     }
 
-    public static async updateUser(id: number, model: IUser) {
+    public static async updateUser(id: number, model: IUser): Promise<IUser> {
         if (model) {
             delete model.id;
 
@@ -33,6 +41,8 @@ export default class UserService {
             });
 
             return this.getUser(id);
+        } else {
+            throw new CustomError(400);
         }
     }
 

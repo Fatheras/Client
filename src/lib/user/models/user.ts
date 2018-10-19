@@ -3,7 +3,7 @@ import db from "../../db/models/db";
 import * as bcrypt from "bcrypt";
 import CustomError from "../../tools/error";
 
-export interface IUser extends Sequelize.Model<IUser> {
+export interface IUser {
     id?: number;
     firstName?: string;
     lastName?: string;
@@ -13,7 +13,7 @@ export interface IUser extends Sequelize.Model<IUser> {
     role: number;
 }
 
-export const User = db.define<IUser>("user", {
+export const User = db.define<IUser, object>("user", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -49,7 +49,7 @@ export const User = db.define<IUser>("user", {
 },
     { timestamps: false });
 
-User.beforeCreate((user: IUser, options) => {
+User.beforeCreate((user: IUser, options: object) => {
     return bcrypt.hash(user.password, 10)
         .then((hash) => {
             user.password = hash;
@@ -58,10 +58,3 @@ User.beforeCreate((user: IUser, options) => {
             throw new CustomError(500);
         });
 });
-
-User.isValidPassword = async (user: IUser, password: string) => {
-    const foundUser = user;
-    let compare: boolean;
-    compare = await bcrypt.compare(password, foundUser.password);
-    return compare;
-};

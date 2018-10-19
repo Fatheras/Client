@@ -1,10 +1,12 @@
-import * as passport from "passport";
-import { Strategy as localStrategy } from "passport-local";
-import { User } from "../../user/models/user";
+import passport from "passport";
+import * as bcrypt from "bcrypt";
+import { Strategy as localStrategy, VerifyFunctionWithRequest } from "passport-local";
+import { User, IUser } from "../../user/models/user";
 import UserService from "../../user/services/user-service";
 import { Strategy as JWTstrategy } from "passport-jwt";
 import { ExtractJwt as ExtractJWT } from "passport-jwt";
 import { Role } from "../../user/models/roles";
+import { Request } from "express";
 
 export default class AuthService {
 
@@ -19,7 +21,7 @@ export default class AuthService {
             usernameField: "email",
             passwordField: "password",
             passReqToCallback: true,
-        }, async (req, email, password, done) => {
+        }, async (req: Request, email: string, password: string, done: any) => {
             try {
                 const user = await UserService.addUser({ email, password, phone: req.body.phone, role: Role.User });
                 return done(null, user);
@@ -41,7 +43,7 @@ export default class AuthService {
 
                     return done(null, false, { message: "User not found" });
                 }
-                const validate = await User.isValidPassword(user, password);
+                const validate = await AuthService.isValidPassword(user, password);
                 if (!validate) {
                     return done(null, false, { message: "Wrong Password" });
                 }
@@ -64,5 +66,12 @@ export default class AuthService {
                 done(error);
             }
         }));
+    }
+
+    private static async isValidPassword(user: IUser, password: string) {
+        const foundUser = user;
+        let compare: boolean;
+        compare = await bcrypt.compare(password, foundUser.password);
+        return compare;
     }
 }

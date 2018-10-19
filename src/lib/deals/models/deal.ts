@@ -3,13 +3,13 @@ import db from "../../db/models/db";
 import {User} from "../../user/models/user";
 import { Task } from "../../tasks/models/task";
 
-export interface IDeal extends  Sequelize.Model<IDeal>  {
+export interface IDeal {
     id?: number;
     userId: number;
     taskId: number;
 }
 
-export const Deal = db.define<IDeal>("deal", {
+export const Deal = db.define<IDeal, IDeal>("deal", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,

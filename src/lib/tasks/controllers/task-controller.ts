@@ -1,9 +1,10 @@
 import TaskService from "../services/task-service";
 import { ITask } from "../models/task";
 import CustomError from "../../tools/error";
+import { Request, Response } from "express";
 
 export class TaskController {
-    public static async getAllTasks(req, res) {
+    public static async getAllTasks(req: Request, res: Response) {
 
         const tasks: ITask[] = await TaskService.getAllTasks();
 
@@ -11,7 +12,7 @@ export class TaskController {
 
     }
 
-    public static async getTask(req, res) {
+    public static async getTask(req: Request, res: Response) {
 
         const task: ITask = await TaskService.getTask(req.params.id);
 
@@ -23,7 +24,7 @@ export class TaskController {
 
     }
 
-    public static async deleteTask(req, res) {
+    public static async deleteTask(req: Request, res: Response) {
 
         const result: number = await TaskService.deleteTask(req.params.id);
 
@@ -35,7 +36,7 @@ export class TaskController {
 
     }
 
-    public static async updateTask(req, res) {
+    public static async updateTask(req: Request, res: Response) {
 
         const taskId = parseInt(req.params.id, 10);
         const model: ITask = req.body;
@@ -49,7 +50,7 @@ export class TaskController {
 
     }
 
-    public static async addTask(req, res) {
+    public static async addTask(req: Request, res: Response) {
 
         const task: ITask = await TaskService.addTask(req.body);
 
@@ -61,7 +62,7 @@ export class TaskController {
 
     }
 
-    public static async getTasksByCategory(req, res) {
+    public static async getTasksByCategory(req: Request, res: Response) {
 
         const category = parseInt(req.params.name, 10);
 
