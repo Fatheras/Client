@@ -9,7 +9,7 @@ export interface IDeal {
     taskId: number;
 }
 
-export const Deal = db.define<IDeal, IDeal>("deal", {
+export const Deal = db.define<IDeal, object>("deal", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,

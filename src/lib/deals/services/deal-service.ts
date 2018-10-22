@@ -2,13 +2,11 @@ import { Deal, IDeal } from "../models/deal";
 import CustomError from "../../tools/error";
 
 export default class DealService {
-
     public static async addDeal(deal: IDeal): Promise<IDeal> {
         return Deal.create(deal);
     }
 
     public static async getDeal(id: number): Promise<IDeal> {
-
         const deal: IDeal |null = await Deal.findById(id);
 
         if (deal) {
@@ -53,5 +51,4 @@ export default class DealService {
             },
         });
     }
-
 }

@@ -3,7 +3,6 @@ import { TaskController } from "../controllers/task-controller";
 import { handleError } from "../../tools/handleError";
 
 class TaskRouter {
-
     public router: Router;
 
     constructor() {
@@ -17,7 +16,7 @@ class TaskRouter {
         this.router.post("/", handleError(TaskController.addTask));
         this.router.put("/:id", handleError(TaskController.updateTask));
         this.router.delete("/:id", handleError(TaskController.deleteTask));
-        this.router.get("/category/:name", handleError(TaskController.getTasksByCategory));
+        this.router.get("/category/:id", handleError(TaskController.getTasksByCategory));
     }
 }
 

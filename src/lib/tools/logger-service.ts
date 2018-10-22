@@ -1,42 +1,39 @@
 import * as winston from "winston";
 import * as path from "path";
+import { FileTransportInstance } from "winston/lib/winston/transports";
+import { Format } from "logform";
 
 const fileSize: number = 1024000;
 
-const Format = winston.format.printf((info) => {
+const format: Format = winston.format.printf((info) => {
     return `${info.timestamp} ${info.level} ${info.message}`;
 });
 
 class LoggerService {
-
-    public log: any;
+    public log: winston.Logger;
 
     constructor() {
-        this.initLoggers();
-    }
-
-    public initLoggers() {
         this.log = this.getLogger();
     }
 
-    public getLogger() {
-        const logger = new (winston.transports.File)({
+    public getLogger(): winston.Logger {
+        const logger: FileTransportInstance = new (winston.transports.File)({
             filename: path.join("logs", "common", "server.log"),
             handleExceptions: true,
             maxsize: fileSize,
             format: winston.format.combine(
                 winston.format.timestamp(),
-                Format,
+                format,
             ),
         });
 
-        const res = winston.createLogger({
+        const res: winston.Logger = winston.createLogger({
             transports: [
                 new (winston.transports.Console)({
                     format: winston.format.combine(
                         winston.format.colorize(),
                         winston.format.timestamp(),
-                        Format,
+                        format,
                     ),
                 }),
                 logger,
@@ -48,9 +45,8 @@ class LoggerService {
 
         return res;
     }
-
 }
 
-const loggerService = new LoggerService();
+const loggerService: LoggerService = new LoggerService();
 
 export const log = loggerService.log;

@@ -4,13 +4,11 @@ import CustomError from "../../tools/error";
 import { Request, Response } from "express";
 
 export class UserController {
-
-    public static async getAllUsers(req: Request, res: Response) {
+    public static async getAllUsers(req: Request, res: Response): Promise<void> {
         res.status(200).send(await UserService.getAllUsers());
     }
 
-    public static async getUser(req: Request, res: Response) {
-
+    public static async getUser(req: Request, res: Response): Promise<void> {
         const id: number = parseInt(req.params.id, 10);
         const user: IUser = await UserService.getUser(id);
 
@@ -19,11 +17,9 @@ export class UserController {
         } else {
             throw new CustomError(404);
         }
-
     }
 
-    public static async addUser(req: Request, res: Response) {
-
+    public static async addUser(req: Request, res: Response): Promise<void> {
         const model: IUser = req.body;
         const user: IUser = await UserService.addUser(model);
 
@@ -32,11 +28,9 @@ export class UserController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
-    public static async deleteUser(req: Request, res: Response) {
-
+    public static async deleteUser(req: Request, res: Response): Promise<void> {
         const id: number = parseInt(req.params.id, 10);
         const result: number = await UserService.deleteUser(id);
 
@@ -45,11 +39,9 @@ export class UserController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
-    public static async updateUser(req: Request, res: Response) {
-
+    public static async updateUser(req: Request, res: Response): Promise<void> {
         const id: number = parseInt(req.params.id, 10);
         const model: IUser = req.body;
         const user: IUser = await UserService.updateUser(id, model);
@@ -60,5 +52,4 @@ export class UserController {
             throw new CustomError(400);
         }
     }
-
 }

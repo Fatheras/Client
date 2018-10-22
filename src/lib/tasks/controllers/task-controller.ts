@@ -4,16 +4,13 @@ import CustomError from "../../tools/error";
 import { Request, Response } from "express";
 
 export class TaskController {
-    public static async getAllTasks(req: Request, res: Response) {
-
+    public static async getAllTasks(req: Request, res: Response): Promise<void> {
         const tasks: ITask[] = await TaskService.getAllTasks();
 
         res.status(200).send(tasks);
-
     }
 
-    public static async getTask(req: Request, res: Response) {
-
+    public static async getTask(req: Request, res: Response): Promise<void> {
         const task: ITask = await TaskService.getTask(req.params.id);
 
         if (task) {
@@ -21,11 +18,9 @@ export class TaskController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
-    public static async deleteTask(req: Request, res: Response) {
-
+    public static async deleteTask(req: Request, res: Response): Promise<void> {
         const result: number = await TaskService.deleteTask(req.params.id);
 
         if (result) {
@@ -33,11 +28,9 @@ export class TaskController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
-    public static async updateTask(req: Request, res: Response) {
-
+    public static async updateTask(req: Request, res: Response): Promise<void> {
         const taskId = parseInt(req.params.id, 10);
         const model: ITask = req.body;
         const task: ITask = await TaskService.updateTask(taskId, model);
@@ -47,11 +40,9 @@ export class TaskController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
-    public static async addTask(req: Request, res: Response) {
-
+    public static async addTask(req: Request, res: Response): Promise<void> {
         const task: ITask = await TaskService.addTask(req.body);
 
         if (task) {
@@ -59,13 +50,10 @@ export class TaskController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
-    public static async getTasksByCategory(req: Request, res: Response) {
-
-        const category = parseInt(req.params.name, 10);
-
+    public static async getTasksByCategory(req: Request, res: Response): Promise<void> {
+        const category = parseInt(req.params.id, 10);
         const tasks: ITask[] = await TaskService.getTasksByCategory(category);
 
         if (tasks) {
@@ -73,6 +61,5 @@ export class TaskController {
         } else {
             throw new CustomError(400);
         }
-
     }
 }

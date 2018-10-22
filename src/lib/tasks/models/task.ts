@@ -15,7 +15,7 @@ export interface ITask {
     countOfDeals?: number;
 }
 
-export const Task = db.define<ITask, object>("task", {
+export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("task", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -63,6 +63,5 @@ export const Task = db.define<ITask, object>("task", {
         },
     },
 },
-    {
-        timestamps: false,
-    });
+    { timestamps: false },
+);

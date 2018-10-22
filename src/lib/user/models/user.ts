@@ -13,7 +13,7 @@ export interface IUser {
     role: number;
 }
 
-export const User = db.define<IUser, object>("user", {
+export const User: Sequelize.Model<IUser, object> = db.define<IUser, object>("user", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -47,7 +47,8 @@ export const User = db.define<IUser, object>("user", {
         notEmpty: true,
     },
 },
-    { timestamps: false });
+    { timestamps: false },
+);
 
 User.beforeCreate((user: IUser, options: object) => {
     return bcrypt.hash(user.password, 10)

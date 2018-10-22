@@ -6,13 +6,11 @@ import TaskService from "../../tasks/services/task-service";
 import { Request, Response } from "express";
 
 export class DealController {
-
     public static async getAllDeals(req: Request, res: Response): Promise<void> {
         res.status(200).send(await DealService.getAllDeals());
     }
 
     public static async getDeal(req: Request, res: Response): Promise<void> {
-
         let deal: IDeal;
 
         deal = await DealService.getDeal(req.params.id);
@@ -22,11 +20,9 @@ export class DealController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
     public static async deleteDeal(req: Request, res: Response): Promise<void> {
-
         let result: number;
 
         result = await DealService.deleteDeal(req.params.id);
@@ -36,11 +32,9 @@ export class DealController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
     public static async updateDeal(req: Request, res: Response): Promise<void> {
-
         const dealId: number = parseInt(req.params.id, 10);
         let deal: IDeal = req.body;
 
@@ -51,11 +45,9 @@ export class DealController {
         } else {
             throw new CustomError(400);
         }
-
     }
 
     public static async addDeal(req: Request, res: Response): Promise<void> {
-
         let deal: IDeal = req.body;
 
         const task: ITask = await TaskService.getTask(deal.taskId);
@@ -72,7 +64,5 @@ export class DealController {
         } else {
             throw new CustomError(400);
         }
-
     }
-
 }

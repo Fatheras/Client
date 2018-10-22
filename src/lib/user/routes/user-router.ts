@@ -7,7 +7,6 @@ import CheckParamsMiddleware from "../../server/models/check-params.middleware";
 import * as joi from "joi";
 
 class UserRouter {
-
     public router: Router;
 
     constructor() {
@@ -30,7 +29,7 @@ class UserRouter {
         this.router.put("/:id", handleError(UserController.updateUser));
         this.router.post("/signup", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             email: joi.string().email({ minDomainAtoms: 2 }).required(),
-            phone: joi.string().trim().regex(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/).required(),
+            phone: joi.string().trim().required(),
             password: joi.string().min(3).max(30).required(),
         })), AuthController.signUp);
         this.router.post("/login", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
@@ -40,6 +39,6 @@ class UserRouter {
     }
 }
 
-const userRoutes = new UserRouter();
+const userRoutes: UserRouter = new UserRouter();
 
 export default userRoutes.router;

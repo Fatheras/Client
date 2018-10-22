@@ -4,13 +4,11 @@ import sequelize from "sequelize";
 import CustomError from "../../tools/error";
 
 export default class TaskService {
-
     public static async addTask(task: ITask) {
         return Task.create(task);
     }
 
     public static async getTask(id: number): Promise<ITask> {
-
         const task: ITask | null = await Task.findById(id, {
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
@@ -40,7 +38,7 @@ export default class TaskService {
         });
     }
 
-    public static async deleteTask(id: number) {
+    public static async deleteTask(id: number): Promise<number> {
         return Task.destroy({
             where: {
                 id,
@@ -71,5 +69,4 @@ export default class TaskService {
             },
         });
     }
-
 }
