@@ -33,7 +33,7 @@ export default class CheckParamsMiddleware {
     public static validateSequelizeEntity(entity: any) {
         return async (req: Request, res: Response, next: NextFunction) => {
             const collection = CheckParamsMiddleware.getCollection(req);
-            const model: any  = entity.build(req.body);
+            const model: any  = entity.build(collection);
 
             try {
                 await model.validate();
