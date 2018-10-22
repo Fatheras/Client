@@ -3,8 +3,7 @@ import db from "../../db/models/db";
 
 export interface ICategory {
     id?: number;
-    userId: number;
-    taskId: number;
+    name: string;
 }
 
 export const Category = db.define<ICategory, object>("category", {
