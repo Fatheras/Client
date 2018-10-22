@@ -1,6 +1,7 @@
 import * as joi from "joi";
 import {Requests} from "../enums/request-verb-enum";
 import { Response, Request, NextFunction } from "express";
+import CustomError from "../../tools/error";
 
 export default class CheckParamsMiddleware {
     public static getCollection(req: Request): string {
@@ -12,7 +13,7 @@ export default class CheckParamsMiddleware {
             case Requests.PUT:
                 return req.body;
             default:
-                throw new Error("500");
+                throw new CustomError(500);
         }
     }
 
@@ -38,7 +39,7 @@ export default class CheckParamsMiddleware {
                 await model.validate();
                 next();
             } catch (error) {
-                res.status(400).send(error);
+                throw new CustomError(400);
             }
         };
     }
