@@ -1,5 +1,5 @@
 import db from "../models/db";
-import { successLog, errorLog } from "../../tools/logger-service";
+import { log } from "../../tools/logger-service";
 
 export default class DBService {
     public static async initDataBase() {
@@ -7,9 +7,9 @@ export default class DBService {
             await db.authenticate();
             await db.sync();
 
-            successLog.info("Connected to database");
+            log.info("Connected to database");
         } catch (err) {
-            errorLog.error("Database is not found");
+            log.error("Database is not found");
         }
     }
 }

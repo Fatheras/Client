@@ -7,7 +7,6 @@ import CheckParamsMiddleware from "../../server/models/check-params.middleware";
 import * as joi from "joi";
 
 class UserRouter {
-
     public router: Router;
 
     constructor() {
@@ -18,7 +17,6 @@ class UserRouter {
     public routes() {
         this.router.get("/", handleError(UserController.getAllUsers));
         this.router.get("/me", passport.authenticate("jwt", { session: false }), (req, res) => {
-
             res.json({
                 message: "You made it to the secure route",
                 user: req.user,
@@ -31,16 +29,16 @@ class UserRouter {
         this.router.put("/:id", handleError(UserController.updateUser));
         this.router.post("/signup", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             email: joi.string().email({ minDomainAtoms: 2 }).required(),
-            phone: joi.string().trim().regex(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/).required(),
+            phone: joi.string().trim().required(),
             password: joi.string().min(3).max(30).required(),
-        })), handleError(AuthController.signUp));
+        })), AuthController.signUp);
         this.router.post("/login", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             email: joi.string().email({ minDomainAtoms: 2 }).required(),
             password: joi.string().min(3).max(30).required(),
-        })), handleError(AuthController.signIn));
+        })), AuthController.signIn);
     }
 }
 
-const userRoutes = new UserRouter();
+const userRoutes: UserRouter = new UserRouter();
 
 export default userRoutes.router;

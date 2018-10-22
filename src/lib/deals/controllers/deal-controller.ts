@@ -1,81 +1,68 @@
 import DealService from "../services/deal-service";
 import { IDeal } from "../models/deal";
+import CustomError from "../../tools/error";
+import { ITask } from "../../tasks/models/task";
+import TaskService from "../../tasks/services/task-service";
+import { Request, Response } from "express";
 
 export class DealController {
-    public static async getAllDeals(req, res) {
+    public static async getAllDeals(req: Request, res: Response): Promise<void> {
         res.status(200).send(await DealService.getAllDeals());
     }
 
-    public static async getDeal(req, res) {
-
+    public static async getDeal(req: Request, res: Response): Promise<void> {
         let deal: IDeal;
 
-        try {
-            deal = await DealService.getDeal(req.params.id);
+        deal = await DealService.getDeal(req.params.id);
 
-            if (deal) {
-                res.status(200).send(deal);
-            } else {
-                res.sendStatus(404);
-            }
-
-        } catch (error) {
-            res.sendStatus(400);
+        if (deal) {
+            res.status(200).send(deal);
+        } else {
+            throw new CustomError(400);
         }
     }
 
-    public static async deleteDeal(req, res) {
-
+    public static async deleteDeal(req: Request, res: Response): Promise<void> {
         let result: number;
 
-        try {
-            result = await DealService.deleteDeal(req.params.id);
+        result = await DealService.deleteDeal(req.params.id);
 
-            if (result) {
-                res.sendStatus(204);
-            } else {
-                res.sendStatus(404);
-            }
-
-        } catch (error) {
-            res.sendStatus(400);
+        if (result) {
+            res.sendStatus(204);
+        } else {
+            throw new CustomError(400);
         }
-
     }
 
-    public static async updateDeal(req, res) {
+    public static async updateDeal(req: Request, res: Response): Promise<void> {
+        const dealId: number = parseInt(req.params.id, 10);
+        let deal: IDeal = req.body;
 
-        const dealId = parseInt(req.params.id, 10);
-        const model: IDeal = req.body;
-        let deal: IDeal;
+        deal = await DealService.updateDeal(dealId, deal);
 
-        try {
-            deal = await DealService.updateDeal(dealId, model);
+        if (deal) {
+            res.status(200).send(deal);
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
+    public static async addDeal(req: Request, res: Response): Promise<void> {
+        let deal: IDeal = req.body;
+
+        const task: ITask = await TaskService.getTask(deal.taskId);
+
+        if (task.countOfDeals! < task.peoples) {
+            deal = await DealService.addDeal(deal);
 
             if (deal) {
                 res.status(200).send(deal);
             } else {
-                res.sendStatus(404);
+                throw new CustomError(400);
             }
 
-        } catch (error) {
-            res.sendStatus(400);
+        } else {
+            throw new CustomError(400);
         }
-
     }
-
-    public static async addDeal(req, res) {
-
-        let deal: IDeal;
-
-        try {
-            deal = await DealService.addDeal(req.body);
-
-            res.status(200).send(deal);
-        } catch (error) {
-            res.send(error.message);
-        }
-
-    }
-
 }

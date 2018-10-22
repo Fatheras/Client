@@ -1,5 +1,4 @@
 export default class CustomError extends Error {
-
     private code: number;
 
     public get Code(): number {

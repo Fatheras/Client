@@ -1,26 +1,28 @@
 import passport = require("passport");
-import { errorLog, successLog } from "../../tools/logger-service";
+import { log } from "../../tools/logger-service";
 import * as jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+import { IUser } from "../../user/models/user";
 
 export class AuthController {
-
-    public static async signUp(req, res, next) {
-        return passport.authenticate("signup", (err, user, info) => {
+    public static async signUp(req: Request, res: Response, next: NextFunction) {
+        return passport.authenticate("signup", (err: Error, user: IUser, info: any) => {
             if (err) {
-                errorLog.error("User has already exist");
+                log.error("User has already exist");
                 res.sendStatus(400);
             } else {
-                successLog.info("User was added");
+                log.info("User was added");
                 res.status(200).send(user);
             }
         })(req, res, next);
     }
 
-    public static async signIn(req, res, next) {
+    public static async signIn(req: Request, res: Response, next: NextFunction) {
         return passport.authenticate("login", async (err, user) => {
             try {
                 if (err || !user) {
                     const error = new Error("An Error occured");
+
                     return next(error);
                 }
                 req.login(user, { session: false }, async (error) => {
@@ -30,9 +32,10 @@ export class AuthController {
 
                     const body = { email: user.email };
 
-                    const token = jwt.sign({ user: body }, process.env.SECRET, {
+                    const token = jwt.sign({ user: body }, process.env.SECRET!, {
                         expiresIn: 60,
                     });
+
                     return res.json(token);
                 });
             } catch (error) {

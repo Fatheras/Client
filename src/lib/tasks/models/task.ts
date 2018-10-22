@@ -2,7 +2,7 @@ import Sequelize from "sequelize";
 import db from "../../db/models/db";
 import { User } from "../../user/models/user";
 
-export interface ITask extends Sequelize.Model<ITask> {
+export interface ITask {
     id?: number;
     title: string;
     cost: number;
@@ -15,7 +15,7 @@ export interface ITask extends Sequelize.Model<ITask> {
     countOfDeals?: number;
 }
 
-export const Task = db.define<ITask>("task", {
+export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("task", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -63,6 +63,5 @@ export const Task = db.define<ITask>("task", {
         },
     },
 },
-    {
-        timestamps: false,
-    });
+    { timestamps: false },
+);

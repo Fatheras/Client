@@ -1,22 +1,27 @@
 import * as joi from "joi";
 import {Requests} from "../enums/request-verb-enum";
+import { Response, Request, NextFunction } from "express";
+import CustomError from "../../tools/error";
 
 export default class CheckParamsMiddleware {
-    public static getCollectionName(req) {
+    public static getCollection(req: Request): string {
         switch (req.method) {
             case Requests.GET:
-                return "query";
+                return req.query;
             case Requests.DELETE:
             case Requests.POST:
             case Requests.PUT:
-                return "body";
+                return req.body;
+            default:
+                throw new CustomError(500);
         }
     }
 
-    public static validateParamsJoi(schema) {
-        return (req, res, next) => {
-            const collectionName = CheckParamsMiddleware.getCollectionName(req);
-            const result = joi.validate(req[collectionName], schema);
+    public static validateParamsJoi(schema: joi.Schema) {
+        return (req: Request, res: Response, next: NextFunction) => {
+            const collection: string  = CheckParamsMiddleware.getCollection(req);
+            const result: joi.ValidationResult<string> = joi.validate(collection, schema);
+
             if (!result.error) {
                 next();
             } else {
@@ -25,15 +30,16 @@ export default class CheckParamsMiddleware {
         };
     }
 
-    public static validateSequelizeEntity(entity) {
-        return async (req, res, next) => {
-            const collectionName = CheckParamsMiddleware.getCollectionName(req);
-            const model = entity.build(req[collectionName]);
+    public static validateSequelizeEntity(entity: any) {
+        return async (req: Request, res: Response, next: NextFunction) => {
+            const collection = CheckParamsMiddleware.getCollection(req);
+            const model: any  = entity.build(collection);
+
             try {
                 await model.validate();
                 next();
             } catch (error) {
-                res.status(400).send(error);
+                throw new CustomError(400);
             }
         };
     }
