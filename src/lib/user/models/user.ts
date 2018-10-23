@@ -49,13 +49,3 @@ export const User: Sequelize.Model<IUser, object> = db.define<IUser, object>("us
 },
     { timestamps: false },
 );
-
-User.beforeCreate((user: IUser, options: object) => {
-    return bcrypt.hash(user.password, 10)
-        .then((hash) => {
-            user.password = hash;
-        })
-        .catch((err) => {
-            throw new CustomError(500);
-        });
-});

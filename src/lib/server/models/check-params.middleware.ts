@@ -25,7 +25,7 @@ export default class CheckParamsMiddleware {
             if (!result.error) {
                 next();
             } else {
-                res.status(400).send(result.error);
+                throw new CustomError(400);
             }
         };
     }

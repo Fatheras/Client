@@ -26,11 +26,12 @@ export default class TaskService {
         }
     }
 
-    public static async getAllTasks(): Promise<ITask[]> {
+    public static async getAllTasks(query: ITask): Promise<ITask[]> {
         return Task.findAll({
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
+            where: query,
             include: [{
                 model: Deal, attributes: [],
             }],
@@ -60,13 +61,5 @@ export default class TaskService {
         } else {
             throw new CustomError(400);
         }
-    }
-
-    public static async getTasksByCategory(category: number): Promise<ITask[]> {
-        return Task.findAll({
-            where: {
-                category,
-            },
-        });
     }
 }

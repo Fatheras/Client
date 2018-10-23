@@ -5,7 +5,9 @@ import { Request, Response } from "express";
 
 export class TaskController {
     public static async getAllTasks(req: Request, res: Response): Promise<void> {
-        const tasks: ITask[] = await TaskService.getAllTasks();
+        let tasks: ITask[];
+
+        tasks = await TaskService.getAllTasks(req.query as ITask);
 
         res.status(200).send(tasks);
     }
@@ -47,17 +49,6 @@ export class TaskController {
 
         if (task) {
             res.status(200).send(task);
-        } else {
-            throw new CustomError(400);
-        }
-    }
-
-    public static async getTasksByCategory(req: Request, res: Response): Promise<void> {
-        const category = parseInt(req.params.id, 10);
-        const tasks: ITask[] = await TaskService.getTasksByCategory(category);
-
-        if (tasks) {
-            res.status(200).send(tasks);
         } else {
             throw new CustomError(400);
         }
