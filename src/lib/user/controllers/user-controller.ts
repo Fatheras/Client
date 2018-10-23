@@ -2,8 +2,21 @@ import UserService from "../services/user-service";
 import { IUser } from "../models/user";
 import CustomError from "../../tools/error";
 import { Request, Response } from "express";
+import AuthService from "../../authentication/services/auth-service";
 
 export class UserController {
+    public static async changePassword(req: Request, res: Response): Promise<void> {
+        const id: number = parseInt(req.params.id, 10);
+        const password: string = await AuthService.hashPassword(req.body.password);
+        const user: IUser = await UserService.updateUser(id, { password } as IUser);
+
+        if (user) {
+            res.status(200).send(user);
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
     public static async getAllUsers(req: Request, res: Response): Promise<void> {
         res.status(200).send(await UserService.getAllUsers());
     }
@@ -35,7 +48,7 @@ export class UserController {
         const result: number = await UserService.deleteUser(id);
 
         if (result) {
-            res.sendStatus(204);
+            res.sendStatus(200);
         } else {
             throw new CustomError(400);
         }

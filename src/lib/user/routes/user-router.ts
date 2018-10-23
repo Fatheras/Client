@@ -27,6 +27,7 @@ class UserRouter {
 
         this.router.delete("/:id", handleError(UserController.deleteUser));
         this.router.put("/:id", handleError(UserController.updateUser));
+        this.router.put("/changePassword/:id", handleError(UserController.changePassword));
         this.router.post("/signup", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             email: joi.string().email({ minDomainAtoms: 2 }).required(),
             phone: joi.string().trim().required(),

@@ -12,6 +12,8 @@ class CategoryRouter {
 
     public routes() {
         this.router.get("/", handleError(CategoryController.getAllCategories));
+        this.router.delete("/:id", handleError(CategoryController.deleteCategory));
+        this.router.post("/", handleError(CategoryController.addCategory));
     }
 }
 

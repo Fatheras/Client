@@ -15,6 +15,10 @@ export default class AuthService {
         AuthService.setCheckAccess();
     }
 
+    public static async hashPassword(password: string): Promise<string> {
+        return await bcrypt.hash(password, 10);
+    }
+
     private static async setSignUp(): Promise<void> {
         passport.use("signup", new localStrategy({
             usernameField: "email",
@@ -22,7 +26,13 @@ export default class AuthService {
             passReqToCallback: true,
         }, async (req: Request, email: string, password: string, done: any) => {
             try {
-                const user = await UserService.addUser({ email, password, phone: req.body.phone, role: Role.User });
+                const hashPass = await AuthService.hashPassword(password);
+                const user = await UserService.addUser({
+                    email,
+                    password: hashPass,
+                    phone: req.body.phone,
+                    role: Role.User,
+                });
 
                 return done(null, user);
             } catch (error) {

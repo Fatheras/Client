@@ -16,7 +16,6 @@ class TaskRouter {
         this.router.post("/", handleError(TaskController.addTask));
         this.router.put("/:id", handleError(TaskController.updateTask));
         this.router.delete("/:id", handleError(TaskController.deleteTask));
-        this.router.get("/category/:id", handleError(TaskController.getTasksByCategory));
     }
 }
 
