@@ -10,6 +10,17 @@ export class CategoryController {
         res.status(200).send(categories);
     }
 
+    public static async getCategory(req: Request, res: Response): Promise<void> {
+        const id: number = parseInt(req.params.id, 10);
+        const category: ICategory = await CategoryService.getCategory(id);
+
+        if (category) {
+            res.status(200).send(category);
+        } else {
+            throw new CustomError(404);
+        }
+    }
+
     public static async deleteCategory(req: Request, res: Response): Promise<void> {
         const id: number = parseInt(req.params.id, 10);
         const result: number = await CategoryService.deleteCategory(id);

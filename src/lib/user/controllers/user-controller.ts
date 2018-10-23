@@ -7,11 +7,19 @@ import AuthService from "../../authentication/services/auth-service";
 export class UserController {
     public static async changePassword(req: Request, res: Response): Promise<void> {
         const id: number = parseInt(req.params.id, 10);
-        const password: string = await AuthService.hashPassword(req.body.password);
-        const user: IUser = await UserService.updateUser(id, { password } as IUser);
+        let user: IUser = await UserService.getUser(id);
 
-        if (user) {
-            res.status(200).send(user);
+        const isValid: boolean = await AuthService.isValidPassword(user.password, req.body.password);
+
+        if (isValid) {
+            const password: string = await AuthService.hashPassword(req.body.newPassword);
+            user = await UserService.updateUser(id, { password } as IUser);
+
+            if (user) {
+                res.status(200).send(user);
+            } else {
+                throw new CustomError(400);
+            }
         } else {
             throw new CustomError(400);
         }
