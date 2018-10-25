@@ -1,2 +1,2 @@
-<app-category-list></app-category-list>
-<app-task-list></app-task-list>
+<app-category-list [categories]="categories" (categoryChanged)="getCategory($event)"></app-category-list>
+<app-task-list [category]="currentCategory" [tasks]="tasks"></app-task-list>

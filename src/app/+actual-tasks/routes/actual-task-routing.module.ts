@@ -1,21 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TaskListComponent } from '../components/task/task-list/task-list.component';
-import { TaskComponent } from '../components/task/task/task.component';
-import { CategoryListComponent } from '../components/category/category-list/category-list.component';
+import { ActualTaskComponent } from '../actual-task.component';
 
 const actualTaskRoutes: Routes = [
-  { path: 'task-list', component: TaskListComponent },
-  { path: 'task', component: TaskComponent },
-  { path: 'category-list', component: CategoryListComponent }
+  // { path: 'category/all/tasks', component: ActualTaskComponent },
+  { path: 'category/:id/tasks', component: ActualTaskComponent },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(actualTaskRoutes)
+    RouterModule.forChild(actualTaskRoutes),
   ],
   exports: [
-    RouterModule
+    RouterModule,
   ]
 })
 export class ActualTaskRoutingModule {

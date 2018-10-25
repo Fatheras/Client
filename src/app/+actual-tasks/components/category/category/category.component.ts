@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter, Input, AfterContentInit } from '@angular/core';
+import { ICategory } from 'src/app/+actual-tasks/models/Category';
 
 @Component({
     selector: 'app-category',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class CategoryComponent {
 
+    @Input() public category: ICategory;
+    url: string;
+    @Output() categoryChanged: EventEmitter<number> = new EventEmitter();
+    change() {
+        this.categoryChanged.emit(this.category.id);
+    }
 }

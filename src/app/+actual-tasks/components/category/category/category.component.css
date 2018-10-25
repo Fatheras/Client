@@ -1,0 +1,24 @@
+.item {
+    width: 200px;
+    text-align: center;
+    margin-right: 20px;
+    
+  }
+  
+a {
+    text-decoration:none;
+    color: black;
+  }
+
+  a:visited {
+    color: black;
+  }
+
+ .container_link {
+  width: 200px;
+  height: 40px;
+ }
+ .active > div {
+border-bottom: 2px solid red;
+ }
+

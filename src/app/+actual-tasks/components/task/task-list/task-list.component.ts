@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { TaskService } from '../../../services/task.service';
+import { Component, Input } from '@angular/core';
 import { ITask } from '../../../models/task';
+import { ICategory } from '../../../models/Category';
 
 @Component({
     selector: 'app-task-list',
@@ -8,20 +8,8 @@ import { ITask } from '../../../models/task';
     styleUrls: ['./task-list.component.css']
 })
 
-export class TaskListComponent implements OnInit {
+export class TaskListComponent {
 
-    @Input() tasks: ITask[];
-
-    constructor(private taskService: TaskService) {
-
-    }
-
-    ngOnInit() {
-        this.getTasks();
-    }
-
-    getTasks(): void {
-        this.taskService.getTasks()
-            .subscribe((tasks: ITask[]) => { this.tasks = tasks; });
-    }
+    @Input() public tasks: ITask[];
+    @Input() public category: ICategory;
 }

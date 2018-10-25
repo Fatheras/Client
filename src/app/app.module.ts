@@ -11,7 +11,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from '../app/+authentication/models/token.interceptor';
 import { MaterialModule } from './material/material.module';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { ActualTaskModule } from './+actual-tasks/modules/actual-tasks.module';
+import { ActualTaskModule } from './+actual-tasks/actual-tasks.module';
+import { CategoryService } from './+actual-tasks/services/category.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { ActualTaskModule } from './+actual-tasks/modules/actual-tasks.module';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }],
+    }, CategoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
