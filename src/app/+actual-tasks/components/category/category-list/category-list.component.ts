@@ -9,10 +9,10 @@ import { ICategory } from 'src/app/+actual-tasks/models/Category';
 export class CategoryListComponent  {
 
     @Input() public categories: ICategory[];
-    @Output() categoryChanged: EventEmitter<number> = new EventEmitter();
+    @Output() categoryChanged: EventEmitter<ICategory> = new EventEmitter();
 
 
-    change(category: number) {
+    change(category: ICategory) {
          this.categoryChanged.emit(category);
      }
 }

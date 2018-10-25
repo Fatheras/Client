@@ -10,8 +10,8 @@ export class CategoryComponent {
 
     @Input() public category: ICategory;
     url: string;
-    @Output() categoryChanged: EventEmitter<number> = new EventEmitter();
+    @Output() categoryChanged: EventEmitter<ICategory> = new EventEmitter();
     change() {
-        this.categoryChanged.emit(this.category.id);
+        this.categoryChanged.emit(this.category);
     }
 }

@@ -13,6 +13,7 @@ import { ICategory } from './models/Category';
 export class ActualTaskComponent implements OnInit {
   public tasks: ITask[];
   public currentCategory: ICategory;
+  // public currentCategory: string;
   public categories: ICategory[] = [{ name: 'ALL' }];
 
   constructor(private taskService: TaskService, private route: ActivatedRoute,
@@ -26,8 +27,7 @@ export class ActualTaskComponent implements OnInit {
       this.categoryService.getCategory(+id).subscribe((category) => {
         this.currentCategory = category;
       });
-    }
-    if (id === 'all') {
+    } else if (id === 'all') {
       this.currentCategory = this.categories[0];
     }
     this.route.paramMap.subscribe((body: any) => {
@@ -45,13 +45,13 @@ export class ActualTaskComponent implements OnInit {
     this.taskService.getAllTasks(category)
       .subscribe((tasks: ITask[]) => {
         this.tasks = tasks;
-        if (!category) {
-          this.currentCategory = this.categories[0];
-        } else {
-          this.categoryService.getCategory(category).subscribe((data: ICategory) => {
-            this.currentCategory = data;
-          });
-        }
+        // if (!category) {
+        //   this.currentCategory = this.categories[0];
+        // } else {
+        //   this.categoryService.getCategory(category).subscribe((data: ICategory) => {
+        //     this.currentCategory = data;
+        //   });
+        // }
       });
   }
 
@@ -60,8 +60,29 @@ export class ActualTaskComponent implements OnInit {
       this.categories = [this.categories[0], ...categories];
     });
   }
+  // getAllCategories() {
+  //   this.categoryService.getAllCategories().subscribe((categories: ICategory[]) => {
+  //     this.categories = [this.categories[0], ...categories];
+  //   });
+  // }
+  getCurrentCategory(category: ICategory) {  // event handler CurrentCategory takes category: ICategory
+    if (!category.name) {
+      this.categoryService.getCategory(category.id).subscribe((data: ICategory) => {
+            this.currentCategory = data;
+          });
+    } else {
+      this.currentCategory = category;
+    }
+    // if (!+category) {
+    //   this.currentCategory = this.categories[0];
+    // } else {
+    //   this.categoryService.getCategory(+category).subscribe((data: ICategory) => {
+    //     this.currentCategory = data;
+    //   });
+    // }
+  }
 
-  getCategory(category: number) {
+  /*getCategory(category: number) {  // event handler CurrentCategory takes category: ICategory
     if (!+category) {
       this.currentCategory = this.categories[0];
     } else {
@@ -69,5 +90,5 @@ export class ActualTaskComponent implements OnInit {
         this.currentCategory = data;
       });
     }
-  }
+  } */
 }
