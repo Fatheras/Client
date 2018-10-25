@@ -43,7 +43,7 @@ export class UserController {
 
     public static async getUserWithStatistic(req: Request, res: Response): Promise<void> {
         const id: number = +req.params.id;
-        const user: IUser = await StatisticService.getUser(id);
+        const user: IUser = await UserService.getUserWithStatistic(id);
 
         if (user) {
             res.status(200).send(user);

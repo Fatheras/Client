@@ -11,18 +11,6 @@ interface IStatistic {
 }
 
 export default class StatisticService {
-    public static async getUser(id: number): Promise<IUser> {
-        const user: IUser = (await UserService.getUser(id) as any).get({plain: true}) as IUser;
-
-        user.statistic = await this.getStatistic(id);
-
-        if (user) {
-            return user;
-        } else {
-            throw new CustomError(500);
-        }
-    }
-
     public static async getStatistic(id: number): Promise<IUserStatistic> {
         const cleanStat: IStatistic[] = [];
 

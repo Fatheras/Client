@@ -20,11 +20,7 @@ export default class AuthService {
     }
 
     public static async isValidPassword(userPass: string, password: string): Promise<boolean> {
-        let compare: boolean;
-
-        compare = await bcrypt.compare(password, userPass);
-
-        return compare;
+        return bcrypt.compare(password, userPass);
     }
 
     private static async setSignUp(): Promise<void> {
