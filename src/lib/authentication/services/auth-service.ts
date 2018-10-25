@@ -19,6 +19,10 @@ export default class AuthService {
         return await bcrypt.hash(password, 10);
     }
 
+    public static async isValidPassword(userPass: string, password: string): Promise<boolean> {
+        return bcrypt.compare(password, userPass);
+    }
+
     private static async setSignUp(): Promise<void> {
         passport.use("signup", new localStrategy({
             usernameField: "email",
@@ -53,7 +57,7 @@ export default class AuthService {
                     return done(null, false, { message: "User not found" });
                 }
 
-                const validate = await AuthService.isValidPassword(user, password);
+                const validate = await AuthService.isValidPassword(user.password, password);
 
                 if (!validate) {
                     return done(null, false, { message: "Wrong Password" });
@@ -77,13 +81,5 @@ export default class AuthService {
                 done(error);
             }
         }));
-    }
-
-    private static async isValidPassword(user: IUser, password: string): Promise<boolean> {
-        let compare: boolean;
-
-        compare = await bcrypt.compare(password, user.password);
-
-        return compare;
     }
 }

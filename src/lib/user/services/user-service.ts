@@ -1,5 +1,6 @@
 import { User, IUser } from "../../user/models/user";
 import CustomError from "../../tools/error";
+import StatisticService from "./statistic-service";
 
 export default class UserService {
     public static async getAllUsers(): Promise<IUser[]> {
@@ -13,6 +14,18 @@ export default class UserService {
             return user;
         } else {
             throw new CustomError(400);
+        }
+    }
+
+    public static async getUserWithStatistic(id: number): Promise<IUser> {
+        const user: IUser = (await UserService.getUser(id) as any).get({plain: true}) as IUser;
+
+        user.statistic = await StatisticService.getStatistic(id);
+
+        if (user) {
+            return user;
+        } else {
+            throw new CustomError(500);
         }
     }
 
