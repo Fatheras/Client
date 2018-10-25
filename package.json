@@ -5,7 +5,7 @@
   "main": "build/src/app.js",
   "scripts": {
     "ts": "tsc -w",
-    "test": "set NODE_ENV=production && nodemon ./build/src/app.js",
+    "dev": "set NODE_ENV=production && nodemon ./build/src/app.js",
     "start": "tsc && set NODE_ENV=production && node ./build/src/app.js",
     "seeders": "node_modules/.bin/sequelize db:seed:all",
     "migrations": "node_modules/.bin/sequelize db:migrate",

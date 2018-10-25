@@ -1,8 +1,9 @@
 import UserService from "../services/user-service";
-import { IUser } from "../models/user";
+import { IUser, User } from "../models/user";
 import CustomError from "../../tools/error";
 import { Request, Response } from "express";
 import AuthService from "../../authentication/services/auth-service";
+import StatisticService from "../services/statistic-service";
 
 export class UserController {
     public static async changePassword(req: Request, res: Response): Promise<void> {
@@ -32,6 +33,17 @@ export class UserController {
     public static async getUser(req: Request, res: Response): Promise<void> {
         const id: number = parseInt(req.params.id, 10);
         const user: IUser = await UserService.getUser(id);
+
+        if (user) {
+            res.status(200).send(user);
+        } else {
+            throw new CustomError(404);
+        }
+    }
+
+    public static async getUserWithStatistic(req: Request, res: Response): Promise<void> {
+        const id: number = +req.params.id;
+        const user: IUser = await StatisticService.getUser(id);
 
         if (user) {
             res.status(200).send(user);
