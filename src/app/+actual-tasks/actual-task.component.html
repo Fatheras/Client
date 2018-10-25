@@ -1,0 +1,3 @@
+<app-category-list [categories]="categories" (categoryChanged)="getCurrentCategory($event)"></app-category-list>
+ <h2>{{currentCategory?.name}} TASKS</h2>
+<app-task-list [tasks]="tasks"></app-task-list>

@@ -1,0 +1,27 @@
+<mat-toolbar class="nav-container" color="primary">
+    <div class="left-navbar">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon class="nav_burger" aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+                <mat-icon>dialpad</mat-icon>
+                <span>Redial</span>
+            </button>
+            <button mat-menu-item disabled>
+                <mat-icon>voicemail</mat-icon>
+                <span>Check voicemail</span>
+            </button>
+            <button mat-menu-item>
+                <mat-icon>notifications_off</mat-icon>
+                <span>Disable alerts</span>
+            </button>
+        </mat-menu>
+        <span>HELPER</span>
+    </div>
+
+    <button class="nav_add-btn" mat-button matSuffix mat-icon-button aria-label="Clear">
+        <mat-icon>add</mat-icon>
+    </button>
+
+</mat-toolbar>

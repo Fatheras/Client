@@ -11,12 +11,10 @@ export class AuthenticationService {
 
     cachedRequests: Array<HttpRequest<any>> = [];
 
-    constructor(private http: HttpClient, public jwtHelper: JwtHelperService) {
-
-    }
+    constructor(private http: HttpClient, public jwtHelper: JwtHelperService) { }
 
     public signUp(email: string, password: string, phone: string) {
-        return this.http.post<void>(`${this.url}/users/signup`, {email, password, phone});
+        return this.http.post<IUser>(`${this.url}/users/signup`, {email, password, phone});
     }
 
     public logIn(email: string, password: string) {

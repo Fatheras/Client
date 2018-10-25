@@ -42,6 +42,7 @@
         <mat-error *ngIf="registForm.controls['phone'].hasError('required')">
             This is required.
         </mat-error>
+        
         <mat-error *ngIf="registForm.controls['phone'].hasError('maxlength')">
             This is too big length.
         </mat-error>
