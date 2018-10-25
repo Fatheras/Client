@@ -13,7 +13,6 @@ import { ICategory } from './models/Category';
 export class ActualTaskComponent implements OnInit {
   public tasks: ITask[];
   public currentCategory: ICategory;
-  // public currentCategory: string;
   public categories: ICategory[] = [{ name: 'ALL' }];
 
   constructor(private taskService: TaskService, private route: ActivatedRoute,
@@ -21,19 +20,11 @@ export class ActualTaskComponent implements OnInit {
 
   ngOnInit() {
     this.getAllCategories();
-    const id = this.route.snapshot.paramMap.get('id');
-
-    if (+id) {
-      this.categoryService.getCategory(+id).subscribe((category) => {
-        this.currentCategory = category;
-      });
-    } else if (id === 'all') {
-      this.currentCategory = this.categories[0];
-    }
     this.route.paramMap.subscribe((body: any) => {
-      if (+body.params.id) {
-        this.getAllTasks(body.params.id);
-      } else if (body.params.id === 'all') {
+     const id = body.params.id;
+      if (+id) {
+        this.getAllTasks(id);
+      } else if (id === 'all') {
         this.getAllTasks();
       } else {
         this.router.navigate(['/category', 'all', 'tasks']);
@@ -45,50 +36,22 @@ export class ActualTaskComponent implements OnInit {
     this.taskService.getAllTasks(category)
       .subscribe((tasks: ITask[]) => {
         this.tasks = tasks;
-        // if (!category) {
-        //   this.currentCategory = this.categories[0];
-        // } else {
-        //   this.categoryService.getCategory(category).subscribe((data: ICategory) => {
-        //     this.currentCategory = data;
-        //   });
-        // }
       });
   }
 
   getAllCategories() {
     this.categoryService.getAllCategories().subscribe((categories: ICategory[]) => {
       this.categories = [this.categories[0], ...categories];
+      const id = +this.route.snapshot.paramMap.get('id');
+      const result = this.categories.find((category: ICategory, index, array) => {
+        return category.id === id;
+      });
+
+      this.currentCategory = result ? result : categories[0];
     });
   }
-  // getAllCategories() {
-  //   this.categoryService.getAllCategories().subscribe((categories: ICategory[]) => {
-  //     this.categories = [this.categories[0], ...categories];
-  //   });
-  // }
-  getCurrentCategory(category: ICategory) {  // event handler CurrentCategory takes category: ICategory
-    if (!category.name) {
-      this.categoryService.getCategory(category.id).subscribe((data: ICategory) => {
-            this.currentCategory = data;
-          });
-    } else {
-      this.currentCategory = category;
-    }
-    // if (!+category) {
-    //   this.currentCategory = this.categories[0];
-    // } else {
-    //   this.categoryService.getCategory(+category).subscribe((data: ICategory) => {
-    //     this.currentCategory = data;
-    //   });
-    // }
-  }
 
-  /*getCategory(category: number) {  // event handler CurrentCategory takes category: ICategory
-    if (!+category) {
-      this.currentCategory = this.categories[0];
-    } else {
-      this.categoryService.getCategory(+category).subscribe((data: ICategory) => {
-        this.currentCategory = data;
-      });
-    }
-  } */
+  getCurrentCategory(category: ICategory) {
+    this.currentCategory = category;
+  }
 }

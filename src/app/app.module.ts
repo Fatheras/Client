@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthenticationModule } from './+authentication/modules/authentication.module';
+import { AuthenticationModule } from './+authentication/authentication.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthenticationService } from './+authentication/services/authentication.service';
 import { MeModule } from './+me/modules/me.module';
