@@ -29,7 +29,7 @@ export class RegistrationComponent {
     phone: new FormControl('', [Validators.required, Validators.maxLength(255)])
   });
 
-  public signUp() {
+  public  signUp() {
 
     let user: IUser;
 
@@ -39,8 +39,11 @@ export class RegistrationComponent {
       phone: this.registForm.controls['phone'].value
     };
 
-    this.authService.signUp(user.email, user.password, user.phone).subscribe((model: IUser) => {
-      this.router.navigate(['/me']);
+    this.authService.signUp(user.email, user.password, user.phone).subscribe((data) => {
+      this.authService.logIn(user.email, user.password).subscribe((token) => {
+        localStorage.setItem('token', token);
+        this.router.navigate(['/me']);
+      });
     });
   }
 
