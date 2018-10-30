@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TaskService } from './services/task.service';
 import { ITask } from './models/Task';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from './services/category.service';
 import { ICategory } from './models/Category';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
+import { throttleTime, mergeMap, scan, map, tap, zip, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-actual-task',
@@ -11,47 +14,56 @@ import { ICategory } from './models/Category';
   styleUrls: ['./actual-task.component.css']
 })
 export class ActualTaskComponent implements OnInit {
-  public tasks: ITask[];
+  public tasks: ITask[] = [];
   public currentCategory: ICategory;
   public categories: ICategory[] = [{ name: 'ALL' }];
 
+  public batch = 30;
+
   constructor(private taskService: TaskService, private route: ActivatedRoute,
-    private categoryService: CategoryService, private router: Router) { }
+    private categoryService: CategoryService, private router: Router) {
 
-  ngOnInit() {
+  }
+
+  public ngOnInit() {
     this.getAllCategories();
-    this.route.paramMap.subscribe((body: any) => {
-     const id = body.params.id;
-      if (+id) {
-        this.getAllTasks(id);
-      } else if (id === 'all') {
-        this.getAllTasks();
-      } else {
-        this.router.navigate(['/category', 'all', 'tasks']);
-      }
-    });
   }
 
-  getAllTasks(category: number = 0): void {
-    this.taskService.getAllTasks(category)
-      .subscribe((tasks: ITask[]) => {
-        this.tasks = tasks;
-      });
-  }
+  public getAllCategories() {
+    const id = +this.route.snapshot.paramMap.get('id');
 
-  getAllCategories() {
-    this.categoryService.getAllCategories().subscribe((categories: ICategory[]) => {
+    if (!id) {
+      this.router.navigate(['/category', 'all', 'tasks']);
+    }
+
+    this.categoryService.getAllCategories().pipe(
+      finalize(() => {
+        this.route.paramMap.subscribe((body: any) => {
+          this.tasks = [];
+          this.getAllTasks();
+        });
+      })
+    ).subscribe((categories: ICategory[]) => {
       this.categories = [this.categories[0], ...categories];
-      const id = +this.route.snapshot.paramMap.get('id');
+
       const result = this.categories.find((category: ICategory, index, array) => {
         return category.id === id;
       });
 
-      this.currentCategory = result ? result : categories[0];
+      this.currentCategory = result ? result : this.categories[0];
     });
   }
 
-  getCurrentCategory(category: ICategory) {
-    this.currentCategory = category;
+  public getAllTasks(category: number = 0): void {
+    this.taskService.getAllTasks(this.currentCategory.id, this.tasks.length, this.batch)
+      .subscribe((tasks: ITask[]) => {
+        this.tasks = this.tasks.concat(tasks);
+      });
+  }
+
+  public getCurrentCategory(category: ICategory) {
+    if (!(category === this.currentCategory)) {
+      this.currentCategory = category;
+    }
   }
 }

@@ -13,14 +13,12 @@ export class TaskService {
     constructor(private http: HttpClient) {
     }
 
-    getAllTasks(category?: number): Observable<ITask[]> {
+    getAllTasks(category?: number, lastSeen?, batchSize?): Observable<ITask[]> {
         const params = new HttpParams()
+            .set('offset', lastSeen + '')
+            .set('limit', batchSize + '')
             .set('category', category + '');
 
-        if (+category) {
-            return this.http.get<ITask[]>(this.url + '/tasks', { params });
-        } else {
-            return this.http.get<ITask[]>(this.url + '/tasks');
-        }
+        return this.http.get<ITask[]>(this.url + '/tasks', { params });
     }
 }

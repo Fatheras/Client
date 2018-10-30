@@ -1,7 +1,3 @@
-<div class="wrap-container">
-<mat-grid-list cols="3" gutterSize="50px" rowHeight="5:4">
-    <mat-grid-tile *ngFor="let task of tasks">
-        <app-task class="task-wrap-container" [task]="task"></app-task>
-    </mat-grid-tile>
-</mat-grid-list>
+<div class="wrap-container" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [scrollWindow]="false">
+    <app-task *ngFor="let task of tasks" class="animated fadeIn task-wrap-container" [task]="task"></app-task>
 </div>

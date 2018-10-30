@@ -3,6 +3,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { IUser } from '../../user/user';
+import { tap, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthenticationService {
@@ -11,18 +13,27 @@ export class AuthenticationService {
 
     cachedRequests: Array<HttpRequest<any>> = [];
 
-    constructor(private http: HttpClient, public jwtHelper: JwtHelperService) { }
+    constructor(private http: HttpClient, public jwtHelper: JwtHelperService, private router: Router) { }
 
-    public signUp(email: string, password: string, phone: string) {
-        return this.http.post<IUser>(`${this.url}/users/signup`, {email, password, phone});
+    public signUp(user: IUser) {
+        return this.http.post<IUser>(`${this.url}/users/signup`, user);
     }
 
     public logIn(email: string, password: string) {
-        return this.http.post<string>(`${this.url}/users/login`, { email, password });
+        return this.http.post<string>(`${this.url}/users/login`, { email, password }).pipe(
+            tap((token) => {
+                this.setToken(token);
+                this.router.navigate(['/me']);
+            })
+        );
     }
 
     public getToken(): string {
         return this.jwtHelper.tokenGetter();
+    }
+
+    public setToken(token) {
+        localStorage.setItem('token', token);
     }
 
     public isAuthenticated(): boolean {

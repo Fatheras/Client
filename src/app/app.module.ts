@@ -14,6 +14,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ActualTaskModule } from './+actual-tasks/actual-tasks.module';
 import { CategoryService } from './+actual-tasks/services/category.service';
 
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -1,3 +1,6 @@
 <app-category-list [categories]="categories" (categoryChanged)="getCurrentCategory($event)"></app-category-list>
- <h2>{{currentCategory?.name}} TASKS</h2>
-<app-task-list [tasks]="tasks"></app-task-list>
+<div class="tasks-wrapper">
+    <h2 class="category-title" *ngIf="currentCategory">{{currentCategory.name}} TASKS</h2>
+    <app-task-list (scrollChanged)="getAllTasks()" [tasks]="tasks"></app-task-list>
+</div>
+ 

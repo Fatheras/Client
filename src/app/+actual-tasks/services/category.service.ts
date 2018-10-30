@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ICategory } from '../models/Category';
 
 @Injectable({

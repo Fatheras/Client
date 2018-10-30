@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormBuilder, ValidatorFn } from '@a
 import { IUser } from 'src/app/user/user';
 import { AuthenticationService } from '../../services/authentication.service';
 import { MyErrorStateMatcher } from '../../models/errors/error.matcher';
+import { switchMap, tap } from 'rxjs/operators';
 
 
 
@@ -29,7 +30,7 @@ export class RegistrationComponent {
     phone: new FormControl('', [Validators.required, Validators.maxLength(255)])
   });
 
-  public  signUp() {
+  public signUp() {
 
     let user: IUser;
 
@@ -39,16 +40,15 @@ export class RegistrationComponent {
       phone: this.registForm.controls['phone'].value
     };
 
-    this.authService.signUp(user.email, user.password, user.phone).subscribe((data) => {
-      this.authService.logIn(user.email, user.password).subscribe((token) => {
-        localStorage.setItem('token', token);
-        this.router.navigate(['/me']);
-      });
-    });
-  }
+    this.authService.signUp(user)
+      .pipe(
+        switchMap(() => this.authService.logIn(user.email, user.password))
+      )
+      .subscribe();
+}
 
   public signIn() {
-    this.router.navigate([`/authorization`]);
-  }
+  this.router.navigate([`/authorization`]);
+}
 
 }

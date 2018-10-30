@@ -8,7 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ActualTaskComponent } from './actual-task.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { CategoryComponent } from './components/category/category/category.component';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -19,10 +19,11 @@ import { CategoryComponent } from './components/category/category/category.compo
     CategoryListComponent
   ],
   imports: [
+    InfiniteScrollModule,
     BrowserModule,
     CommonModule,
     MaterialModule,
-    ActualTaskRoutingModule
+    ActualTaskRoutingModule,
   ],
   exports: [
     TaskComponent,

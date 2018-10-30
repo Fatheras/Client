@@ -33,10 +33,7 @@ export class AuthorizationComponent {
     email = this.authForm.controls['email'].value;
     password = this.authForm.controls['password'].value;
 
-    this.authService.logIn(email, password).subscribe((token: string) => {
-      localStorage.setItem('token', token);
-      this.router.navigate(['/me']);
-    });
+    this.authService.logIn(email, password).subscribe();
   }
 
 }

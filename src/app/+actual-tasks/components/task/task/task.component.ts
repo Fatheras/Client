@@ -8,15 +8,14 @@ import { TaskService } from '../../../services/task.service';
   styleUrls: ['./task.component.css']
 })
 export class TaskComponent implements OnInit {
-
-  @Input() task: ITask;
+  @Input() public task: ITask;
   public countOfUsers: number;
 
   constructor(private taskService: TaskService) {
 
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
   }
 }

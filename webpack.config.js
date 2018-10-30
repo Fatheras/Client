@@ -130,7 +130,7 @@ module.exports = {
 
   plugins: [
     new IndexHtmlWebpackPlugin({
-      input: './src/index.html',
+      input: './index.html',
       output: 'index.html',
       entrypoints: [
         'styles',
