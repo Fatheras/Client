@@ -1,7 +1,0 @@
-const path = require("path");
-
-module.exports = {
-  "config": path.resolve("config", "config.json"),
-  "models-path": path.resolve("build", "src", "lib", "db", "models"),
-  "seeders-path": path.resolve("build", "src", "lib", "db", "seeders")
-};
