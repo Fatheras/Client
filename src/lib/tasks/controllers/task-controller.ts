@@ -2,6 +2,7 @@ import TaskService from "../services/task-service";
 import { ITask } from "../models/task";
 import CustomError from "../../tools/error";
 import { Request, Response } from "express";
+import { Status } from "../models/status";
 
 export class TaskController {
     public static async getAllTasks(req: Request, res: Response): Promise<void> {
@@ -45,6 +46,7 @@ export class TaskController {
     }
 
     public static async addTask(req: Request, res: Response): Promise<void> {
+        req.body.status = Status.OnReview;
         const task: ITask = await TaskService.addTask(req.body);
 
         if (task) {
