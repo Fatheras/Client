@@ -17,6 +17,7 @@ export default class TaskService {
                 model: Deal, attributes: [],
             }],
             group: ["Task.id"],
+            raw: true,
         });
 
         if (task) {
@@ -26,16 +27,23 @@ export default class TaskService {
         }
     }
 
-    public static async getAllTasks(query: ITask): Promise<ITask[]> {
+    public static async getAllTasks(query: any): Promise<ITask[]> {
         return Task.findAll({
+            offset: +query.offset,
+            limit: +query.limit,
+            order: [["time", "ASC"]],
+
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
-            where: query,
+            where: {
+                category: +query.category,
+            },
             include: [{
                 model: Deal, attributes: [],
             }],
             group: ["Task.id"],
+            subQuery: false,
         });
     }
 
