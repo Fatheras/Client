@@ -5,7 +5,7 @@ import CustomError from "../../tools/error";
 
 export default class TaskService {
     public static async addTask(task: ITask) {
-        return Task.create(task);
+        return await Task.create(task);
     }
 
     public static async getTask(id: number): Promise<ITask> {
@@ -17,6 +17,7 @@ export default class TaskService {
                 model: Deal, attributes: [],
             }],
             group: ["Task.id"],
+            raw: true,
         });
 
         if (task) {
@@ -27,36 +28,23 @@ export default class TaskService {
     }
 
     public static async getAllTasks(query: any): Promise<ITask[]> {
-        const options: any = {
-            order: [["id", "ASC"]],
+        return Task.findAll({
+            offset: +query.offset,
+            limit: +query.limit,
+            order: [["time", "ASC"]],
 
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
-
+            where: {
+                category: +query.category,
+            },
             include: [{
                 model: Deal, attributes: [],
             }],
             group: ["Task.id"],
             subQuery: false,
-
-        };
-
-        if (+query.limit) {
-            options.limit = +query.limit;
-        }
-
-        if (+query.category) {
-            options.where = {
-                category: +query.category,
-            };
-        }
-
-        if (+query.offset) {
-            options.offset = +query.offset;
-        }
-
-        return Task.findAll(options);
+        });
     }
 
     public static async deleteTask(id: number): Promise<number> {

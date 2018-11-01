@@ -6,12 +6,14 @@ dotenv.config();
 const db = new Sequelize(process.env.DB!, process.env.USER!, process.env.PASSWORD!, {
     host: process.env.HOST,
     dialect: process.env.DIALECT,
+    // port: 3306,
     pool: {
         max: 5,
         min: 0,
         acquire: 30000,
         idle: 10000,
     },
+    timezone: "+00:00",
 });
 
 export default db;

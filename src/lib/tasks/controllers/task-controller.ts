@@ -2,6 +2,7 @@ import TaskService from "../services/task-service";
 import { ITask } from "../models/task";
 import CustomError from "../../tools/error";
 import { Request, Response } from "express";
+import { Status } from "../models/status";
 
 export class TaskController {
     public static async getAllTasks(req: Request, res: Response): Promise<void> {
@@ -45,7 +46,22 @@ export class TaskController {
     }
 
     public static async addTask(req: Request, res: Response): Promise<void> {
-        const task: ITask = await TaskService.addTask(req.body);
+        const taskModel: ITask = req.body;
+        if (taskModel) {
+            taskModel.status = Status.OnReview;
+        } else {
+            throw new CustomError(400);
+        }
+        const fiftyNineMinutes: number = 59 * 60000;
+        const msTime: number = Date.parse(taskModel.time);
+        const msCurrentTime: number = Date.now();
+
+        if (msTime < (msCurrentTime + fiftyNineMinutes)) {
+            throw new CustomError(400);
+        }
+
+        taskModel.time = taskModel.time.replace(/T/g, " ").replace(/Z/g, "");
+        const task: ITask = await TaskService.addTask(taskModel);
 
         if (task) {
             res.status(200).send(task);

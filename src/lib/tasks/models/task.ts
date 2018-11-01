@@ -6,7 +6,7 @@ export interface ITask {
     id?: number;
     title: string;
     cost: number;
-    status: string;
+    status: number;
     category: string;
     time: string;
     description: string;
@@ -32,14 +32,13 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
         type: Sequelize.DOUBLE,
     },
     status: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         validate: {
             notEmpty: true,
-            len: [4, 15],
         },
     },
     category: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
     },
     time: {
         type: Sequelize.TIME,
@@ -63,5 +62,4 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
         },
     },
 },
-    { timestamps: false },
 );

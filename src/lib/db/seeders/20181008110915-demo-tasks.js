@@ -1,5 +1,5 @@
 "use strict";
-const faker = require("faker");
+const faker = require('faker');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -11,12 +11,14 @@ module.exports = {
         {
           title: faker.name.jobTitle(),
           cost: faker.random.number(),
-          status: "done",
-          category: faker.random.number({ min: 1, max: 3 }),
-          peoples: faker.random.number({ min: 0, max: 6 }),
-          time: "10:10:10",
+          status: faker.random.number({ min: 1, max: 5 }),
+          category: faker.random.number({ min: 1, max: 2 }),
+          peoples: faker.random.number({ min: 1, max: 6 }),
+          time: faker.date.future(1),
           description: faker.name.jobDescriptor(),
-          owner: faker.random.number({ min: 2, max: 3 }),
+          owner: faker.random.number({ min: 55, max: 62 }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       );
 

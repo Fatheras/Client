@@ -4,6 +4,7 @@ import CustomError from "../../tools/error";
 import { ITask } from "../../tasks/models/task";
 import TaskService from "../../tasks/services/task-service";
 import { Request, Response } from "express";
+import { Status } from "../../tasks/models/status";
 
 export class DealController {
     public static async getAllDeals(req: Request, res: Response): Promise<void> {
@@ -48,7 +49,7 @@ export class DealController {
     }
 
     public static async addDeal(req: Request, res: Response): Promise<void> {
-        let deal: IDeal = req.body;
+        let deal: any = req.body;
 
         const task: ITask = await TaskService.getTask(deal.taskId);
 
@@ -60,7 +61,10 @@ export class DealController {
             } else {
                 throw new CustomError(400);
             }
-
+        } else if (task.countOfDeals! === task.peoples && task.status !== Status.Pending) {
+            task.status = Status.Pending;
+            await TaskService.updateTask(deal.taskId, task);
+            throw new CustomError(400);
         } else {
             throw new CustomError(400);
         }
