@@ -26,17 +26,37 @@ export default class TaskService {
         }
     }
 
-    public static async getAllTasks(query: ITask): Promise<ITask[]> {
-        return Task.findAll({
+    public static async getAllTasks(query: any): Promise<ITask[]> {
+        const options: any = {
+            order: [["id", "ASC"]],
+
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
-            where: query,
+
             include: [{
                 model: Deal, attributes: [],
             }],
             group: ["Task.id"],
-        });
+            subQuery: false,
+
+        };
+
+        if (+query.limit) {
+            options.limit = +query.limit;
+        }
+
+        if (+query.category) {
+            options.where = {
+                category: +query.category,
+            };
+        }
+
+        if (+query.offset) {
+            options.offset = +query.offset;
+        }
+
+        return Task.findAll(options);
     }
 
     public static async deleteTask(id: number): Promise<number> {

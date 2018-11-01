@@ -7,7 +7,7 @@ export class TaskController {
     public static async getAllTasks(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
 
-        tasks = await TaskService.getAllTasks(req.query as ITask);
+        tasks = await TaskService.getAllTasks(req.query);
 
         res.status(200).send(tasks);
     }
