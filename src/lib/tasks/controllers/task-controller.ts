@@ -46,8 +46,22 @@ export class TaskController {
     }
 
     public static async addTask(req: Request, res: Response): Promise<void> {
-        req.body.status = Status.OnReview;
-        const task: ITask = await TaskService.addTask(req.body);
+        const taskModel: ITask = req.body;
+        if (taskModel) {
+            taskModel.status = Status.OnReview;
+        } else {
+            throw new CustomError(400);
+        }
+        const fiftyNineMinutes: number = 59 * 60000;
+        const msTime: number = Date.parse(taskModel.time);
+        const msCurrentTime: number = Date.now();
+
+        if (msTime < (msCurrentTime + fiftyNineMinutes)) {
+            throw new CustomError(400);
+        }
+
+        taskModel.time = taskModel.time.replace(/T/g, " ").replace(/Z/g, "");
+        const task: ITask = await TaskService.addTask(taskModel);
 
         if (task) {
             res.status(200).send(task);

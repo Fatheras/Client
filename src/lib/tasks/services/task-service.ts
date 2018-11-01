@@ -5,7 +5,7 @@ import CustomError from "../../tools/error";
 
 export default class TaskService {
     public static async addTask(task: ITask) {
-        return Task.create(task);
+        return await Task.create(task);
     }
 
     public static async getTask(id: number): Promise<ITask> {

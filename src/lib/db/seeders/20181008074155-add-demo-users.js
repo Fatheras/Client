@@ -13,9 +13,11 @@ module.exports = {
           email: faker.internet.email(),
           phone: faker.phone.phoneNumber(),
           password: faker.internet.password(),
+          role: faker.random.number({ min: 1, max: 3 }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       );
-
     }
 
     return queryInterface.bulkInsert("users", users, {});
