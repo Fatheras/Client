@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 import db from "../../db/models/db";
-import {User} from "../../user/models/user";
+import { User } from "../../user/models/user";
 import { Task } from "../../tasks/models/task";
 
 export interface IDeal {
@@ -21,20 +21,18 @@ export const Deal = db.define<IDeal, object>("deal", {
             model: User,
             key: "id",
         },
-        validate: {notEmpty: true},
+        validate: { notEmpty: true },
     },
     taskId: {
         type: Sequelize.INTEGER,
         references: {
             model: Task,
-            key:   "id",
+            key: "id",
         },
-        validate: {notEmpty: true},
+        validate: { notEmpty: true },
     },
 },
-{
-    timestamps: false,
-});
+);
 
-Deal.belongsTo(Task, {foreignKey: "taskId"});
+Deal.belongsTo(Task, { foreignKey: "taskId" });
 Task.hasMany(Deal);

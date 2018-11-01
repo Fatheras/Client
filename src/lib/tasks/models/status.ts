@@ -1,7 +1,7 @@
 export enum Status {
-    OnReview = "On Review",
-    Open = "Open",
-    Pending = "Pending",
-    Done = "Done",
-    Declined = "Declined",
+    OnReview = 1,
+    Open = 2,
+    Pending = 3,
+    Done = 4,
+    Declined = 5,
 }

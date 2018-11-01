@@ -22,6 +22,7 @@ class TaskRouter {
             cost: joi.number().positive().min(1).required(),
             description: joi.string().max(255).required(),
             time: joi.date().required(),
+            owner: joi.number().integer().positive().min(1).required(),
         })), handleError(TaskController.addTask));
         this.router.put("/:id", handleError(TaskController.updateTask));
         this.router.delete("/:id", handleError(TaskController.deleteTask));

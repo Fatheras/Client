@@ -9,7 +9,7 @@ export default class DBService {
 
             log.info("Connected to database");
         } catch (err) {
-            log.error("Database is not found");
+            log.error(err.message);
         }
     }
 }
