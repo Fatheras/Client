@@ -5,6 +5,9 @@ import { ITask } from "../../tasks/models/task";
 import TaskService from "../../tasks/services/task-service";
 import { Request, Response } from "express";
 import { Status } from "../../tasks/models/status";
+import * as jwt from "jsonwebtoken";
+import { IUser } from "../../user/models/user";
+import UserService from "../../user/services/user-service";
 
 export class DealController {
     public static async getAllDeals(req: Request, res: Response): Promise<void> {
@@ -51,6 +54,14 @@ export class DealController {
     public static async addDeal(req: Request, res: Response): Promise<void> {
         let deal: any = req.body;
 
+        const user: any = await UserService.getUserByToken(req.body.token);
+
+        if (user) {
+            deal.userId = user.id;
+        } else {
+            throw new CustomError(400);
+        }
+
         const task: ITask = await TaskService.getTask(deal.taskId);
 
         if (task.countOfDeals! < task.people) {
@@ -63,7 +74,9 @@ export class DealController {
             }
         } else if (task.countOfDeals! === task.people && task.status !== Status.Pending) {
             task.status = Status.Pending;
+
             await TaskService.updateTask(deal.taskId, task);
+
             throw new CustomError(400);
         } else {
             throw new CustomError(400);

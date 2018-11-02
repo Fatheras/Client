@@ -33,7 +33,7 @@ export class AuthController {
                     const body = { email: user.email };
 
                     const token = jwt.sign({ user: body }, process.env.SECRET!, {
-                        expiresIn: 60,
+                        expiresIn: "30 days",
                     });
 
                     return res.json(token);

@@ -7,7 +7,7 @@ export interface ITask {
     title: string;
     cost: number;
     status: number;
-    category: string;
+    category: number;
     time: string;
     description: string;
     owner: number;

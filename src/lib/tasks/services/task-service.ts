@@ -1,7 +1,10 @@
 import { Task, ITask } from "../models/task";
-import { Deal } from "../../deals/models/deal";
-import sequelize, { FindOptions } from "sequelize";
+import { Deal, IDeal } from "../../deals/models/deal";
+import sequelize, { FindOptions, Op } from "sequelize";
 import CustomError from "../../tools/error";
+import { Status } from "../models/status";
+import { IUser } from "../../user/models/user";
+import DealService from "../../deals/services/deal-service";
 
 export default class TaskService {
     public static async addTask(task: ITask) {
@@ -27,12 +30,24 @@ export default class TaskService {
         }
     }
 
-    public static async getAllTasks(query: any): Promise<ITask[]> {
+    public static async getAllTasks(query: any, userId: number): Promise<ITask[]> {
+
+        const deals: IDeal[] =  await DealService.getUserDeals(userId);
+        const taskIds: number[] = deals.map((el, i, arr) => el.taskId);
+
         const options: FindOptions<object> = {
             offset: +query.offset,
             limit: +query.limit,
             order: [["time", "ASC"]],
-
+            where: {
+                status: Status.Open,
+                owner: {
+                    [Op.not]: userId,
+                },
+                id: {
+                    [Op.not]: taskIds,
+                },
+            },
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
@@ -42,11 +57,8 @@ export default class TaskService {
             group: ["Task.id"],
             subQuery: false,
         };
-
         if (+query.category) {
-            options.where = {
-                category: +query.category,
-            };
+            Object.assign(options.where, { category: query.category });
         }
 
         return Task.findAll(options);
