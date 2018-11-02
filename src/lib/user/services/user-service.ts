@@ -1,6 +1,7 @@
 import { User, IUser } from "../../user/models/user";
 import CustomError from "../../tools/error";
 import StatisticService from "./statistic-service";
+import * as jwt from "jsonwebtoken";
 
 export default class UserService {
     public static async getAllUsers(): Promise<IUser[]> {
@@ -17,8 +18,18 @@ export default class UserService {
         }
     }
 
+    public static async getUserByEmail(email: any): Promise<IUser> {
+        const user: IUser | null = await User.findOne(email);
+
+        if (user) {
+            return user;
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
     public static async getUserWithStatistic(id: number): Promise<IUser> {
-        const user: IUser = (await UserService.getUser(id) as any).get({plain: true}) as IUser;
+        const user: IUser = (await UserService.getUser(id) as any).get({ plain: true }) as IUser;
 
         user.statistic = await StatisticService.getStatistic(id);
 
@@ -55,5 +66,10 @@ export default class UserService {
         } else {
             throw new CustomError(400);
         }
+    }
+    public static async getUserByToken(token: string): Promise<IUser> {
+        const email: any = jwt.decode(token);
+
+        return await UserService.getUserByEmail(email);
     }
 }

@@ -16,6 +16,14 @@ export default class DealService {
         }
     }
 
+    public static async getUserDeals(userId: number) {
+        return Deal.findAll({
+            where: {
+                userId,
+            },
+        });
+    }
+
     public static async getAllDeals() {
         return Deal.findAll();
     }
