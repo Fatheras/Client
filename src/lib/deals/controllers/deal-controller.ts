@@ -52,15 +52,10 @@ export class DealController {
     }
 
     public static async addDeal(req: Request, res: Response): Promise<void> {
-        if (!req.body) {
-            throw new CustomError(400);
-        }
         let deal: any = req.body;
 
-        const token: string = req.body.token;
-        const email: any = jwt.decode(token);
+        const user: any = await UserService.getUserByToken(req.body.token);
 
-        const user: IUser = await UserService.getUserByEmail(email);
         if (user) {
             deal.userId = user.id;
         } else {
@@ -79,7 +74,9 @@ export class DealController {
             }
         } else if (task.countOfDeals! === task.peoples && task.status !== Status.Pending) {
             task.status = Status.Pending;
+
             await TaskService.updateTask(deal.taskId, task);
+
             throw new CustomError(400);
         } else {
             throw new CustomError(400);
