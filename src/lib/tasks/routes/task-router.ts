@@ -17,7 +17,7 @@ class TaskRouter {
         this.router.get("/:id", handleError(TaskController.getTask));
         this.router.post("/", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             title: joi.string().max(255).required(),
-            peoples: joi.number().integer().positive().min(1).max(5).required(),
+            people: joi.number().integer().positive().min(1).max(5).required(),
             category: joi.string().required(),
             cost: joi.number().positive().min(1).required(),
             description: joi.string().max(255).required(),

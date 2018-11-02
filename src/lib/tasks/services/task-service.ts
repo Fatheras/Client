@@ -1,6 +1,6 @@
 import { Task, ITask } from "../models/task";
 import { Deal } from "../../deals/models/deal";
-import sequelize from "sequelize";
+import sequelize, { FindOptions } from "sequelize";
 import CustomError from "../../tools/error";
 
 export default class TaskService {
@@ -28,7 +28,7 @@ export default class TaskService {
     }
 
     public static async getAllTasks(query: any): Promise<ITask[]> {
-        return Task.findAll({
+        const options: FindOptions<object> = {
             offset: +query.offset,
             limit: +query.limit,
             order: [["time", "ASC"]],
@@ -36,15 +36,20 @@ export default class TaskService {
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
-            where: {
-                category: +query.category,
-            },
             include: [{
                 model: Deal, attributes: [],
             }],
             group: ["Task.id"],
             subQuery: false,
-        });
+        };
+
+        if (+query.category) {
+            options.where = {
+                category: +query.category,
+            };
+        }
+
+        return Task.findAll(options);
     }
 
     public static async deleteTask(id: number): Promise<number> {

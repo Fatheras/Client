@@ -11,7 +11,7 @@ export interface ITask {
     time: string;
     description: string;
     owner: number;
-    peoples: number;
+    people: number;
     countOfDeals?: number;
 }
 
@@ -54,7 +54,7 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
         },
         validate: { notEmpty: true },
     },
-    peoples: {
+    people: {
         type: Sequelize.INTEGER,
         validate: {
             notEmpty: true,

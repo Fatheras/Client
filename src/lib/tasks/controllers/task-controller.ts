@@ -3,6 +3,7 @@ import { ITask } from "../models/task";
 import CustomError from "../../tools/error";
 import { Request, Response } from "express";
 import { Status } from "../models/status";
+import moment from "moment";
 
 export class TaskController {
     public static async getAllTasks(req: Request, res: Response): Promise<void> {
@@ -60,7 +61,11 @@ export class TaskController {
             throw new CustomError(400);
         }
 
-        taskModel.time = taskModel.time.replace(/T/g, " ").replace(/Z/g, "");
+        const time = new Date(taskModel.time);
+
+        taskModel.time = moment(taskModel.time)
+            .hours(time.getHours() + time.getTimezoneOffset() / 60).format("YYYY-MM-DD kk:mm:ss");
+
         const task: ITask = await TaskService.addTask(taskModel);
 
         if (task) {

@@ -25,6 +25,7 @@
     "faker": "^4.1.0",
     "joi": "^13.7.0",
     "jsonwebtoken": "^7.4.3",
+    "moment": "^2.22.2",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.1",
     "passport": "^0.3.2",
