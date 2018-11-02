@@ -17,6 +17,16 @@ export default class UserService {
         }
     }
 
+    public static async getUserByEmail(email: any): Promise<IUser> {
+        const user: IUser | null = await User.findOne(email);
+
+        if (user) {
+            return user;
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
     public static async getUserWithStatistic(id: number): Promise<IUser> {
         const user: IUser = (await UserService.getUser(id) as any).get({plain: true}) as IUser;
 

@@ -5,6 +5,9 @@ import { ITask } from "../../tasks/models/task";
 import TaskService from "../../tasks/services/task-service";
 import { Request, Response } from "express";
 import { Status } from "../../tasks/models/status";
+import * as jwt from "jsonwebtoken";
+import { IUser } from "../../user/models/user";
+import UserService from "../../user/services/user-service";
 
 export class DealController {
     public static async getAllDeals(req: Request, res: Response): Promise<void> {
@@ -49,7 +52,20 @@ export class DealController {
     }
 
     public static async addDeal(req: Request, res: Response): Promise<void> {
+        if (!req.body) {
+            throw new CustomError(400);
+        }
         let deal: any = req.body;
+
+        const token: string = req.body.token;
+        const email: any = jwt.decode(token);
+
+        const user: IUser = await UserService.getUserByEmail(email);
+        if (user) {
+            deal.userId = user.id;
+        } else {
+            throw new CustomError(400);
+        }
 
         const task: ITask = await TaskService.getTask(deal.taskId);
 
