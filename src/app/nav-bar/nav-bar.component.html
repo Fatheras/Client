@@ -12,15 +12,15 @@
                 <mat-icon>voicemail</mat-icon>
                 <span>Check voicemail</span>
             </button>
-            <button mat-menu-item>
-                <mat-icon>notifications_off</mat-icon>
-                <span>Disable alerts</span>
+            <button (click)="logOut()" mat-menu-item>
+                <mat-icon>input</mat-icon>
+                <span>Logout</span>
             </button>
         </mat-menu>
         <span>HELPER</span>
     </div>
 
-    <button class="nav_add-btn" mat-button matSuffix mat-icon-button aria-label="Clear">
+    <button (click)="moveToAddTask()" class="nav_add-btn" mat-button matSuffix mat-icon-button aria-label="Clear">
         <mat-icon>add</mat-icon>
     </button>
 

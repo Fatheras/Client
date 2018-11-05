@@ -9,28 +9,41 @@ import { ActualTaskComponent } from './actual-task.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { CategoryComponent } from './components/category/category/category.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { AddTaskComponent } from './components/add-task/add-task.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { WarnDialogComponent } from './components/task/warn-dialog/warn-dialog.component';
 
 @NgModule({
+  entryComponents: [
+    WarnDialogComponent
+    ],
   declarations: [
+    WarnDialogComponent,
+    AddTaskComponent,
     TaskComponent,
     CategoryComponent,
     TaskListComponent,
     ActualTaskComponent,
-    CategoryListComponent
+    CategoryListComponent,
   ],
   imports: [
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    NgxMaterialTimepickerModule.forRoot(),
     InfiniteScrollModule,
     BrowserModule,
     CommonModule,
     MaterialModule,
+    ReactiveFormsModule,
     ActualTaskRoutingModule,
   ],
   exports: [
     TaskComponent,
     TaskListComponent,
     ActualTaskComponent,
-    CategoryListComponent
+    CategoryListComponent,
   ]
-
 })
 export class ActualTaskModule { }

@@ -11,17 +11,18 @@ import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from '../services/authentication.service';
 import 'rxjs/add/operator/do';
 import { Router } from '@angular/router';
+import { TokenService } from '../services/token.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    constructor(public auth: AuthenticationService, public route: Router) { }
+    constructor(public tokenService: TokenService, public route: Router) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         return next.handle(request).do((event: HttpEvent<any>) => {
             if (event instanceof HttpResponse) {
                 request = request.clone({
                     setHeaders: {
-                        Authorization: `Bearer ${this.auth.getToken()}`
+                        Authorization: `Bearer ${this.tokenService.getToken()}`
                     }
                 });
             }

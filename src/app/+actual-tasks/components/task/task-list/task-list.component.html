@@ -1,3 +1,4 @@
-<div class="wrap-container" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [scrollWindow]="false">
-    <app-task *ngFor="let task of tasks" class="animated fadeIn task-wrap-container" [task]="task"></app-task>
+
+<div class="wrap-container">
+    <app-task (addDeal)="addDeal($event)" *ngFor="let task of tasks" class="animated fadeIn task-wrap-container" [task]="task"></app-task>
 </div>

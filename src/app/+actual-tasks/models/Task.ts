@@ -1,12 +1,12 @@
 export interface ITask {
-    id: number;
+    id?: number;
     title: string;
     cost: number;
-    status: string;
+    status?: string;
     category: string;
     people: number;
     time: string;
     description: string;
-    owner: number;
+    owner?: number;
     countOfDeals?: number;
 }

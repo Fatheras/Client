@@ -1,7 +1,6 @@
 import { Component, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ITask } from '../../../models/task';
 import { ICategory } from '../../../models/Category';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 
 @Component({
@@ -13,10 +12,10 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 export class TaskListComponent {
     @Input() public tasks: ITask[];
     @Input() public category: ICategory;
+    @Output() public accept: EventEmitter<number> = new EventEmitter();
 
-    @Output() public scrollChanged: EventEmitter<void> = new EventEmitter();
 
-    onScroll() {
-        this.scrollChanged.emit();
+    public addDeal(taskId) {
+        this.accept.emit(taskId);
     }
 }

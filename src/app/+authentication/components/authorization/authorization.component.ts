@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../services/authentication.service';
@@ -10,7 +10,6 @@ import { MyErrorStateMatcher } from '../../models/errors/error.matcher';
   styleUrls: ['./authorization.component.css']
 })
 export class AuthorizationComponent {
-
   constructor(private router: Router, private authService: AuthenticationService) {
 
   }
@@ -33,7 +32,12 @@ export class AuthorizationComponent {
     email = this.authForm.controls['email'].value;
     password = this.authForm.controls['password'].value;
 
-    this.authService.logIn(email, password).subscribe();
+    this.authService.logIn(email, password).subscribe(
+      () => { }, (err) => {
+        this.authForm.setErrors({
+          'badRequest': true
+        });
+      });
   }
 
 }

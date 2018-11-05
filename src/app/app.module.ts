@@ -13,32 +13,45 @@ import { MaterialModule } from './material/material.module';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ActualTaskModule } from './+actual-tasks/actual-tasks.module';
 import { CategoryService } from './+actual-tasks/services/category.service';
+import { DealService } from './+actual-tasks/services/deal-service';
+import { ErrorComponent } from './error/components/error.component';
+import { CommonModule } from '@angular/common';
+import { AuthenticationRoutingModule } from './+authentication/routes/authentication-routing.module';
+import { ErrorModule } from './error/error.module';
+import { LoggedGuardService } from './+authentication/services/logged-guard.service';
+import { TokenService } from './+authentication/services/token.service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent
+    NavBarComponent,
   ],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
     AuthenticationModule,
+    ActualTaskModule,
+    ErrorModule,
     MeModule,
     MaterialModule,
-    ActualTaskModule,
+
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem('token'),
       }
     }),
   ],
-  providers: [AuthenticationService, AuthenticationGuardService,
+  providers: [
+    AuthenticationService,
+    AuthenticationGuardService,
+    LoggedGuardService,
+    TokenService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }, CategoryService],
+    }, CategoryService, DealService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

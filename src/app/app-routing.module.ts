@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthenticationGuardService } from './+authentication/services/authentication-guard.service';
+import { ErrorComponent } from './error/components/error.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/me', pathMatch: 'full',  canActivate: [AuthenticationGuardService] },
+  { path: '', pathMatch: 'full', redirectTo: '/registration' },
 ];
 
 @NgModule({
@@ -14,7 +15,7 @@ const appRoutes: Routes = [
     )
   ],
   exports: [
-    RouterModule
+    RouterModule,
   ]
 })
 export class AppRoutingModule { }

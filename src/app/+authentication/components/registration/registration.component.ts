@@ -42,10 +42,19 @@ export class RegistrationComponent {
 
     this.authService.signUp(user)
       .pipe(
-        switchMap(() => this.authService.logIn(user.email, user.password))
+        switchMap(
+          () => this.authService.logIn(user.email, user.password),
+        )
       )
-      .subscribe();
-}
+      .subscribe(
+        () => {},
+        (error) => {
+          this.registForm.setErrors({
+            'badRequest': true,
+          });
+        }
+      );
+  }
 
   public signIn() {
   this.router.navigate([`/authorization`]);
