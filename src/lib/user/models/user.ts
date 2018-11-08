@@ -6,7 +6,7 @@ export interface IUser {
     id?: number;
     firstName?: string;
     lastName?: string;
-    phone: string;
+    phone?: string;
     email: string;
     password: string;
     role: number;
@@ -14,11 +14,12 @@ export interface IUser {
 }
 
 export interface IUserStatistic {
-    approved: number;
+    onReview: number;
+    open: number;
+    pending: number;
+    done: number;
     declined: number;
-    opened: number;
-    closed: number;
-    [index: string]: number;
+    count: number;
 }
 
 export const User: Sequelize.Model<IUser, object> = db.define<IUser, object>("user", {
@@ -38,7 +39,6 @@ export const User: Sequelize.Model<IUser, object> = db.define<IUser, object>("us
     phone: {
         type: Sequelize.STRING,
         validate: {
-            notEmpty: true,
             len: [4, 15],
         },
     },
