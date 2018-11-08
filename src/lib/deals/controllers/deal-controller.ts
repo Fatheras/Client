@@ -5,8 +5,6 @@ import { ITask } from "../../tasks/models/task";
 import TaskService from "../../tasks/services/task-service";
 import { Request, Response } from "express";
 import { Status } from "../../tasks/models/status";
-import * as jwt from "jsonwebtoken";
-import { IUser } from "../../user/models/user";
 import UserService from "../../user/services/user-service";
 
 export class DealController {

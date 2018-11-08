@@ -14,7 +14,10 @@ class TaskRouter {
 
     public routes() {
         this.router.get("/", handleError(TaskController.getAllTasks));
-        this.router.get("/:id", handleError(TaskController.getTask));
+        this.router.get("/tasksForAdmin", handleError(TaskController.getTasksForAdmin));
+        this.router.get("/getOnReviewTasks", handleError(TaskController.getOnReviewTasks));
+        this.router.get("/getUserTasks", handleError(TaskController.getUserTasks));
+        this.router.get(":id", handleError(TaskController.getTask));
         this.router.post("/", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             title: joi.string().max(255).required(),
             peoples: joi.number().integer().positive().min(1).max(5).required(),
@@ -24,7 +27,7 @@ class TaskRouter {
             time: joi.date().required(),
             owner: joi.number().integer().positive().min(1).required(),
         })), handleError(TaskController.addTask));
-        this.router.put("/:id", handleError(TaskController.updateTask));
+        this.router.put("/", handleError(TaskController.updateTask));
         this.router.delete("/:id", handleError(TaskController.deleteTask));
     }
 }

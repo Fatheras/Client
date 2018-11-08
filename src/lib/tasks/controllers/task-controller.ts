@@ -16,6 +16,33 @@ export class TaskController {
         res.status(200).send(tasks);
     }
 
+    public static async getTasksForAdmin(req: Request, res: Response): Promise<void> {
+        let tasks: ITask[];
+        const user: any = await UserService.getUserByToken(req.body.token);
+
+        tasks = await TaskService.getTasksForAdmin(req.query as ITask, user.id, user.role);
+
+        res.status(200).send(tasks);
+    }
+
+    public static async getOnReviewTasks(req: Request, res: Response): Promise<void> {
+        let tasks: ITask[];
+        const user: any = await UserService.getUserByToken(req.body.token);
+
+        tasks = await TaskService.getOnReviewTasks(req.query as ITask, user.id, user.role);
+
+        res.status(200).send(tasks);
+    }
+
+    public static async getUserTasks(req: Request, res: Response): Promise<void> {
+        let tasks: ITask[];
+        const user: any = await UserService.getUserByToken(req.body.token);
+
+        tasks = await TaskService.getUserTasks(req.query as ITask, user.id, user.role);
+
+        res.status(200).send(tasks);
+    }
+
     public static async getTask(req: Request, res: Response): Promise<void> {
         const task: ITask = await TaskService.getTask(req.params.id);
 
@@ -37,9 +64,10 @@ export class TaskController {
     }
 
     public static async updateTask(req: Request, res: Response): Promise<void> {
-        const taskId = parseInt(req.params.id, 10);
+        // const taskId = parseInt(req.params.id, 10);
+        const user: any = await UserService.getUserByToken(req.body.token);
         const model: ITask = req.body;
-        const task: ITask = await TaskService.updateTask(taskId, model);
+        const task: ITask = await TaskService.updateTask(user.id, model);
 
         if (task) {
             res.status(200).send(task);

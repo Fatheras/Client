@@ -38,7 +38,7 @@ export default class AuthService {
                     role: Role.User,
                 });
 
-                return done(null, user);
+                return done(null);
             } catch (error) {
                 return done(error);
             }

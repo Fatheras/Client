@@ -2,17 +2,16 @@ import passport = require("passport");
 import { log } from "../../tools/logger-service";
 import * as jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { IUser } from "../../user/models/user";
 
 export class AuthController {
     public static async signUp(req: Request, res: Response, next: NextFunction) {
-        return passport.authenticate("signup", (err: Error, user: IUser, info: any) => {
+        return passport.authenticate("signup", (err: Error, info: any) => {
             if (err) {
                 log.error("User has already exist");
                 res.sendStatus(400);
             } else {
                 log.info("User was added");
-                res.status(200).send(user);
+                res.status(200).send();
             }
         })(req, res, next);
     }
@@ -36,7 +35,7 @@ export class AuthController {
                         expiresIn: "30 days",
                     });
 
-                    return res.json(token);
+                    return res.json({token, user: user.role});
                 });
             } catch (error) {
                 return next(error);

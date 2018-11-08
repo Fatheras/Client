@@ -14,11 +14,11 @@ export interface IUser {
 }
 
 export interface IUserStatistic {
-    approved: number;
+    onReview: number;
+    open: number;
+    pending: number;
+    done: number;
     declined: number;
-    opened: number;
-    closed: number;
-    [index: string]: number;
 }
 
 export const User: Sequelize.Model<IUser, object> = db.define<IUser, object>("user", {

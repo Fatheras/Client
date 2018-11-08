@@ -40,6 +40,18 @@ export default class UserService {
         }
     }
 
+    public static async getAllUsersWithStatistic(id: number): Promise<IUser> {
+        const user: IUser = (await UserService.getUser(id) as any).get({ plain: true }) as IUser;
+
+        user.statistic = await StatisticService.getStatistic(id);
+
+        if (user) {
+            return user;
+        } else {
+            throw new CustomError(500);
+        }
+    }
+
     public static async addUser(user: IUser): Promise<IUser> {
         return User.create(user);
     }
@@ -67,6 +79,22 @@ export default class UserService {
             throw new CustomError(400);
         }
     }
+
+    public static async updateUserRole(id: number, role: number): Promise<IUser> {
+        if (role) {
+
+            await User.update({role}, {
+                where: {
+                    id,
+                },
+            });
+
+            return this.getUser(id);
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
     public static async getUserByToken(token: string): Promise<IUser> {
         const email: any = jwt.decode(token);
 
