@@ -9,9 +9,36 @@ import UserService from "../../user/services/user-service";
 export class TaskController {
     public static async getAllTasks(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const user: any = await UserService.getUserByToken(req.query.token);
 
         tasks = await TaskService.getAllTasks(req.query as ITask, user.id);
+
+        res.status(200).send(tasks);
+    }
+
+    public static async getTasksForAdmin(req: Request, res: Response): Promise<void> {
+        let tasks: ITask[];
+        const user: any = await UserService.getUserByToken(req.body.token);
+
+        tasks = await TaskService.getTasksForAdmin(req.query as ITask, user.id, user.role);
+
+        res.status(200).send(tasks);
+    }
+
+    public static async getOnReviewTasks(req: Request, res: Response): Promise<void> {
+        let tasks: ITask[];
+        const user: any = await UserService.getUserByToken(req.body.token);
+
+        tasks = await TaskService.getOnReviewTasks(req.query as ITask, user.id, user.role);
+
+        res.status(200).send(tasks);
+    }
+
+    public static async getUserTasks(req: Request, res: Response): Promise<void> {
+        let tasks: ITask[];
+        const user: any = await UserService.getUserByToken(req.query.token);
+
+        tasks = await TaskService.getUserTasks(req.query as ITask, user.id);
 
         res.status(200).send(tasks);
     }
@@ -30,7 +57,7 @@ export class TaskController {
         const result: number = await TaskService.deleteTask(req.params.id);
 
         if (result) {
-            res.sendStatus(200);
+            res.send();
         } else {
             throw new CustomError(400);
         }

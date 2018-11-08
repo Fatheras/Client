@@ -3,6 +3,7 @@ import { log } from "../../tools/logger-service";
 import * as jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { IUser } from "../../user/models/user";
+import CustomError from "../../tools/error";
 
 export class AuthController {
     public static async signUp(req: Request, res: Response, next: NextFunction) {
@@ -21,7 +22,7 @@ export class AuthController {
         return passport.authenticate("login", async (err, user) => {
             try {
                 if (err || !user) {
-                    const error = new Error("An Error occured");
+                    const error = new CustomError(400);
 
                     return next(error);
                 }
@@ -36,7 +37,7 @@ export class AuthController {
                         expiresIn: "30 days",
                     });
 
-                    return res.json(token);
+                    return res.json({ token, role: user.role });
                 });
             } catch (error) {
                 return next(error);

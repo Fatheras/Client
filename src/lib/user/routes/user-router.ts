@@ -16,6 +16,7 @@ class UserRouter {
 
     public routes() {
         this.router.get("/", handleError(UserController.getAllUsers));
+        this.router.get("/token", handleError(UserController.getUserByToken));
         this.router.get("/me", passport.authenticate("jwt", { session: false }), (req, res) => {
             res.json({
                 message: "You made it to the secure route",
@@ -24,11 +25,22 @@ class UserRouter {
             });
         });
         this.router.get("/:id/statistic", handleError(UserController.getUserWithStatistic));
+        this.router.get("/statistic", handleError(UserController.getAllUsersWithStatistic));
         this.router.get("/:id", handleError(UserController.getUser));
-
+        this.router.put("/:id/changeRole", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
+            role: joi.number().integer().positive().required(),
+        })), handleError(UserController.updateUserRole));
         this.router.delete("/:id", handleError(UserController.deleteUser));
-        this.router.put("/:id", handleError(UserController.updateUser));
-        this.router.put("/:id/changePassword", handleError(UserController.changePassword));
+        this.router.put("/:id", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
+            user: {
+                id: joi.number().integer().positive().required(),
+                firstName: joi.string().max(255).required(),
+                lastName: joi.string().max(255).required(),
+                email: joi.string().email({ minDomainAtoms: 2 }).max(255).required(),
+            },
+            password: joi.string().min(3).max(255).allow(""),
+            newPassword: joi.string().min(3).max(255).allow(""),
+        })), handleError(UserController.updateUser));
         this.router.post("/signup", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             email: joi.string().email({ minDomainAtoms: 2 }).required(),
             phone: joi.string().trim().required(),

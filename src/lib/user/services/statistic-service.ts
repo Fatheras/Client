@@ -6,7 +6,7 @@ import { Task } from "../../tasks/models/task";
 import sequelize = require("sequelize");
 
 interface IStatistic {
-    status: string;
+    status: number;
     count: number;
 }
 
@@ -27,14 +27,35 @@ export default class StatisticService {
         }
 
         const statistic: IUserStatistic = {
-            approved: 0,
+            onReview: 0,
+            open: 0,
+            pending: 0,
+            done: 0,
             declined: 0,
-            opened: 0,
-            closed: 0,
+            count: 0,
         };
 
         for (const value of cleanStat) {
-            statistic![value.status] = value.count;
+            statistic.count += value.count;
+
+            switch (value.status) {
+                case 1:
+                    statistic.onReview = value.count;
+                    break;
+                case 2:
+                    statistic.open = value.count;
+                    break;
+                case 3:
+                    statistic.pending = value.count;
+                    break;
+                case 4:
+                    statistic.done = value.count;
+                case 5:
+                    statistic.declined = value.count;
+
+                default:
+                    break;
+            }
         }
 
         return statistic;

@@ -64,7 +64,7 @@ export class DealController {
 
         const task: ITask = await TaskService.getTask(deal.taskId);
 
-        if (task.countOfDeals! < task.peoples) {
+        if (task.countOfDeals! < task.people) {
             deal = await DealService.addDeal(deal);
 
             if (deal) {
@@ -72,7 +72,7 @@ export class DealController {
             } else {
                 throw new CustomError(400);
             }
-        } else if (task.countOfDeals! === task.peoples && task.status !== Status.Pending) {
+        } else if (task.countOfDeals! === task.people && task.status !== Status.Pending) {
             task.status = Status.Pending;
 
             await TaskService.updateTask(deal.taskId, task);

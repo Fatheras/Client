@@ -75,14 +75,60 @@ export class UserController {
     }
 
     public static async updateUser(req: Request, res: Response): Promise<void> {
+        const model: IUser = req.body.user;
+        const user: IUser = await UserService.getUser(model.id!);
+        if (req.body.password && req.body.newPassword) {
+            const isValid: boolean = await AuthService.isValidPassword(user.password, req.body.password);
+            if (isValid) {
+                model.password = await AuthService.hashPassword(req.body.newPassword);
+            } else {
+                throw new CustomError(400);
+            }
+        }
+
+        const updatedUser: IUser = await UserService.updateUser(model.id!, model);
+
+        if (updatedUser) {
+            res.status(200).send(updatedUser);
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
+    public static async updateUserRole(req: Request, res: Response): Promise<void> {
         const id: number = parseInt(req.params.id, 10);
-        const model: IUser = req.body;
-        const user: IUser = await UserService.updateUser(id, model);
+        const role: number = parseInt(req.body.role, 10);
+        const updatedUser: IUser = await UserService.updateUserRole(id, role);
+
+        if (updatedUser) {
+            res.status(200).send(200);
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
+    public static async getAllUsersWithStatistic(req: Request, res: Response): Promise<void> {
+        const users: IUser[] = await UserService.getAllUsers();
+        const usersWithStatictics: IUser[] = [];
+
+        for (const user of users) {
+            usersWithStatictics.push(await UserService.getUserWithStatistic(user.id!));
+        }
+
+        if (usersWithStatictics) {
+            res.status(200).send(usersWithStatictics);
+        } else {
+            throw new CustomError(404);
+        }
+    }
+
+    public static async getUserByToken(req: Request, res: Response): Promise<void> {
+        const user: any = await UserService.getUserByToken(req.query.token);
 
         if (user) {
             res.status(200).send(user);
         } else {
-            throw new CustomError(400);
+            throw new CustomError(404);
         }
     }
 }
