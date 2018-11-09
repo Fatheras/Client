@@ -46,7 +46,7 @@ export class RegistrationComponent {
         )
       )
       .subscribe(
-        () => {},
+        () => { },
         (error) => {
           this.registForm.setErrors({
             'badRequest': true,
@@ -56,7 +56,7 @@ export class RegistrationComponent {
   }
 
   public signIn() {
-  this.router.navigate([`/authorization`]);
-}
+    this.router.navigate([`/authorization`]);
+  }
 
 }
