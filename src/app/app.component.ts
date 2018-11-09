@@ -1,6 +1,5 @@
-import { Component, OnInit, OnChanges, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from './+authentication/services/authentication.service';
 
 @Component({
@@ -11,10 +10,7 @@ import { AuthenticationService } from './+authentication/services/authentication
 export class AppComponent implements OnInit, DoCheck {
   public isLoggedIn;
 
-  constructor(public http: HttpClient, private router: Router, private authService: AuthenticationService,
-    private route: ActivatedRoute) {
-
-  }
+  constructor(public http: HttpClient, private authService: AuthenticationService) {}
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isAuthenticated();

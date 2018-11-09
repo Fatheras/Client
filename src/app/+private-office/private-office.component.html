@@ -1,0 +1,46 @@
+<div class="example-container">
+    <div class="example-sidenav">
+        <ul class="list">
+            <li class="list-item">
+                <a [routerLink]="['/profile']" routerLinkActive="active" (click)="change()" [routerLinkActiveOptions]="{exact: true}">
+                    <i class="material-icons">
+                        account_circle
+                    </i>
+                    Profile
+                </a>
+            </li>
+            <li class="list-item">
+                <a [routerLink]="['/tasks']" routerLinkActive="active" (click)="change()" [routerLinkActiveOptions]="{exact: true}">
+                    <i class="material-icons">
+                        tab
+                    </i>
+                    Tasks
+                </a>
+            </li>
+            <li *ngIf='role === 3' class="list-item">
+                <a [routerLink]="['categories']" routerLinkActive="active" (click)="change()" [routerLinkActiveOptions]="{exact: true}">
+                    Categories
+                </a>
+            </li>
+            <li *ngIf='role === 3' class="list-item">
+                <a [routerLink]="['/users']" routerLinkActive="active" (click)="change()" [routerLinkActiveOptions]="{exact: true}">
+                    <i class="list-icon" class="material-icons md-48">face</i>
+                    Users
+                </a>
+            </li>
+            <li *ngIf='role === 3' class="list-item">
+                <a [routerLink]="['new-tasks']" routerLinkActive="active" (click)="change()" [routerLinkActiveOptions]="{exact: true}">
+                    New Tasks
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="main-content">
+        <router-outlet>
+
+        </router-outlet>
+    </div>
+
+</div>

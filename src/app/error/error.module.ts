@@ -6,7 +6,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorComponent } from './components/error.component';
 import { ErrorRoutingModule } from './routes/error-routing.module';
 
-
 @NgModule({
   declarations: [
     ErrorComponent

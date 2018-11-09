@@ -1,17 +1,13 @@
-import { Component, OnInit, ViewChild, OnDestroy, ViewEncapsulation, DoCheck } from '@angular/core';
-import { TaskService } from './services/task.service';
-import { ITask } from './models/Task';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { TaskService } from '../+tasks/services/task.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoryService } from './services/category.service';
-import { ICategory } from './models/Category';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { BehaviorSubject, Observable, forkJoin, Subscription } from 'rxjs';
-import { throttleTime, mergeMap, scan, map, tap, zip, finalize, switchMap } from 'rxjs/operators';
+import { CategoryService } from '../services/category.service';
+import { Subscription } from 'rxjs';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { DealService } from './services/deal-service';
-import { AuthenticationService } from '../+authentication/services/authentication.service';
-import * as moment from '../../../node_modules/moment/moment';
+import { DealService } from '../services/deal-service';
 import { TokenService } from '../+authentication/services/token.service';
+import { ITask } from '../+tasks/models/Task';
+import { ICategory } from '../models/Category';
 
 
 @Component({
@@ -89,7 +85,7 @@ export class ActualTaskComponent implements OnInit, OnDestroy {
   }
 
   public addDeal(taskId) {
-    const token = this.tokenService.getToken();
+    const token = this.tokenService.Token;
 
     this.dealService.addDeal(token, taskId).subscribe(() => {
       this.tasks = this.tasks.filter((task: ITask, index, arr) => {

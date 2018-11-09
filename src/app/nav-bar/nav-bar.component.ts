@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../+authentication/services/authentication.service';
-import { TokenService } from '../+authentication/services/token.service';
-
-
 
 @Component({
     selector: 'app-nav-bar',
@@ -11,13 +8,21 @@ import { TokenService } from '../+authentication/services/token.service';
     styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-    constructor(public route: Router, private tokenService: TokenService) {}
+    constructor(public route: Router, private authService: AuthenticationService) {}
 
     public moveToAddTask() {
         this.route.navigate(['tasks', 'add']);
     }
 
+    public moveToProfile() {
+        this.route.navigate(['/profile']);
+    }
+
+    public moveToTasks() {
+        this.route.navigate(['category/all/tasks']);
+    }
+
     public logOut() {
-        this.tokenService.removeToken();
+        this.authService.logOut();
     }
 }

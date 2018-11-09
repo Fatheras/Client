@@ -2,11 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from '../components/error.component';
 
-
-
 const errorRoutes: Routes = [
-    { path: '**', component: ErrorComponent}
- ];
+  { path: '**', component: ErrorComponent }
+];
 
 @NgModule({
   imports: [
@@ -16,6 +14,4 @@ const errorRoutes: Routes = [
     RouterModule
   ]
 })
-export class ErrorRoutingModule {
-
-}
+export class ErrorRoutingModule { }
