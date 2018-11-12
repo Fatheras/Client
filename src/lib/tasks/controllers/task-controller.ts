@@ -12,7 +12,7 @@ export class TaskController {
         let tasks: ITask[];
         const user: IUser = await UserService.getUserByToken(req.headers.authorization!);
 
-        tasks = await TaskService.getAllTasksForUser(req.query as ITask, user.id!);
+        tasks = await TaskService.getAllTasksForUser(req.query, user.id!);
 
         res.status(200).send(tasks);
     }
@@ -22,7 +22,7 @@ export class TaskController {
         const token: string = req.headers.authorization!;
         const user: IUser = await UserService.getUserByToken(token);
 
-        tasks = await TaskService.getTasksForAdmin(req.query as ITask, user.id!);
+        tasks = await TaskService.getTasksForAdmin(req.query, user.id!);
 
         res.status(200).send(tasks);
     }
@@ -32,7 +32,7 @@ export class TaskController {
         const token: string = req.headers.authorization!;
         const user: any = await UserService.getUserByToken(token);
 
-        tasks = await TaskService.getTasksByStatus(req.query as ITask, user.id);
+        tasks = await TaskService.getTasksByStatus(req.query, user.id);
 
         res.status(200).send(tasks);
     }
@@ -42,7 +42,15 @@ export class TaskController {
         const token: string = req.headers.authorization!;
         const user: any = await UserService.getUserByToken(token);
 
-        tasks = await TaskService.getUserTasks(req.query as ITask, user.id);
+        tasks = await TaskService.getUserTasks(req.query, user.id);
+
+        res.status(200).send(tasks);
+    }
+
+    public static async getUsersTasks(req: Request, res: Response): Promise<void> {
+        let tasks: ITask[];
+
+        tasks = await TaskService.getUsersTasks(req.query);
 
         res.status(200).send(tasks);
     }

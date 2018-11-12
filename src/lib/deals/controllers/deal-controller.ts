@@ -31,7 +31,7 @@ export class DealController {
         result = await DealService.deleteDeal(req.params.id);
 
         if (result) {
-            res.sendStatus(200).send(200);
+            res.sendStatus(200);
         } else {
             throw new CustomError(400);
         }

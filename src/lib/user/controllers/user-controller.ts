@@ -68,7 +68,7 @@ export class UserController {
         const result: number = await UserService.deleteUser(id);
 
         if (result) {
-            res.sendStatus(200).send(200);
+            res.sendStatus(200);
         } else {
             throw new CustomError(400);
         }
@@ -101,7 +101,7 @@ export class UserController {
         const updatedUser: IUser = await UserService.updateUserRole(id, role);
 
         if (updatedUser) {
-            res.status(200).send(200);
+            res.sendStatus(200);
         } else {
             throw new CustomError(400);
         }

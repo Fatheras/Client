@@ -17,21 +17,17 @@ export class CategoryController {
         const categories: ICategory[] = (await CategoryService.getAllCategories());
         const tasks: ITask[] = await TaskService.getAllTasks();
 
-        for (const category of categories) {
+        categories.map((category, i, arr) => {
             const categoryStatistic: ICategoryStatistic = { count: 0, open: 0 };
 
-            for (const task of tasks) {
-                if (task.category === category.id) {
-                    categoryStatistic.count++;
-                }
+            category.statistic!.count = tasks.filter((task, index, array) => {
+                return task.category === category.id;
+            })!.length;
 
-                if (task.category === category.id && task.status === Status.Open) {
-                    categoryStatistic.open++;
-                }
-            }
-
-            category.statistic = categoryStatistic;
-        }
+            category.statistic!.open = tasks.filter((task, index, array) => {
+                return task.category === category.id && task.status === Status.Open;
+            })!.length;
+        });
 
         res.status(200).send(categories);
     }
@@ -52,7 +48,7 @@ export class CategoryController {
         const result: number = await CategoryService.deleteCategory(id);
 
         if (result) {
-            res.sendStatus(200).send(200);
+            res.sendStatus(200);
         } else {
             throw new CustomError(400);
         }

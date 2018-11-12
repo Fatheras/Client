@@ -33,14 +33,6 @@ export class Server {
 
             this.setRoutes();
 
-            this.app.use((req: Request, res: express.Response, next: express.NextFunction) => {
-                try {
-                    next();
-                } catch (error) {
-                    next(error);
-                }
-            });
-
             this.app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {
                 switch (error.Code) {
                     case 400: {

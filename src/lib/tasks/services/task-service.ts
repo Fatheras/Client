@@ -40,19 +40,6 @@ export default class TaskService {
         }
     }
 
-    // public static async getAllOpenTasks(): Promise<ITask[]> {
-    //     const tasks: ITask[] = await Task.findAll(
-    //         {
-    //             where: { status: Status.OnReview },
-    //         });
-
-    //     if (tasks) {
-    //         return tasks;
-    //     } else {
-    //         throw new CustomError(400);
-    //     }
-    // }
-
     public static async getAllTasksForUser(query: any, userId: number): Promise<ITask[]> {
 
         const deals: IDeal[] = await DealService.getUserDeals(userId);
@@ -206,8 +193,69 @@ export default class TaskService {
         return Task.findAll(options);
     }
 
+    public static async getUsersTasks(query: any): Promise<ITask[]> {
+        const options: FindOptions<object> = {
+            offset: +query.offset,
+            limit: +query.limit,
+            order: [["time", "ASC"]],
+            where: {},
+            attributes: {
+                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
+            },
+            include: [{
+                model: Deal, attributes: [],
+            }],
+            group: ["Task.id"],
+            subQuery: false,
+        };
+
+        if (query.pattern) {
+            Object.assign(options.where,
+                {
+                    title: {
+                        [Op.like]: query.pattern + "%",
+                    },
+                });
+        }
+
+        if (+query.category) {
+            Object.assign(options.where, { category: query.category });
+        }
+        if (+query.status) {
+            Object.assign(options.where, { status: query.status });
+        }
+        if (query.ownerIds) {
+            Object.assign(options.where, {
+                owner: {
+                    [Op.in]: query.owners,
+                },
+            });
+        }
+        if (query.startDate && query.endDate) {
+            Object.assign(options.where, {
+                time: {
+                    [Op.between]: [query.startDate, query.endDate],
+                },
+            });
+        } else if (query.startDate) {
+            Object.assign(options.where, {
+                time: {
+                    [Op.gt]: query.startDate,
+                },
+            });
+        } else if (query.endDate) {
+            Object.assign(options.where, {
+                time: {
+                    [Op.lt]: query.endDate,
+                },
+            });
+        }
+
+        return Task.findAll(options);
+    }
+
     public static async deleteTask(id: number): Promise<number> {
-        return Task.destroy({
+        return await Task.destroy({
             where: {
                 id,
             },
