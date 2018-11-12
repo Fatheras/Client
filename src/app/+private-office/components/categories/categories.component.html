@@ -1,0 +1,26 @@
+<div class="categories-wrap-container">
+    <h1 class="categories_title">Categories</h1>
+    <div class="categories_main">
+        <div class="categories-list">
+            <div class="category">
+                <h2>Blalba</h2>
+                <span>(18/20)</span>
+                <mat-icon class="clear">clear</mat-icon>
+            </div>
+        </div>
+        <div class="add-category">
+            <mat-form-field class="profile_field">
+                <input matInput placeholder="New Category" [formControl]="categoryName">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Managers" [formControl]="managers" multiple>
+                    <mat-option *ngFor="let user of users" [value]="user.id">{{ user.firstName + " " + user.lastName }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="btns-container">
+                <button class="btn" type="button">Save</button>
+                <button class="btn" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

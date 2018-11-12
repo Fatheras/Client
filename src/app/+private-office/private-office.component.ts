@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RoleService } from '../+authentication/services/role.service';
+import { Role } from '../models/Role';
 
 @Component({
   selector: 'app-private-office',
@@ -9,6 +10,7 @@ import { RoleService } from '../+authentication/services/role.service';
 export class PrivateOfficeComponent implements OnInit {
   public isMenuOpen = false;
   public role;
+  public Role = Role;
 
   constructor(private roleService: RoleService) { }
 
@@ -21,6 +23,6 @@ export class PrivateOfficeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.role = +this.roleService.Role;
+    this.role = this.roleService.Role;
   }
 }

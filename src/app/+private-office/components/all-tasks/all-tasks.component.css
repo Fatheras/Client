@@ -7,7 +7,7 @@
     width: 80%;
 }
 
-.my-task-container{
+.all-task-container{
     display: flex;
     justify-content: space-between;
     height: 70vh;
@@ -38,18 +38,7 @@
     width: 100%;
 }
 
-.reset-btn {
-    width: 100%;
-    height: 40px;
-    background-color: #3f51b5;
-    color: white;
-    font-weight: 400;
-    font-size: 16px;
-    outline: none;
-    border: none;
-}
-
-.my-tasks {
+.all-tasks {
     position: relative;
 }
 

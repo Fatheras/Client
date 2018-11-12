@@ -1,11 +1,6 @@
 <div class="my-tasks">
-    <h1>My Tasks</h1>
-    <div class="search_field">
-        <input class="search_input" matInput placeholder="Input title" [formControl]="pattern">
-        <i class="search_icon" class="material-icons">
-            search
-        </i>
-    </div>
+    <h1 class="tasks_title">My Tasks</h1>
+    <app-search (searchChange)="search($event)"></app-search>
     <div class="my-task-container">
         <div class="tasks-container" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
             (scrolled)="getUserTasks()" [scrollWindow]="false">
@@ -24,7 +19,7 @@
                     </mat-form-field>
 
                     <mat-form-field class="filter_field">
-                        <mat-select (selectionChange)="filterChange()" placeholder="Category" [formControl]="filterForm.controls['category']">
+                        <mat-select (selectionChange)="filterChange()" placeholder="Category" [formControl]="filterForm.controls['category']" multiple>
                             <mat-option *ngFor="let category of categories" [value]="category.name">
                                 {{category.name}}
                             </mat-option>

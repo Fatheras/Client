@@ -41,10 +41,14 @@ export class TasksComponent implements OnInit {
         pattern: new FormControl('')
     });
 
-    public pattern = new FormControl('');
-
     constructor(private taskService: TaskService, private categoryService: CategoryService, private router: Router) {
 
+    }
+
+    search(pattern) {
+        this.filterForm.controls['pattern'].setValue(pattern);
+
+        this.filterChange();
     }
 
     filterChange() {
@@ -58,12 +62,6 @@ export class TasksComponent implements OnInit {
         status.forEach((el, i, arr) => {
             this.statuses.push(el.viewValue);
         });
-
-        this.pattern.valueChanges.pipe(
-                debounceTime(500),
-            ).subscribe((data) => {
-                this.filterChange();
-            });
 
         this.categoryService.getAllCategories().subscribe((categories) => {
             this.categories = categories;
@@ -88,8 +86,8 @@ export class TasksComponent implements OnInit {
         const start = this.filterForm.controls['start'].value;
         const end = this.filterForm.controls['end'].value;
 
+        const pattern = this.filterForm.controls['pattern'].value;
 
-        const pattern = this.pattern.value;
         const filter = {
             status: statusId,
             category: categoryId,
@@ -119,7 +117,7 @@ export class TasksComponent implements OnInit {
         this.taskService.deleteTask(taskId).subscribe(() => {
             this.tasks = this.tasks.filter((task: ITask, index, arr) => {
                 return task.id !== taskId;
-              });
+            });
         });
     }
 

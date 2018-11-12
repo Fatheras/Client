@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
         phone: this.user.phone,
       },
         oldPassword, newPassword
-      ).subscribe(() => {},
+      ).subscribe(() => { },
         (err) => {
           this.userForm.setErrors({
             'badRequest': true

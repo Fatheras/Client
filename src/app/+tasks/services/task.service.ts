@@ -29,6 +29,19 @@ export class TaskService {
         return this.http.get<ITask>(this.url + `/tasks/${id}`);
     }
 
+    public getTasksByCategories(categories, lastSeen, batchSize): Observable<ITask[]> {
+        let params = new HttpParams()
+            .set('offset', lastSeen + '')
+            .set('limit', batchSize + '');
+
+        if (categories) {
+            params = params
+                .set('categories', categories);
+        }
+
+        return this.http.get<ITask[]>(this.url + '/tasks/categories', { params });
+    }
+
     public getUserTasks(filter?, lastSeen?, batchSize?): Observable<ITask[]> {
         let params = new HttpParams()
             .set('offset', lastSeen + '')

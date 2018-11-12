@@ -12,9 +12,17 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TaskComponent } from './components/tasks/components/task/task.component';
 import { TaskListComponent } from './components/tasks/components/task-list/task-list.component';
+import { CategoriesComponent } from './components/categories/categories.component';
+import { NewTasksComponent } from './components/new-tasks/new-tasks.component';
+import { SearchComponent } from '../search/search.component';
+import { AllTasksComponent } from './components/all-tasks/all-tasks.component';
 
 @NgModule({
   declarations: [
+    AllTasksComponent,
+    SearchComponent,
+    NewTasksComponent,
+    CategoriesComponent,
     TaskComponent,
     TaskListComponent,
     TasksComponent,

@@ -6,10 +6,10 @@ export class RoleService {
     constructor(public router: Router) { }
 
     public get Role() {
-        return localStorage.getItem('role');
+        return +localStorage.getItem('role');
     }
 
-    public set Role(role: string) {
-        localStorage.setItem('role', role);
+    public set Role(role: number) {
+        localStorage.setItem('role', role.toString());
     }
 }

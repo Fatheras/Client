@@ -14,6 +14,9 @@ export class RoleGuardService implements CanActivate {
   public canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRole = route.data.expectedRole;
 
+    if (expectedRole instanceof Array) {
+      return !!expectedRole.find((role, i, arr) => this.roleService.Role === role);
+    }
     return this.roleService.Role === expectedRole;
   }
 }
