@@ -3,6 +3,8 @@ import { TaskController } from "../controllers/task-controller";
 import { handleError } from "../../tools/handleError";
 import CheckParamsMiddleware from "../../server/models/check-params.middleware";
 import * as joi from "joi";
+import { Role } from "../../user/models/roles";
+import CheckRoleMiddleware from "../../server/models/check-role.middleware";
 
 class TaskRouter {
     public router: Router;
@@ -13,19 +15,21 @@ class TaskRouter {
     }
 
     public routes() {
-        this.router.get("/", handleError(TaskController.getAllTasks));
-        this.router.get("/tasksForAdmin", handleError(TaskController.getTasksForAdmin));
-        this.router.get("/getOnReviewTasks", handleError(TaskController.getOnReviewTasks));
+        this.router.get("/tasksForAdmin", CheckRoleMiddleware.checkRole(Role.Admin),
+         handleError(TaskController.getTasksForAdmin));
+        this.router.get("/getTasksByStatus", CheckRoleMiddleware.checkRole(Role.Manager, Role.Admin),
+        handleError(TaskController.getTasksByStatus));
         this.router.get("/getUserTasks", handleError(TaskController.getUserTasks));
+        this.router.get("/", handleError(TaskController.getAllTasksForUser));
         this.router.get(":id", handleError(TaskController.getTask));
         this.router.post("/", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             title: joi.string().max(255).required(),
-            peoples: joi.number().integer().positive().min(1).max(5).required(),
+            people: joi.number().integer().positive().min(1).max(5).required(),
             category: joi.string().required(),
             cost: joi.number().positive().min(1).required(),
             description: joi.string().max(255).required(),
             time: joi.date().required(),
-            owner: joi.number().integer().positive().min(1).required(),
+            token: joi.string().required(),
         })), handleError(TaskController.addTask));
         this.router.put("/", handleError(TaskController.updateTask));
         this.router.delete("/:id", handleError(TaskController.deleteTask));

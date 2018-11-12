@@ -6,6 +6,7 @@ import TaskService from "../../tasks/services/task-service";
 import { Request, Response } from "express";
 import { Status } from "../../tasks/models/status";
 import UserService from "../../user/services/user-service";
+import { IUser } from "../../user/models/user";
 
 export class DealController {
     public static async getAllDeals(req: Request, res: Response): Promise<void> {
@@ -30,7 +31,7 @@ export class DealController {
         result = await DealService.deleteDeal(req.params.id);
 
         if (result) {
-            res.sendStatus(204);
+            res.sendStatus(200).send(200);
         } else {
             throw new CustomError(400);
         }
@@ -51,8 +52,8 @@ export class DealController {
 
     public static async addDeal(req: Request, res: Response): Promise<void> {
         let deal: any = req.body;
-
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const token: string = req.headers.authorization!;
+        const user: IUser = await UserService.getUserByToken(token);
 
         if (user) {
             deal.userId = user.id;
@@ -62,7 +63,7 @@ export class DealController {
 
         const task: ITask = await TaskService.getTask(deal.taskId);
 
-        if (task.countOfDeals! < task.peoples) {
+        if (task.countOfDeals! < task.people) {
             deal = await DealService.addDeal(deal);
 
             if (deal) {
@@ -70,7 +71,7 @@ export class DealController {
             } else {
                 throw new CustomError(400);
             }
-        } else if (task.countOfDeals! === task.peoples && task.status !== Status.Pending) {
+        } else if (task.countOfDeals! === task.people && task.status !== Status.Pending) {
             task.status = Status.Pending;
 
             await TaskService.updateTask(deal.taskId, task);

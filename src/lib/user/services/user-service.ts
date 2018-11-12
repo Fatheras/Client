@@ -19,7 +19,11 @@ export default class UserService {
     }
 
     public static async getUserByEmail(email: any): Promise<IUser> {
-        const user: IUser | null = await User.findOne(email);
+        const user: IUser | null = await User.findOne({
+            where: {
+                email,
+            },
+        });
 
         if (user) {
             return user;
@@ -29,18 +33,6 @@ export default class UserService {
     }
 
     public static async getUserWithStatistic(id: number): Promise<IUser> {
-        const user: IUser = (await UserService.getUser(id) as any).get({ plain: true }) as IUser;
-
-        user.statistic = await StatisticService.getStatistic(id);
-
-        if (user) {
-            return user;
-        } else {
-            throw new CustomError(500);
-        }
-    }
-
-    public static async getAllUsersWithStatistic(id: number): Promise<IUser> {
         const user: IUser = (await UserService.getUser(id) as any).get({ plain: true }) as IUser;
 
         user.statistic = await StatisticService.getStatistic(id);
@@ -64,6 +56,20 @@ export default class UserService {
         });
     }
 
+    public static async updateUserRole(id: number, role: number): Promise<IUser> {
+        if (role) {
+            await User.update({role}, {
+                where: {
+                    id,
+                },
+            });
+
+            return this.getUser(id);
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
     public static async updateUser(id: number, model: IUser): Promise<IUser> {
         if (model) {
             delete model.id;
@@ -79,25 +85,9 @@ export default class UserService {
             throw new CustomError(400);
         }
     }
-
-    public static async updateUserRole(id: number, role: number): Promise<IUser> {
-        if (role) {
-
-            await User.update({role}, {
-                where: {
-                    id,
-                },
-            });
-
-            return this.getUser(id);
-        } else {
-            throw new CustomError(400);
-        }
-    }
-
     public static async getUserByToken(token: string): Promise<IUser> {
-        const email: any = jwt.decode(token);
+        const body: any = jwt.decode(token);
 
-        return await UserService.getUserByEmail(email);
+        return await UserService.getUserByEmail(body.email);
     }
 }

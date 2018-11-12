@@ -5,40 +5,44 @@ import { Request, Response } from "express";
 import { Status } from "../models/status";
 import moment from "moment";
 import UserService from "../../user/services/user-service";
+import { IUser } from "../../user/models/user";
 
 export class TaskController {
-    public static async getAllTasks(req: Request, res: Response): Promise<void> {
+    public static async getAllTasksForUser(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const user: IUser = await UserService.getUserByToken(req.headers.authorization!);
 
-        tasks = await TaskService.getAllTasks(req.query as ITask, user.id);
+        tasks = await TaskService.getAllTasksForUser(req.query as ITask, user.id!);
 
         res.status(200).send(tasks);
     }
 
     public static async getTasksForAdmin(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const token: string = req.headers.authorization!;
+        const user: IUser = await UserService.getUserByToken(token);
 
-        tasks = await TaskService.getTasksForAdmin(req.query as ITask, user.id, user.role);
+        tasks = await TaskService.getTasksForAdmin(req.query as ITask, user.id!);
 
         res.status(200).send(tasks);
     }
 
-    public static async getOnReviewTasks(req: Request, res: Response): Promise<void> {
+    public static async getTasksByStatus(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const token: string = req.headers.authorization!;
+        const user: any = await UserService.getUserByToken(token);
 
-        tasks = await TaskService.getOnReviewTasks(req.query as ITask, user.id, user.role);
+        tasks = await TaskService.getTasksByStatus(req.query as ITask, user.id);
 
         res.status(200).send(tasks);
     }
 
     public static async getUserTasks(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const token: string = req.headers.authorization!;
+        const user: any = await UserService.getUserByToken(token);
 
-        tasks = await TaskService.getUserTasks(req.query as ITask, user.id, user.role);
+        tasks = await TaskService.getUserTasks(req.query as ITask, user.id);
 
         res.status(200).send(tasks);
     }
@@ -57,17 +61,16 @@ export class TaskController {
         const result: number = await TaskService.deleteTask(req.params.id);
 
         if (result) {
-            res.sendStatus(200);
+            res.send();
         } else {
             throw new CustomError(400);
         }
     }
 
     public static async updateTask(req: Request, res: Response): Promise<void> {
-        // const taskId = parseInt(req.params.id, 10);
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const taskId = parseInt(req.params.id, 10);
         const model: ITask = req.body;
-        const task: ITask = await TaskService.updateTask(user.id, model);
+        const task: ITask = await TaskService.updateTask(taskId, model);
 
         if (task) {
             res.status(200).send(task);
@@ -84,7 +87,8 @@ export class TaskController {
             throw new CustomError(400);
         }
 
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const token: string = req.headers.authorization!;
+        const user: IUser = await UserService.getUserByToken(token);
 
         const fiftyNineMinutes: number = 59 * 60000;
         const msTime: number = Date.parse(taskModel.time);
@@ -99,7 +103,7 @@ export class TaskController {
         taskModel.time = moment(taskModel.time)
             .hours(time.getHours() + time.getTimezoneOffset() / 60).format("YYYY-MM-DD kk:mm:ss");
 
-        taskModel.owner = user.id;
+        taskModel.owner = user.id!;
 
         const task: ITask = await TaskService.addTask(taskModel);
 

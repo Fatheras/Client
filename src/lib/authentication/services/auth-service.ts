@@ -1,7 +1,7 @@
 import passport from "passport";
 import * as bcrypt from "bcrypt";
 import { Strategy as localStrategy } from "passport-local";
-import { User, IUser } from "../../user/models/user";
+import { User } from "../../user/models/user";
 import UserService from "../../user/services/user-service";
 import { Strategy as JWTstrategy } from "passport-jwt";
 import { ExtractJwt as ExtractJWT } from "passport-jwt";
@@ -73,7 +73,7 @@ export default class AuthService {
     private static async setCheckAccess(): Promise<void> {
         passport.use(new JWTstrategy({
             secretOrKey: "top_secret",
-            jwtFromRequest: ExtractJWT.fromUrlQueryParameter("secret_token"),
+            jwtFromRequest: ExtractJWT.fromAuthHeader(),
         }, async (token, done) => {
             try {
                 return done(null, token.user);

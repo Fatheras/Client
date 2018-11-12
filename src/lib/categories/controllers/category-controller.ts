@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
-import { ICategory, Category } from "../models/category";
+import { ICategory, ICategoryStatistic } from "../models/category";
 import CategoryService from "../services/category-service";
 import CustomError from "../../tools/error";
-import DealService from "../../deals/services/deal-service";
-import { IDeal } from "../../deals/models/deal";
 import { ITask } from "../../tasks/models/task";
 import TaskService from "../../tasks/services/task-service";
 import { Status } from "../../tasks/models/status";
@@ -15,27 +13,27 @@ export class CategoryController {
         res.status(200).send(categories);
     }
 
-    public static async getCategoriesTaskCount(req: Request, res: Response): Promise<void> {
-        const categories: any = await CategoryService.getAllCategories();
-        const taskCountArray: number[] = [];
-        const openTaskCountArray: number[] = [];
-        const tasks: ITask[] = await TaskService.onlyGetAllTasks();
+    public static async getCategoriesTaskCountAndNames(req: Request, res: Response): Promise<void> {
+        const categories: ICategory[] = (await CategoryService.getAllCategories());
+        const tasks: ITask[] = await TaskService.getAllTasks();
 
-        for (let i = 0; i < categories.length; i++) {
-            taskCountArray[i] = 0;
-            openTaskCountArray[i] = 0;
+        for (const category of categories) {
+            const categoryStatistic: ICategoryStatistic = { count: 0, open: 0 };
+
             for (const task of tasks) {
-                if (task.category === categories[i].id) {
-                    taskCountArray[i]++;
+                if (task.category === category.id) {
+                    categoryStatistic.count++;
                 }
 
-                if (task.category === categories[i].id && task.status === Status.Open) {
-                    openTaskCountArray[i]++;
+                if (task.category === category.id && task.status === Status.Open) {
+                    categoryStatistic.open++;
                 }
             }
+
+            category.statistic = categoryStatistic;
         }
 
-        res.status(200).send({ taskCountArray, openTaskCountArray });
+        res.status(200).send(categories);
     }
 
     public static async getCategory(req: Request, res: Response): Promise<void> {
@@ -54,7 +52,7 @@ export class CategoryController {
         const result: number = await CategoryService.deleteCategory(id);
 
         if (result) {
-            res.sendStatus(200);
+            res.sendStatus(200).send(200);
         } else {
             throw new CustomError(400);
         }

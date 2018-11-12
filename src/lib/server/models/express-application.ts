@@ -2,7 +2,7 @@ import bodyParser = require("body-parser");
 import passport = require("passport");
 import { morganSetUp } from "../../tools/morgan";
 import { log } from "../../tools/logger-service";
-import express, { Request } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import taskRouter from "../../tasks/routes/task-router";
 import userRouter from "../../user/routes/user-router";
 import dealRouter from "../../deals/routes/deal-router";
@@ -33,7 +33,15 @@ export class Server {
 
             this.setRoutes();
 
-            this.app.use((error: CustomError, req: Request, res: express.Response, next: express.NextFunction) => {
+            this.app.use((req: Request, res: express.Response, next: express.NextFunction) => {
+                try {
+                    next();
+                } catch (error) {
+                    next(error);
+                }
+            });
+
+            this.app.use((error: CustomError, req: Request, res: Response, next: NextFunction) => {
                 switch (error.Code) {
                     case 400: {
                         res.sendStatus(400);

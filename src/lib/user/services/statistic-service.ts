@@ -1,4 +1,4 @@
-import { IUser, IUserStatistic } from "../../user/models/user";
+import { IUserStatistic } from "../../user/models/user";
 import { Task } from "../../tasks/models/task";
 import sequelize = require("sequelize");
 
@@ -29,9 +29,12 @@ export default class StatisticService {
             pending: 0,
             done: 0,
             declined: 0,
+            count: 0,
         };
 
         for (const value of cleanStat) {
+            statistic.count += value.count;
+
             switch (value.status) {
                 case 1:
                     statistic.onReview = value.count;
