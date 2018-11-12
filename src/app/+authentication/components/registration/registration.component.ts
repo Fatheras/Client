@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder, ValidatorFn } from '@angular/forms';
-import { IUser } from 'src/app/user/user';
+import { IUser } from '../../../user/models/User';
 import { AuthenticationService } from '../../services/authentication.service';
-import { MyErrorStateMatcher } from '../../models/errors/error.matcher';
+import { MyErrorStateMatcher } from '../../../models/errors/error.matcher';
+import { switchMap, tap } from 'rxjs/operators';
 
 
 
@@ -13,11 +14,6 @@ import { MyErrorStateMatcher } from '../../models/errors/error.matcher';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
-
-  constructor(private router: Router, private authService: AuthenticationService, private fb: FormBuilder) {
-
-  }
-
   public matcher = new MyErrorStateMatcher();
 
   public registForm = new FormGroup({
@@ -29,6 +25,10 @@ export class RegistrationComponent {
     phone: new FormControl('', [Validators.required, Validators.maxLength(255)])
   });
 
+  constructor(private router: Router, private authService: AuthenticationService, private fb: FormBuilder) {
+
+  }
+
   public signUp() {
 
     let user: IUser;
@@ -39,9 +39,20 @@ export class RegistrationComponent {
       phone: this.registForm.controls['phone'].value
     };
 
-    this.authService.signUp(user.email, user.password, user.phone).subscribe((model: IUser) => {
-      this.router.navigate(['/me']);
-    });
+    this.authService.signUp(user)
+      .pipe(
+        switchMap(
+          () => this.authService.logIn(user.email, user.password),
+        )
+      )
+      .subscribe(
+        () => { },
+        (error) => {
+          this.registForm.setErrors({
+            'badRequest': true,
+          });
+        }
+      );
   }
 
   public signIn() {

@@ -1,0 +1,66 @@
+<form (ngSubmit)="send()" [formGroup]="taskForm" class="task-form" action="">
+    <mat-form-field class="title_field">
+        <input matInput placeholder="Title*" [formControl]="taskForm.controls['title']" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="taskForm.controls['title'].hasError('required')">
+            This is required.
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="description_field">
+        <textarea class="description_textarea" matInput placeholder="Description*" [formControl]="taskForm.controls['description']"
+            [errorStateMatcher]="matcher"></textarea>
+        <mat-error *ngIf="taskForm.controls['description'].hasError('required')">
+            This is required.
+        </mat-error>
+        <mat-error *ngIf="taskForm.controls['description'].hasError('max')">
+            Too much people.
+        </mat-error>
+    </mat-form-field>
+
+    <div class="fields-container">
+        <mat-form-field class="peoples_field">
+            <input matInput placeholder="People*" [formControl]="taskForm.controls['people']" [errorStateMatcher]="matcher">
+            <mat-error *ngIf="taskForm.controls['people'].hasError('required')">
+                This is required.
+            </mat-error>
+            <mat-error *ngIf="taskForm.controls['people'].hasError('max')">
+                Too much people.
+            </mat-error>
+            <mat-error *ngIf="taskForm.controls['people'].hasError('min')">
+                Run of people.
+            </mat-error>
+            <mat-error *ngIf="taskForm.controls['people'].hasError('pattern')">
+                Must be integer number.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="category_field">
+            <mat-select placeholder="Category*" [formControl]="taskForm.controls['category']" [errorStateMatcher]="matcher">
+                <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="cost_field">
+            <input matInput placeholder="Cost*" [formControl]="taskForm.controls['cost']" [errorStateMatcher]="matcher">
+            <mat-error *ngIf="taskForm.controls['cost'].hasError('required')">
+                This is required.
+            </mat-error>
+            <mat-error *ngIf="taskForm.controls['cost'].hasError('pattern')">
+                Incorrect value.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="time_field">
+            <input matInput readonly [min]="mintime"  [owlDateTime]="dt" [owlDateTimeTrigger]="dt"  placeholder="time*" [formControl]="taskForm.controls['time']" [errorStateMatcher]="matcher">
+            <owl-date-time [hour12Timer]="false"  #dt></owl-date-time>
+            <mat-error *ngIf="taskForm.controls['time'].hasError('timeErr')">
+                Date error.
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <ng-content>
+        
+    </ng-content>
+    
+</form>

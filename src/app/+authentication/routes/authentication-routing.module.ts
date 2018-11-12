@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegistrationComponent } from '../components/registration/registration.component';
 import { AuthorizationComponent } from '../components/authorization/authorization.component';
-
+import { LoggedGuardService } from '../services/logged-guard.service';
 
 const authRoutes: Routes = [
-    { path: 'registration', component: RegistrationComponent},
-    { path: 'authorization', component: AuthorizationComponent},
+    { path: 'registration', component: RegistrationComponent, canActivate: [LoggedGuardService] },
+    { path: 'authorization', component: AuthorizationComponent, canActivate: [LoggedGuardService]},
  ];
 
 @NgModule({

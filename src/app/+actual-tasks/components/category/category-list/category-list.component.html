@@ -1,5 +1,5 @@
-<ul class="container">
-  <li class="item" *ngFor="let category of categories">
+<ul class="category-list-container">
+  <li class="category" *ngFor="let category of categories">
     <app-category [category]="category" (categoryChanged)="change($event)"></app-category>
   </li>
 </ul>

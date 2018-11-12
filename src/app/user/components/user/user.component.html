@@ -1,0 +1,46 @@
+<div class="user-container">
+    <div class="user_info">
+        <div class="user_title">
+            <h3>{{user.firstName}} {{user.lastName}}</h3>
+            <span>{{user.createdAt}}</span>
+        </div>
+        <div class="user_statistic">
+            <table>
+                <thead>
+                    <tr>
+                        <th>onReview</th>
+                        <th>open</th>
+                        <th>pending</th>
+                        <th>done</th>
+                        <th>declined</th>
+                        <th>count</th>
+                    </tr>
+                </thead>
+
+                <tr>
+                    <td>{{user.statistic.onReview}}</td>
+                    <td>{{user.statistic.open}}</td>
+                    <td>{{user.statistic.pending}}</td>
+                    <td>{{user.statistic.done}}</td>
+                    <td>{{user.statistic.declined}}</td>
+                    <td>{{user.statistic.count}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="user-actions">
+        <mat-form-field>
+            <mat-select [formControl]="userRole">
+                <mat-option [value]="role.value" *ngFor="let role of roles">
+                    {{role.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="btn-container">
+            <button (click)="save()" class="user_btn">Save</button>
+            <button (click)="cancel()" class="user_btn">Cancel</button>
+        </div>
+    </div>
+</div>

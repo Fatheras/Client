@@ -1,11 +1,35 @@
 
-// tslint:disable-next-line:max-line-length
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatMenuModule, MatCardModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatTabsModule, MatGridListModule } from '@angular/material';
+import {
+  MatToolbarModule,
+  MatButtonModule,
+  MatIconModule,
+  MatListModule,
+  MatMenuModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatTabsModule,
+  MatGridListModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatDialogModule,
+  MatTableModule
+} from '@angular/material';
 import { NgModule } from '@angular/core';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { OwlNativeDateTimeModule, OwlDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
   exports: [
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    MatTableModule,
+    MatSidenavModule,
+    MatNativeDateModule,
+    MatDialogModule,
+    MatDatepickerModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -21,6 +45,5 @@ import { NgModule } from '@angular/core';
     MatListModule,
     MatGridListModule,
   ]
-
 })
 export class MaterialModule { }

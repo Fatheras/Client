@@ -1,20 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthenticationGuardService } from './+authentication/services/authentication-guard.service';
-
-const appRoutes: Routes = [
-  { path: '', redirectTo: '/me', pathMatch: 'full',  canActivate: [AuthenticationGuardService] },
-];
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false }
-    )
-  ],
   exports: [
-    RouterModule
+    RouterModule,
   ]
 })
 export class AppRoutingModule { }
