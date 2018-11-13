@@ -6,6 +6,8 @@ import { Status } from "../models/status";
 import moment from "moment";
 import UserService from "../../user/services/user-service";
 import { IUser } from "../../user/models/user";
+import { ManagerService } from "../../manager/services/manager-service";
+import { ICategory } from "../../categories/models/category";
 
 export class TaskController {
     public static async getAllTasksForUser(req: Request, res: Response): Promise<void> {
@@ -27,12 +29,13 @@ export class TaskController {
         res.status(200).send(tasks);
     }
 
-    public static async getTasksByStatus(req: Request, res: Response): Promise<void> {
-        let tasks: ITask[];
+    public static async getTasksForManager(req: Request, res: Response): Promise<void> {
         const token: string = req.headers.authorization!;
-        const user: any = await UserService.getUserByToken(token);
+        const user: IUser = await UserService.getUserByToken(token);
+        let categories = req.query.categories;
 
-        tasks = await TaskService.getTasksByStatus(req.query, user.id);
+        categories =  ManagerService.getAllManagerCategories(req.query.categories, user.id!);
+
 
         res.status(200).send(tasks);
     }
@@ -69,7 +72,7 @@ export class TaskController {
         const result: number = await TaskService.deleteTask(req.params.id);
 
         if (result) {
-            res.send();
+            res.sendStatus(200);
         } else {
             throw new CustomError(400);
         }

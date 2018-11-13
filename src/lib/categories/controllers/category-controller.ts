@@ -18,8 +18,6 @@ export class CategoryController {
         const tasks: ITask[] = await TaskService.getAllTasks();
 
         categories.map((category, i, arr) => {
-            const categoryStatistic: ICategoryStatistic = { count: 0, open: 0 };
-
             category.statistic!.count = tasks.filter((task, index, array) => {
                 return task.category === category.id;
             })!.length;

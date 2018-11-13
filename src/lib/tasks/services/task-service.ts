@@ -186,22 +186,17 @@ export default class TaskService {
         return Task.findAll(options);
     }
 
-    public static async getTasksByStatus(query: any, userId: number): Promise<ITask[]> {
-
+    public static async getTasksForManager(query: any): Promise<ITask[]> {
         const options: FindOptions<object> = {
             offset: +query.offset,
             limit: +query.limit,
             order: [["time", "ASC"]],
             where: {
-                status: query.status,
+                category: {
+                    [Op.in]: query.categories,
+                },
+                status: Status.OnReview,
             },
-            attributes: {
-                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
-            },
-            include: [{
-                model: Deal, attributes: [],
-            }],
-            group: ["Task.id"],
             subQuery: false,
         };
 

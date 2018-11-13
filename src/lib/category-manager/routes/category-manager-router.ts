@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { ManagerController } from "../controllers/manager-controller";
+import { CategoryManagerController } from "../controllers/category-manager-controller";
 import { handleError } from "../../tools/handleError";
 import CheckParamsMiddleware from "../../server/models/check-params.middleware";
 import * as joi from "joi";
 import { Role } from "../../user/models/roles";
 import CheckRoleMiddleware from "../../server/models/check-role.middleware";
 
-class TaskRouter {
+class CategoryManagerRouter {
     public router: Router;
 
     constructor() {
@@ -20,10 +20,10 @@ class TaskRouter {
             CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
                 category: joi.string().required(),
                 userId: joi.number().integer().positive().required(),
-            })), handleError(ManagerController.AddManager));
+            })), handleError(CategoryManagerController.addCategoryManager));
     }
 }
 
-const taskRoutes = new TaskRouter();
+const taskCategoryManager = new CategoryManagerRouter();
 
-export default taskRoutes.router;
+export default taskCategoryManager.router;
