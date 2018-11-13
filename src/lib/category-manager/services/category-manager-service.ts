@@ -3,23 +3,24 @@ import { FindOptions, Op } from "sequelize";
 
 export class CategoryManagerService {
 
-    public static async addCategoryManager(categoryManager: ICategoryManager): Promise<ICategoryManager> {
-        return await CategoryManager.create(categoryManager);
+    public static async subscribeCategoryManagers(categoryManagersIds: number[], categoryId: number): Promise<void> {
+        const categoryManagers: ICategoryManager[] = categoryManagersIds
+            .map((categoryManager, index, arr) => {
+                return { userId: categoryManager, categoryId };
+            });
+        await CategoryManager.bulkCreate(categoryManagers);
     }
 
-    public static async getAllCategoryManagersCategories(query: any, userId: number): Promise<ICategoryManager[]> {
+    public static async getAllManagersCategories(userId: number): Promise<number[]> {
         const options: FindOptions<object> = {
-            order: [["time", "ASC"]],
             attributes: ["categoryId"],
             where: {
-                categoryId: {
-                    [Op.in]: query.categories,
-                },
                 userId,
             },
-            subQuery: false,
+            raw: true,
         };
 
-        return await CategoryManager.findAll(options);
+        return (await CategoryManager.findAll(options) as any[])
+            .map((category, index, categories) => category.categoryId);
     }
 }

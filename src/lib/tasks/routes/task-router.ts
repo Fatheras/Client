@@ -17,8 +17,8 @@ class TaskRouter {
     public routes() {
         this.router.get("/tasksForAdmin", CheckRoleMiddleware.checkRole(Role.Admin),
          handleError(TaskController.getTasksForAdmin));
-        this.router.get("/getTasksByStatus", CheckRoleMiddleware.checkRole(Role.Manager, Role.Admin),
-        handleError(TaskController.getTasksByStatus));
+        this.router.get("/getTasksForManager", CheckRoleMiddleware.checkRole(Role.Manager, Role.Admin),
+        handleError(TaskController.getTasksForManager));
         this.router.get("/getUserTasks", handleError(TaskController.getUserTasks));
         this.router.get(
             "/getUsersTasks",

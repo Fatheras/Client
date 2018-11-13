@@ -5,6 +5,7 @@ import CustomError from "../../tools/error";
 import { ITask } from "../../tasks/models/task";
 import TaskService from "../../tasks/services/task-service";
 import { Status } from "../../tasks/models/status";
+import { CategoryManagerService } from "../../category-manager/services/category-manager-service";
 
 export class CategoryController {
     public static async getAllCategories(req: Request, res: Response): Promise<void> {
@@ -53,8 +54,14 @@ export class CategoryController {
     }
 
     public static async addCategory(req: Request, res: Response): Promise<void> {
-        const model: ICategory = req.body;
+        const model: ICategory = {
+            name: req.body.name,
+        };
         const category: ICategory = await CategoryService.addCategory(model);
+
+        const categoryManagersIds: any = req.body.categoryManagersIds.split(",");
+
+        await CategoryManagerService.subscribeCategoryManagers(categoryManagersIds, category.id!);
 
         if (category) {
             res.status(200).send(category);

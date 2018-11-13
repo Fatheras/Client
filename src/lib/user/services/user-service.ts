@@ -2,10 +2,18 @@ import { User, IUser } from "../../user/models/user";
 import CustomError from "../../tools/error";
 import StatisticService from "./statistic-service";
 import * as jwt from "jsonwebtoken";
+import { Role } from "../models/roles";
 
 export default class UserService {
     public static async getAllUsers(): Promise<IUser[]> {
         return User.findAll();
+    }
+
+    public static async getAllManagers(): Promise<IUser[]> {
+        return User.findAll(
+            {
+                where: { role: Role.Manager },
+            });
     }
 
     public static async getUser(id: number): Promise<IUser> {
@@ -58,7 +66,7 @@ export default class UserService {
 
     public static async updateUserRole(id: number, role: number): Promise<IUser> {
         if (role) {
-            await User.update({role}, {
+            await User.update({ role }, {
                 where: {
                     id,
                 },

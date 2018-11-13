@@ -186,20 +186,28 @@ export default class TaskService {
         return Task.findAll(options);
     }
 
-    public static async getTasksForManager(query: any): Promise<ITask[]> {
+    public static async getTasksForManager(query: any, categories: number[]): Promise<ITask[]> {
         const options: FindOptions<object> = {
             offset: +query.offset,
             limit: +query.limit,
             order: [["time", "ASC"]],
             where: {
                 category: {
-                    [Op.in]: query.categories,
+                    [Op.in]: categories,
                 },
                 status: Status.OnReview,
             },
             subQuery: false,
         };
 
+        if (query.selectedCategories) {
+           options.where = {
+                category:
+                {
+                    [Op.in]: query.selectedCategories,
+                },
+            };
+        }
         return Task.findAll(options);
     }
 

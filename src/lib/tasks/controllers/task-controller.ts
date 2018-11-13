@@ -6,8 +6,7 @@ import { Status } from "../models/status";
 import moment from "moment";
 import UserService from "../../user/services/user-service";
 import { IUser } from "../../user/models/user";
-import { ManagerService } from "../../manager/services/manager-service";
-import { ICategory } from "../../categories/models/category";
+import { CategoryManagerService } from "../../category-manager/services/category-manager-service";
 
 export class TaskController {
     public static async getAllTasksForUser(req: Request, res: Response): Promise<void> {
@@ -30,12 +29,15 @@ export class TaskController {
     }
 
     public static async getTasksForManager(req: Request, res: Response): Promise<void> {
+        let tasks: ITask[];
+
         const token: string = req.headers.authorization!;
         const user: IUser = await UserService.getUserByToken(token);
-        let categories = req.query.categories;
 
-        categories =  ManagerService.getAllManagerCategories(req.query.categories, user.id!);
+        let categories: number[];
 
+        categories = await CategoryManagerService.getAllManagersCategories(user.id!);
+        tasks = await TaskService.getTasksForManager(req.query, categories);
 
         res.status(200).send(tasks);
     }

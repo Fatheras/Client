@@ -29,6 +29,10 @@ export class UserController {
         res.status(200).send(await UserService.getAllUsers());
     }
 
+    public static async getAllManagers(req: Request, res: Response): Promise<void> {
+        res.status(200).send(await UserService.getAllManagers());
+    }
+
     public static async getUser(req: Request, res: Response, next: any): Promise<void> {
 
         const id: number = parseInt(req.params.id, 10);

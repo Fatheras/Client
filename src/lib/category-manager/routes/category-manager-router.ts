@@ -16,11 +16,11 @@ class CategoryManagerRouter {
 
     public routes() {
 
-        this.router.post("/", CheckRoleMiddleware.checkRole(Role.Admin),
-            CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
-                category: joi.string().required(),
-                userId: joi.number().integer().positive().required(),
-            })), handleError(CategoryManagerController.addCategoryManager));
+        // this.router.post("/", CheckRoleMiddleware.checkRole(Role.Admin),
+        //     CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
+        //         category: joi.string().required(),
+        //         userId: joi.number().integer().positive().required(),
+        //     })), handleError(CategoryManagerController.));
     }
 }
 
