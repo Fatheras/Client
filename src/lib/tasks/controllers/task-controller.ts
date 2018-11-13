@@ -40,9 +40,9 @@ export class TaskController {
     public static async getUserTasks(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
         const token: string = req.headers.authorization!;
-        const user: any = await UserService.getUserByToken(token);
+        const user: IUser = await UserService.getUserByToken(token);
 
-        tasks = await TaskService.getUserTasks(req.query, user.id);
+        tasks = await TaskService.getUserTasks(req.query, user.id!);
 
         res.status(200).send(tasks);
     }

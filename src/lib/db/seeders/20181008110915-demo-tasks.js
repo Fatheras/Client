@@ -17,12 +17,11 @@ module.exports = {
           people: faker.random.number({ min: 1, max: 6 }),
           time: moment().format("YYYY-MM-DD"),
           description: faker.name.jobDescriptor(),
-          owner: faker.random.number({ min: 83, max: 83 }),
+          owner: faker.random.number({ min: 106, max: 106 }),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       );
-
     }
 
     return queryInterface.bulkInsert("tasks", tasks, {});

@@ -63,3 +63,6 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
     },
 },
 );
+
+Task.belongsTo(User, { foreignKey: "owner" });
+User.hasMany(Task, { foreignKey: "owner" });

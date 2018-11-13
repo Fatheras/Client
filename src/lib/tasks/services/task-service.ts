@@ -4,7 +4,7 @@ import sequelize, { FindOptions, Op } from "sequelize";
 import CustomError from "../../tools/error";
 import { Status } from "../models/status";
 import DealService from "../../deals/services/deal-service";
-import { Role } from "../../user/models/roles";
+import { User } from "../../user/models/user";
 
 export default class TaskService {
     public static async addTask(task: ITask) {
@@ -67,8 +67,13 @@ export default class TaskService {
             group: ["Task.id"],
             subQuery: false,
         };
-        if (+query.category) {
-            Object.assign(options.where, { category: query.category });
+        if (query.categories) {
+            Object.assign(options.where, {
+                category:
+                {
+                    [Op.in]: query.categories,
+                },
+            });
         }
 
         return Task.findAll(options);
@@ -101,8 +106,13 @@ export default class TaskService {
                 });
         }
 
-        if (+query.category) {
-            Object.assign(options.where, { category: query.category });
+        if (query.categories) {
+            Object.assign(options.where, {
+                category:
+                {
+                    [Op.in]: query.categories,
+                },
+            });
         }
         if (+query.status) {
             Object.assign(options.where, { status: query.status });
@@ -151,15 +161,20 @@ export default class TaskService {
             Object.assign(options, { limit: +query.limit });
         }
 
-        if (+query.category) {
-            Object.assign(options.where, { category: +query.category });
+        if (query.categories) {
+            Object.assign(options.where, {
+                category:
+                {
+                    [Op.in]: query.categories,
+                },
+            });
         }
         if (+query.status) {
             Object.assign(options.where, { status: +query.status });
         }
         if (query.time) {
             Object.assign(options.where, {
-                category: {
+                time: {
                     [Op.between]: [query.startDate, query.endDate],
                 },
             });
@@ -199,14 +214,11 @@ export default class TaskService {
             limit: +query.limit,
             order: [["time", "ASC"]],
             where: {},
-            attributes: {
-                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
-            },
             include: [{
-                model: Deal, attributes: [],
+                model: User, attributes: ["firstName", "lastName"],
             }],
             group: ["Task.id"],
-            subQuery: false,
+            subQuery: true,
         };
 
         if (query.pattern) {
@@ -218,13 +230,18 @@ export default class TaskService {
                 });
         }
 
-        if (+query.category) {
-            Object.assign(options.where, { category: query.category });
+        if (query.categories) {
+            Object.assign(options.where, {
+                category:
+                {
+                    [Op.in]: query.categories,
+                },
+            });
         }
         if (+query.status) {
             Object.assign(options.where, { status: query.status });
         }
-        if (query.ownerIds) {
+        if (query.owners) {
             Object.assign(options.where, {
                 owner: {
                     [Op.in]: query.owners,

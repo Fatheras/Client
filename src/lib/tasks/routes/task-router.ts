@@ -20,6 +20,11 @@ class TaskRouter {
         this.router.get("/getTasksByStatus", CheckRoleMiddleware.checkRole(Role.Manager, Role.Admin),
         handleError(TaskController.getTasksByStatus));
         this.router.get("/getUserTasks", handleError(TaskController.getUserTasks));
+        this.router.get(
+            "/getUsersTasks",
+            CheckRoleMiddleware.checkRole(Role.Admin),
+            handleError(TaskController.getUsersTasks),
+        );
         this.router.get("/", handleError(TaskController.getAllTasksForUser));
         this.router.get(":id", handleError(TaskController.getTask));
         this.router.post("/", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
