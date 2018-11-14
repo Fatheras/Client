@@ -1,13 +1,12 @@
 import UserService from "../services/user-service";
-import { IUser, User } from "../models/user";
+import { IUser } from "../models/user";
 import CustomError from "../../tools/error";
 import { Request, Response } from "express";
 import AuthService from "../../authentication/services/auth-service";
-import StatisticService from "../services/statistic-service";
 
 export class UserController {
     public static async changePassword(req: Request, res: Response): Promise<void> {
-        const id: number = parseInt(req.params.id, 10);
+        const id: number = +req.params.id;
         let user: IUser = await UserService.getUser(id);
 
         const isValid: boolean = await AuthService.isValidPassword(user.password, req.body.password);
@@ -27,12 +26,20 @@ export class UserController {
     }
 
     public static async getAllUsers(req: Request, res: Response): Promise<void> {
-        res.status(200).send(await UserService.getAllUsers());
+        const users: IUser[] = await UserService.getAllUsers();
+
+        res.status(200).send(users);
     }
 
-    public static async getUser(req: Request, res: Response): Promise<void> {
-        const id: number = parseInt(req.params.id, 10);
-        const user: IUser = await UserService.getUser(id);
+    public static async getAllManagers(req: Request, res: Response): Promise<void> {
+        const users: IUser[] = await UserService.getAllManagers();
+
+        res.status(200).send(users);
+    }
+
+    public static async getUser(req: Request, res: Response, next: any): Promise<void> {
+        const id: number = +req.params.id;
+        const user: IUser | null = await UserService.getUser(id);
 
         if (user) {
             res.status(200).send(user);
@@ -64,7 +71,7 @@ export class UserController {
     }
 
     public static async deleteUser(req: Request, res: Response): Promise<void> {
-        const id: number = parseInt(req.params.id, 10);
+        const id: number = +req.params.id;
         const result: number = await UserService.deleteUser(id);
 
         if (result) {
@@ -77,8 +84,10 @@ export class UserController {
     public static async updateUser(req: Request, res: Response): Promise<void> {
         const model: IUser = req.body.user;
         const user: IUser = await UserService.getUser(model.id!);
+
         if (req.body.password && req.body.newPassword) {
             const isValid: boolean = await AuthService.isValidPassword(user.password, req.body.password);
+
             if (isValid) {
                 model.password = await AuthService.hashPassword(req.body.newPassword);
             } else {
@@ -87,7 +96,6 @@ export class UserController {
         }
 
         const updatedUser: IUser = await UserService.updateUser(model.id!, model);
-
         if (updatedUser) {
             res.status(200).send(updatedUser);
         } else {
@@ -96,12 +104,13 @@ export class UserController {
     }
 
     public static async updateUserRole(req: Request, res: Response): Promise<void> {
-        const id: number = parseInt(req.params.id, 10);
-        const role: number = parseInt(req.body.role, 10);
+        const id: number = +req.params.id;
+        const role: number = +req.body.role;
+
         const updatedUser: IUser = await UserService.updateUserRole(id, role);
 
         if (updatedUser) {
-            res.status(200).send(200);
+            res.sendStatus(200);
         } else {
             throw new CustomError(400);
         }
@@ -123,7 +132,7 @@ export class UserController {
     }
 
     public static async getUserByToken(req: Request, res: Response): Promise<void> {
-        const user: any = await UserService.getUserByToken(req.query.token);
+        const user: IUser = await UserService.getUserByToken(req.headers.authorization!);
 
         if (user) {
             res.status(200).send(user);

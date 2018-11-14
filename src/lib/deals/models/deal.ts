@@ -36,3 +36,6 @@ export const Deal = db.define<IDeal, object>("deal", {
 
 Deal.belongsTo(Task, { foreignKey: "taskId" });
 Task.hasMany(Deal);
+
+Deal.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Deal);

@@ -26,7 +26,7 @@ class UserRouter {
         });
         this.router.get("/:id/statistic", handleError(UserController.getUserWithStatistic));
         this.router.get("/statistic", handleError(UserController.getAllUsersWithStatistic));
-        this.router.get("/:id", handleError(UserController.getUser));
+        this.router.get("/:id", UserController.getUser);
         this.router.put("/:id/changeRole", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             role: joi.number().integer().positive().required(),
         })), handleError(UserController.updateUserRole));

@@ -4,6 +4,6 @@ export const handleError = (func: any) => async (req: Request, res: Response, ne
     try {
         await func(req, res, next);
     } catch (error) {
-        next();
+        throw new Error(error);
     }
 };
