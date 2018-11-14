@@ -29,6 +29,3 @@ export const CategoryManager: Sequelize.Model<ICategoryManager, object> =
 
 CategoryManager.hasMany(Category, { foreignKey: "id" });
 Category.belongsTo(CategoryManager, { foreignKey: "categoryId" });
-
-// CategoryManager.hasMany(User, { foreignKey: "id" });
-// User.belongsTo(CategoryManager, { foreignKey: "userId" });

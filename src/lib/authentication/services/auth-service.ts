@@ -31,7 +31,7 @@ export default class AuthService {
         }, async (req: Request, email: string, password: string, done: any) => {
             try {
                 const hashPass = await AuthService.hashPassword(password);
-                const user = await UserService.addUser({
+                await UserService.addUser({
                     email,
                     password: hashPass,
                     phone: req.body.phone,

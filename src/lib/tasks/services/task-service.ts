@@ -41,7 +41,6 @@ export default class TaskService {
     }
 
     public static async getAllTasksForUser(query: any, userId: number): Promise<ITask[]> {
-
         const deals: IDeal[] = await DealService.getUserDeals(userId);
         const taskIds: number[] = deals.map((el, i, arr) => el.taskId);
 
@@ -67,6 +66,7 @@ export default class TaskService {
             group: ["Task.id"],
             subQuery: false,
         };
+
         if (query.categories) {
             Object.assign(options.where, {
                 category:
@@ -114,9 +114,11 @@ export default class TaskService {
                 },
             });
         }
+
         if (+query.status) {
             Object.assign(options.where, { status: query.status });
         }
+
         if (query.startDate && query.endDate) {
             Object.assign(options.where, {
                 time: {
@@ -140,11 +142,14 @@ export default class TaskService {
         return Task.findAll(options);
     }
 
-    public static async getTasksForAdmin(query: any, userId: number): Promise<ITask[]> {
-
+    public static async getTasksForAdmin(query: any): Promise<ITask[]> {
         const options: FindOptions<object> = {
             order: [["time", "ASC"]],
-            where: {},
+            where: {
+                status: {
+                    [Op.not]: Status.Declined,
+                },
+            },
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
@@ -154,9 +159,11 @@ export default class TaskService {
             group: ["Task.id"],
             subQuery: false,
         };
+
         if (+query.offset) {
             Object.assign(options, { offset: +query.offset });
         }
+
         if (+query.limit) {
             Object.assign(options, { limit: +query.limit });
         }
@@ -169,9 +176,11 @@ export default class TaskService {
                 },
             });
         }
+
         if (+query.status) {
             Object.assign(options.where, { status: +query.status });
         }
+
         if (query.time) {
             Object.assign(options.where, {
                 time: {
@@ -179,8 +188,12 @@ export default class TaskService {
                 },
             });
         }
-        if (+query.userId) {
-            Object.assign(options.where, { userId: +query.userId });
+
+        if (query.usersIds) {
+            Object.assign(options.where, {
+                userId:
+                    { [Op.in]: query.usersIds },
+            });
         }
 
         return Task.findAll(options);
@@ -201,7 +214,7 @@ export default class TaskService {
         };
 
         if (query.selectedCategories) {
-           options.where = {
+            options.where = {
                 category:
                 {
                     [Op.in]: query.selectedCategories,
@@ -241,9 +254,11 @@ export default class TaskService {
                 },
             });
         }
+
         if (+query.status) {
             Object.assign(options.where, { status: query.status });
         }
+
         if (query.owners) {
             Object.assign(options.where, {
                 owner: {
@@ -251,6 +266,7 @@ export default class TaskService {
                 },
             });
         }
+
         if (query.startDate && query.endDate) {
             Object.assign(options.where, {
                 time: {

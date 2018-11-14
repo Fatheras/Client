@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ICategory, ICategoryStatistic } from "../models/category";
+import { ICategory } from "../models/category";
 import CategoryService from "../services/category-service";
 import CustomError from "../../tools/error";
 import { ITask } from "../../tasks/models/task";
@@ -14,7 +14,7 @@ export class CategoryController {
         res.status(200).send(categories);
     }
 
-    public static async getCategoriesTaskCountAndNames(req: Request, res: Response): Promise<void> {
+    public static async getCategoriesWithStatistic(req: Request, res: Response): Promise<void> {
         const categories: ICategory[] = (await CategoryService.getAllCategories());
         const tasks: ITask[] = await TaskService.getAllTasks();
 
@@ -57,6 +57,7 @@ export class CategoryController {
         const model: ICategory = {
             name: req.body.name,
         };
+
         const category: ICategory = await CategoryService.addCategory(model);
 
         const categoryManagersIds: any = req.body.categoryManagersIds.split(",");

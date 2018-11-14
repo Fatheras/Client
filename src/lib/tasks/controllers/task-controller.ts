@@ -11,6 +11,7 @@ import { CategoryManagerService } from "../../category-manager/services/category
 export class TaskController {
     public static async getAllTasksForUser(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
+
         const user: IUser = await UserService.getUserByToken(req.headers.authorization!);
 
         tasks = await TaskService.getAllTasksForUser(req.query, user.id!);
@@ -20,10 +21,8 @@ export class TaskController {
 
     public static async getTasksForAdmin(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
-        const token: string = req.headers.authorization!;
-        const user: IUser = await UserService.getUserByToken(token);
 
-        tasks = await TaskService.getTasksForAdmin(req.query, user.id!);
+        tasks = await TaskService.getTasksForAdmin(req.query);
 
         res.status(200).send(tasks);
     }
@@ -44,6 +43,7 @@ export class TaskController {
 
     public static async getUserTasks(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
+
         const token: string = req.headers.authorization!;
         const user: IUser = await UserService.getUserByToken(token);
 
@@ -81,7 +81,7 @@ export class TaskController {
     }
 
     public static async updateTask(req: Request, res: Response): Promise<void> {
-        const taskId = parseInt(req.params.id, 10);
+        const taskId = +req.params.id;
         const model: ITask = req.body;
         const task: ITask = await TaskService.updateTask(taskId, model);
 
@@ -94,6 +94,7 @@ export class TaskController {
 
     public static async addTask(req: Request, res: Response): Promise<void> {
         const taskModel: ITask = req.body;
+
         if (taskModel) {
             taskModel.status = Status.OnReview;
         } else {

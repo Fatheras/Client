@@ -24,7 +24,7 @@ export default class DealService {
         });
     }
 
-    public static async getAllDeals() {
+    public static async getAllDeals(): Promise<IDeal[]> {
         return Deal.findAll();
     }
 

@@ -7,7 +7,7 @@ import CustomError from "../../tools/error";
 
 export class AuthController {
     public static async signUp(req: Request, res: Response, next: NextFunction) {
-        return passport.authenticate("signup", (err: Error, user: IUser, info: any) => {
+        return passport.authenticate("signup", (err: Error, user: IUser) => {
             if (err) {
                 log.error("User has already exist");
                 res.sendStatus(400);
@@ -19,7 +19,7 @@ export class AuthController {
     }
 
     public static async signIn(req: Request, res: Response, next: NextFunction) {
-        return passport.authenticate("login", async (err, user) => {
+        return passport.authenticate("login", async (err: Error, user: IUser) => {
             try {
                 if (err || !user) {
                     const error = new CustomError(400);

@@ -1,5 +1,5 @@
 import { CategoryManager, ICategoryManager } from "../models/category-manager";
-import { FindOptions, Op } from "sequelize";
+import { FindOptions } from "sequelize";
 
 export class CategoryManagerService {
 
@@ -8,6 +8,7 @@ export class CategoryManagerService {
             .map((categoryManager, index, arr) => {
                 return { userId: categoryManager, categoryId };
             });
+
         await CategoryManager.bulkCreate(categoryManagers);
     }
 

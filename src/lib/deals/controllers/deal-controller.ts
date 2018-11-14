@@ -10,7 +10,9 @@ import { IUser } from "../../user/models/user";
 
 export class DealController {
     public static async getAllDeals(req: Request, res: Response): Promise<void> {
-        res.status(200).send(await DealService.getAllDeals());
+        const deals: IDeal[] = await DealService.getAllDeals();
+
+        res.status(200).send(deals);
     }
 
     public static async getDeal(req: Request, res: Response): Promise<void> {
