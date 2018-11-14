@@ -3,7 +3,9 @@ import CustomError from "../../tools/error";
 
 export default class CategoryService {
     public static async getAllCategories(): Promise<ICategory[]> {
-        return Category.findAll();
+        return await Category.findAll({
+            raw: true,
+        });
     }
 
     public static async getCategory(id: number): Promise<ICategory> {

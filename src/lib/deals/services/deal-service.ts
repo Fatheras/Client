@@ -7,7 +7,7 @@ export default class DealService {
     }
 
     public static async getDeal(id: number): Promise<IDeal> {
-        const deal: IDeal |null = await Deal.findById(id);
+        const deal: IDeal | null = await Deal.findById(id);
 
         if (deal) {
             return deal;
@@ -24,7 +24,7 @@ export default class DealService {
         });
     }
 
-    public static async getAllDeals() {
+    public static async getAllDeals(): Promise<IDeal[]> {
         return Deal.findAll();
     }
 
@@ -56,6 +56,14 @@ export default class DealService {
         return Deal.findAll({
             where: {
                 taskId,
+            },
+        });
+    }
+
+    public static async getDealsByCategory(category: number) {
+        return Deal.findAll({
+            where: {
+                category,
             },
         });
     }

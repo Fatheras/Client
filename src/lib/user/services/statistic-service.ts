@@ -1,7 +1,4 @@
-import { IUser, IUserStatistic } from "../../user/models/user";
-import CustomError from "../../tools/error";
-import UserService from "./user-service";
-import db from "../../db/models/db";
+import { IUserStatistic } from "../../user/models/user";
 import { Task } from "../../tasks/models/task";
 import sequelize = require("sequelize");
 
@@ -23,7 +20,7 @@ export default class StatisticService {
         });
 
         for (const item of stat) {
-            cleanStat.push((item as sequelize.Instance<IStatistic>).get({plain: true}) as IStatistic);
+            cleanStat.push((item as sequelize.Instance<IStatistic>).get({ plain: true }) as IStatistic);
         }
 
         const statistic: IUserStatistic = {

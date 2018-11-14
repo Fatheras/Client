@@ -1,7 +1,5 @@
 import Sequelize from "sequelize";
 import db from "../../db/models/db";
-import { Task } from "../../tasks/models/task";
-import { Deal } from "../../deals/models/deal";
 
 export interface IUser {
     id?: number;
@@ -56,11 +54,4 @@ export const User: Sequelize.Model<IUser, object> = db.define<IUser, object>("us
         notEmpty: true,
     },
 },
-
 );
-
-User.hasMany(Task, { foreignKey: "owner" });
-Task.belongsTo(User, { foreignKey: "owner" });
-
-User.hasMany(Deal, { foreignKey: "userId" });
-Deal.belongsTo(User, { foreignKey: "userId" });

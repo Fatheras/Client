@@ -17,16 +17,9 @@ class UserRouter {
     public routes() {
         this.router.get("/", handleError(UserController.getAllUsers));
         this.router.get("/token", handleError(UserController.getUserByToken));
-        this.router.get("/me", passport.authenticate("jwt", { session: false }), (req, res) => {
-            res.json({
-                message: "You made it to the secure route",
-                user: req.user,
-                token: req.query.secret_token,
-            });
-        });
         this.router.get("/:id/statistic", handleError(UserController.getUserWithStatistic));
         this.router.get("/statistic", handleError(UserController.getAllUsersWithStatistic));
-        this.router.get("/:id", handleError(UserController.getUser));
+        this.router.get("/:id", UserController.getUser);
         this.router.put("/:id/changeRole", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             role: joi.number().integer().positive().required(),
         })), handleError(UserController.updateUserRole));

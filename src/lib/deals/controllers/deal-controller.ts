@@ -5,13 +5,14 @@ import { ITask } from "../../tasks/models/task";
 import TaskService from "../../tasks/services/task-service";
 import { Request, Response } from "express";
 import { Status } from "../../tasks/models/status";
-import * as jwt from "jsonwebtoken";
-import { IUser } from "../../user/models/user";
 import UserService from "../../user/services/user-service";
+import { IUser } from "../../user/models/user";
 
 export class DealController {
     public static async getAllDeals(req: Request, res: Response): Promise<void> {
-        res.status(200).send(await DealService.getAllDeals());
+        const deals: IDeal[] = await DealService.getAllDeals();
+
+        res.status(200).send(deals);
     }
 
     public static async getDeal(req: Request, res: Response): Promise<void> {
@@ -32,7 +33,7 @@ export class DealController {
         result = await DealService.deleteDeal(req.params.id);
 
         if (result) {
-            res.sendStatus(204);
+            res.sendStatus(200);
         } else {
             throw new CustomError(400);
         }
@@ -53,8 +54,8 @@ export class DealController {
 
     public static async addDeal(req: Request, res: Response): Promise<void> {
         let deal: any = req.body;
-
-        const user: any = await UserService.getUserByToken(req.body.token);
+        const token: string = req.headers.authorization!;
+        const user: IUser = await UserService.getUserByToken(token);
 
         if (user) {
             deal.userId = user.id;
