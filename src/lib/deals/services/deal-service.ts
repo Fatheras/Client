@@ -60,10 +60,10 @@ export default class DealService {
         });
     }
 
-    public static async getDealsByCategory(category: number) {
+    public static async getDealsByCategory(categoryId: number) {
         return Deal.findAll({
             where: {
-                category,
+                categoryId,
             },
         });
     }

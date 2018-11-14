@@ -50,7 +50,7 @@ export default class TaskService {
             order: [["time", "ASC"]],
             where: {
                 status: Status.Open,
-                owner: {
+                ownerId: {
                     [Op.not]: userId,
                 },
                 id: {
@@ -67,12 +67,9 @@ export default class TaskService {
             subQuery: false,
         };
 
-        if (query.categories) {
+        if (query.categoryId) {
             Object.assign(options.where, {
-                category:
-                {
-                    [Op.in]: query.categories,
-                },
+                categoryId: query.categoryId,
             });
         }
 
@@ -85,7 +82,7 @@ export default class TaskService {
             limit: +query.limit,
             order: [["time", "ASC"]],
             where: {
-                owner: userId,
+                ownerId: userId,
             },
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
@@ -150,11 +147,8 @@ export default class TaskService {
                     [Op.not]: Status.Declined,
                 },
             },
-            attributes: {
-                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
-            },
             include: [{
-                model: Deal, attributes: [],
+                model: User, attributes: ["firstName", "lastName"],
             }],
             group: ["Task.id"],
             subQuery: false,
@@ -170,7 +164,7 @@ export default class TaskService {
 
         if (query.categories) {
             Object.assign(options.where, {
-                category:
+                categoryId:
                 {
                     [Op.in]: query.categories,
                 },
@@ -191,7 +185,7 @@ export default class TaskService {
 
         if (query.usersIds) {
             Object.assign(options.where, {
-                userId:
+                ownerId:
                     { [Op.in]: query.usersIds },
             });
         }
@@ -205,7 +199,7 @@ export default class TaskService {
             limit: +query.limit,
             order: [["time", "ASC"]],
             where: {
-                category: {
+                categoryId: {
                     [Op.in]: categories,
                 },
                 status: Status.OnReview,
@@ -215,7 +209,7 @@ export default class TaskService {
 
         if (query.selectedCategories) {
             options.where = {
-                category:
+                categoryId:
                 {
                     [Op.in]: query.selectedCategories,
                 },
@@ -248,7 +242,7 @@ export default class TaskService {
 
         if (query.categories) {
             Object.assign(options.where, {
-                category:
+                categoryId:
                 {
                     [Op.in]: query.categories,
                 },
@@ -259,10 +253,10 @@ export default class TaskService {
             Object.assign(options.where, { status: query.status });
         }
 
-        if (query.owners) {
+        if (query.ownerIds) {
             Object.assign(options.where, {
-                owner: {
-                    [Op.in]: query.owners,
+                ownerId: {
+                    [Op.in]: query.ownerIds,
                 },
             });
         }

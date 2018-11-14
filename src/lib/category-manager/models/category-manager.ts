@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import db from "../../db/models/db";
 import { Category } from "../../categories/models/category";
+import { User } from "../../user/models/user";
 
 export interface ICategoryManager {
     id?: number;
@@ -17,15 +18,23 @@ export const CategoryManager: Sequelize.Model<ICategoryManager, object> =
         categoryId: {
             type: Sequelize.INTEGER,
             notEmpty: true,
+            references: {
+                model: Category,
+                key: "id",
+            },
         },
         userId: {
             type: Sequelize.INTEGER,
             notEmpty: true,
+            references: {
+                model: User,
+                key: "id",
+            },
         },
 
     },
         { timestamps: false },
     );
 
-CategoryManager.hasMany(Category, { foreignKey: "id" });
-Category.belongsTo(CategoryManager, { foreignKey: "categoryId" });
+CategoryManager.belongsTo(Category, { foreignKey: "categoryId" });
+Category.hasMany(CategoryManager);

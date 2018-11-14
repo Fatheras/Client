@@ -117,7 +117,7 @@ export class TaskController {
         taskModel.time = moment(taskModel.time)
             .hours(time.getHours() + time.getTimezoneOffset() / 60).format("YYYY-MM-DD kk:mm:ss");
 
-        taskModel.owner = user.id!;
+        taskModel.ownerId = user.id!;
 
         const task: ITask = await TaskService.addTask(taskModel);
 
