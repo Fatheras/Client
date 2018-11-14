@@ -13,13 +13,9 @@ export default class TaskService {
 
     public static async getTask(id: number): Promise<ITask> {
         const task: ITask | null = await Task.findById(id, {
-            attributes: {
-                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
-            },
             include: [{
                 model: Deal, attributes: [],
             }],
-            group: ["Task.id"],
             raw: true,
         });
 
@@ -57,22 +53,11 @@ export default class TaskService {
                     [Op.not]: taskIds,
                 },
             },
-            attributes: {
-                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
-            },
-            include: [{
-                model: Deal, attributes: [],
-            }],
-            group: ["Task.id"],
-            subQuery: false,
         };
 
-        if (query.categories) {
+        if (query.categoryId) {
             Object.assign(options.where, {
-                category:
-                {
-                    [Op.in]: query.categories,
-                },
+                category: query.categoryId,
             });
         }
 
@@ -87,14 +72,6 @@ export default class TaskService {
             where: {
                 owner: userId,
             },
-            attributes: {
-                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
-            },
-            include: [{
-                model: Deal, attributes: [],
-            }],
-            group: ["Task.id"],
-            subQuery: false,
         };
 
         if (query.pattern) {
@@ -150,14 +127,6 @@ export default class TaskService {
                     [Op.not]: Status.Declined,
                 },
             },
-            attributes: {
-                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
-            },
-            include: [{
-                model: Deal, attributes: [],
-            }],
-            group: ["Task.id"],
-            subQuery: false,
         };
 
         if (+query.offset) {
