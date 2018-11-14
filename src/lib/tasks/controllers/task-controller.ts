@@ -8,6 +8,7 @@ import UserService from "../../user/services/user-service";
 
 export class TaskController {
     public static async getAllTasks(req: Request, res: Response): Promise<void> {
+
         let tasks: ITask[];
         const user: any = await UserService.getUserByToken(req.query.token);
 

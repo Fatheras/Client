@@ -2,6 +2,9 @@ import { User, IUser } from "../../user/models/user";
 import CustomError from "../../tools/error";
 import StatisticService from "./statistic-service";
 import * as jwt from "jsonwebtoken";
+import { Deal } from "../../deals/models/deal";
+import sequelize from "sequelize";
+import { Task } from "../../tasks/models/task";
 
 export default class UserService {
     public static async getAllUsers(): Promise<IUser[]> {
