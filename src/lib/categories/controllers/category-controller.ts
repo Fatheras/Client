@@ -20,11 +20,11 @@ export class CategoryController {
 
         categories.map((category, i, arr) => {
             category.statistic!.count = tasks.filter((task, index, array) => {
-                return task.category === category.id;
+                return task.categoryId === category.id;
             })!.length;
 
             category.statistic!.open = tasks.filter((task, index, array) => {
-                return task.category === category.id && task.status === Status.Open;
+                return task.categoryId === category.id && task.status === Status.Open;
             })!.length;
         });
 
