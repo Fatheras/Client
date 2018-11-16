@@ -1,17 +1,20 @@
 import Sequelize from "sequelize";
 import db from "../../db/models/db";
-import { User } from "../../user/models/user";
+import { User, IUser } from "../../user/models/user";
+import { ICategory, Category } from "../../categories/models/category";
 
 export interface ITask {
     id?: number;
     title: string;
     cost: number;
     status: number;
-    category: number;
+    categoryId: number;
+    category?: ICategory;
     time: string;
     description: string;
-    owner: number;
+    ownerId: number;
     people: number;
+    user?: IUser;
     countOfDeals?: number;
 }
 
@@ -25,7 +28,7 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
         type: Sequelize.STRING,
         validate: {
             notEmpty: true,
-            len: [3, 30],
+            len: [3, 255],
         },
     },
     cost: {
@@ -37,7 +40,7 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
             notEmpty: true,
         },
     },
-    category: {
+    categoryId: {
         type: Sequelize.INTEGER,
     },
     time: {
@@ -46,7 +49,7 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
     description: {
         type: Sequelize.STRING,
     },
-    owner: {
+    ownerId: {
         type: Sequelize.INTEGER,
         references: {
             model: User,
@@ -64,5 +67,17 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
 },
 );
 
-Task.belongsTo(User, { foreignKey: "owner" });
-User.hasMany(Task, { foreignKey: "owner" });
+Task.belongsTo(User, { foreignKey: "ownerId" });
+User.hasMany(Task, { foreignKey: "ownerId" });
+
+Task.belongsTo(Category, {
+    foreignKey: "categoryId",
+     onDelete: "CASCADE",
+     constraints: false,
+});
+
+Category.hasMany(Task, {
+     onDelete: "CASCADE",
+      constraints: false,
+    foreignKey: "categoryId",
+});

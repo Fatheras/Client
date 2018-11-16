@@ -7,6 +7,8 @@ import moment from "moment";
 import UserService from "../../user/services/user-service";
 import { IUser } from "../../user/models/user";
 import { CategoryManagerService } from "../../category-manager/services/category-manager-service";
+import { Role } from "../../user/models/roles";
+import CategoryService from "../../categories/services/category-service";
 
 export class TaskController {
     public static async getAllTasksForUser(req: Request, res: Response): Promise<void> {
@@ -22,6 +24,14 @@ export class TaskController {
     public static async getTasksForAdmin(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
 
+        if (req.query.categories) {
+            req.query.categories = JSON.parse(req.query.categories);
+        }
+
+        if (req.query.usersIds) {
+            req.query.usersIds = JSON.parse(req.query.usersIds);
+        }
+
         tasks = await TaskService.getTasksForAdmin(req.query);
 
         res.status(200).send(tasks);
@@ -35,7 +45,24 @@ export class TaskController {
 
         let categories: number[];
 
-        categories = await CategoryManagerService.getAllManagersCategories(user.id!);
+        switch (user.role) {
+            case Role.Manager: {
+                categories = await CategoryManagerService.getAllManagerCategoriesIds(user.id!);
+                break;
+            }
+            case Role.Admin: {
+                categories = (await CategoryService.getAllCategories()).map((category) => category.id!);
+                break;
+            }
+            default: {
+                categories = [];
+            }
+        }
+
+        if (req.query.categories) {
+            req.query.categories = JSON.parse(req.query.categories);
+        }
+
         tasks = await TaskService.getTasksForManager(req.query, categories);
 
         res.status(200).send(tasks);
@@ -43,6 +70,8 @@ export class TaskController {
 
     public static async getUserTasks(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
+
+        req.query.categories = JSON.parse(req.query.categories);
 
         const token: string = req.headers.authorization!;
         const user: IUser = await UserService.getUserByToken(token);
@@ -74,7 +103,7 @@ export class TaskController {
         const result: number = await TaskService.deleteTask(req.params.id);
 
         if (result) {
-            res.sendStatus(200);
+            res.json(200);
         } else {
             throw new CustomError(400);
         }
@@ -117,9 +146,30 @@ export class TaskController {
         taskModel.time = moment(taskModel.time)
             .hours(time.getHours() + time.getTimezoneOffset() / 60).format("YYYY-MM-DD kk:mm:ss");
 
-        taskModel.owner = user.id!;
+        taskModel.ownerId = user.id!;
 
         const task: ITask = await TaskService.addTask(taskModel);
+
+        if (task) {
+            res.status(200).send(task);
+        } else {
+            throw new CustomError(400);
+        }
+    }
+
+    public static async updateTaskStatus(req: Request, res: Response): Promise<void> {
+        const taskId: number = +req.params.id;
+        const status: number = req.body.status;
+
+        const currentTask: ITask = await TaskService.getTask(taskId);
+
+        if (status) {
+            currentTask.status = status;
+        } else {
+            throw new CustomError(400);
+        }
+
+        const task: ITask = await TaskService.updateTask(taskId, currentTask);
 
         if (task) {
             res.status(200).send(task);

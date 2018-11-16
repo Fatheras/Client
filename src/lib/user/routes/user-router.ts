@@ -16,7 +16,8 @@ class UserRouter {
 
     public routes() {
         this.router.get("/", handleError(UserController.getAllUsers));
-        this.router.get("/token", handleError(UserController.getUserByToken));
+        this.router.get("/managers", handleError(UserController.getAllManagers));
+        this.router.get("/me", handleError(UserController.getUserByToken));
         this.router.get("/:id/statistic", handleError(UserController.getUserWithStatistic));
         this.router.get("/statistic", handleError(UserController.getAllUsersWithStatistic));
         this.router.get("/:id", UserController.getUser);

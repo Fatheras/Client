@@ -16,7 +16,6 @@ class DealRouter {
         this.router.get("/", handleError(DealController.getAllDeals));
         this.router.get("/:id", handleError(DealController.getDeal));
         this.router.post("/", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
-            token: joi.string().required(),
             taskId: joi.number().integer().positive().min(1).required(),
         })), handleError(DealController.addDeal));
         this.router.put("/:id", handleError(DealController.updateDeal));

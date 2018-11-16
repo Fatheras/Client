@@ -15,10 +15,13 @@ class TaskRouter {
     }
 
     public routes() {
-        this.router.get("/tasksForAdmin", CheckRoleMiddleware.checkRole(Role.Admin),
-         handleError(TaskController.getTasksForAdmin));
+        this.router.get("/tasksForAdmin", CheckRoleMiddleware.checkRole(Role.Admin), TaskController.getTasksForAdmin);
+        this.router.put("/:id/updateStatus",
+            CheckRoleMiddleware.checkRole(Role.Manager, Role.Admin),
+            handleError(TaskController.updateTaskStatus),
+        );
         this.router.get("/getTasksForManager", CheckRoleMiddleware.checkRole(Role.Manager, Role.Admin),
-        handleError(TaskController.getTasksForManager));
+            handleError(TaskController.getTasksForManager));
         this.router.get("/getUserTasks", handleError(TaskController.getUserTasks));
         this.router.get(
             "/getUsersTasks",
@@ -26,17 +29,16 @@ class TaskRouter {
             handleError(TaskController.getUsersTasks),
         );
         this.router.get("/", handleError(TaskController.getAllTasksForUser));
-        this.router.get(":id", handleError(TaskController.getTask));
+        this.router.get("/:id", handleError(TaskController.getTask));
         this.router.post("/", CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
             title: joi.string().max(255).required(),
             people: joi.number().integer().positive().min(1).max(5).required(),
-            category: joi.string().required(),
+            categoryId: joi.number().integer().positive().required(),
             cost: joi.number().positive().min(1).required(),
             description: joi.string().max(255).required(),
             time: joi.date().required(),
-            token: joi.string().required(),
         })), handleError(TaskController.addTask));
-        this.router.put("/", handleError(TaskController.updateTask));
+        this.router.put("/:id", handleError(TaskController.updateTask));
         this.router.delete("/:id", handleError(TaskController.deleteTask));
     }
 }

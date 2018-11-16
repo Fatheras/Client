@@ -110,7 +110,7 @@ export class UserController {
         const updatedUser: IUser = await UserService.updateUserRole(id, role);
 
         if (updatedUser) {
-            res.sendStatus(200);
+            res.json(200);
         } else {
             throw new CustomError(400);
         }

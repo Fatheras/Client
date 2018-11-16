@@ -1,5 +1,6 @@
 import { ICategory, Category } from "../models/category";
 import CustomError from "../../tools/error";
+import { Task, ITask } from "../../tasks/models/task";
 
 export default class CategoryService {
     public static async getAllCategories(): Promise<ICategory[]> {
