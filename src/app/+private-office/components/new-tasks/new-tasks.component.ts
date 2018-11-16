@@ -1,10 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TaskService } from '../../../+tasks/services/task.service';
 import { CategoryService } from '../../../services/category.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ITask } from '../../../+tasks/models/Task';
 import { Router } from '@angular/router';
+import { ICategory } from '../../../models/Category';
+import { RoleService } from '../../../+authentication/services/role.service';
+import { Role } from '../../../models/Role';
 
 @Component({
     selector: 'app-new-tasks',
@@ -19,13 +22,21 @@ export class NewTasksComponent implements OnInit {
 
     public batch = 30;
 
-    public categories = new FormControl('');
+    public categoriesControl: FormControl = new FormControl('');
+    public categories: ICategory[] = [];
 
-    constructor(private taskService: TaskService, private categoryService: CategoryService, private router: Router) {
+    public pattern: FormControl = new FormControl('');
 
-    }
+    public getCategories;
 
-    categoryChange() {
+    constructor(
+        private taskService: TaskService,
+        private categoryService: CategoryService,
+        private router: Router,
+        private roleService: RoleService,
+    ) { }
+
+    public categoryChange(): void {
         this.tasks = [];
         this.infiniteScroll.ngOnDestroy();
         this.infiniteScroll.setup();
@@ -33,16 +44,44 @@ export class NewTasksComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.categoryService.getAllCategories().subscribe((categories) => {
-            this.categories.patchValue(categories);
+        switch (this.roleService.Role) {
+            case Role.Manager: {
+                this.getCategories = this.categoryService.getManagerCategories.bind(this.categoryService);
+                break;
+            }
+            case Role.Admin: {
+                this.getCategories = this.categoryService.getAllCategories.bind(this.categoryService);
+                break;
+            }
+        }
+
+        this.getCategories().subscribe((categories: ICategory[]) => {
+            this.categories = categories;
 
             this.getTasksByCategories();
         });
     }
 
-    getTasksByCategories() {
-        this.taskService.getTasksByCategories(this.categories.value, this.tasks.length, this.batch).subscribe((tasks) => {
+    public getTasksByCategories(): void {
+        const filter = {
+            pattern: this.pattern.value,
+            categories: this.categoriesControl.value,
+        };
+
+        this.taskService.getTasksForManager(filter, this.tasks.length, this.batch).subscribe((tasks: ITask[]) => {
             this.tasks = this.tasks.concat(tasks);
+        });
+    }
+
+    public search(pattern: string): void {
+        this.pattern.setValue(pattern);
+
+        this.categoryChange();
+    }
+
+    public change($event) {
+        this.taskService.updateTaskStatus($event.taskId, $event.status).subscribe(() => {
+            this.tasks = this.tasks.filter((task) => task.id !== $event.taskId);
         });
     }
 }

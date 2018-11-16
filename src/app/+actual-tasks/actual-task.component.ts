@@ -58,11 +58,11 @@ export class ActualTaskComponent implements OnInit, OnDestroy {
     this.categoryService.getAllCategories()
       .subscribe(
         (categories: ICategory[]) => {
-          const id = +this.route.snapshot.params.id;
+          const id: number = +this.route.snapshot.params.id;
 
           this.categories = [this.categories[0], ...categories];
 
-          const result = this.categories.find((category: ICategory, index, array) => {
+          const result = this.categories.find((category: ICategory, index: number, array: ICategory[]) => {
             return category.id === id;
           });
 
@@ -78,17 +78,15 @@ export class ActualTaskComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getCurrentCategory(category: ICategory) {
+  public getCurrentCategory(category: ICategory): void {
     if (!(category === this.currentCategory)) {
       this.currentCategory = category;
     }
   }
 
-  public addDeal(taskId) {
-    const token = this.tokenService.Token;
-
-    this.dealService.addDeal(token, taskId).subscribe(() => {
-      this.tasks = this.tasks.filter((task: ITask, index, arr) => {
+  public addDeal(taskId: number): void {
+    this.dealService.addDeal(taskId).subscribe(() => {
+      this.tasks = this.tasks.filter((task: ITask, index: number, arr: ITask[]) => {
         return task.id !== taskId;
       });
     });

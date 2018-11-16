@@ -13,43 +13,44 @@ export class TaskService {
     constructor(private http: HttpClient) {
     }
 
-    public getAllTasks(category?: number, lastSeen?, batchSize?): Observable<ITask[]> {
+    public getAllTasks(categoryId?: number, lastSeen?: number, batchSize?: number): Observable<ITask[]> {
         let params = new HttpParams()
             .set('offset', lastSeen + '')
             .set('limit', batchSize + '');
 
-        if (category) {
-            params = params.set('category', category + '');
+        if (categoryId) {
+            params = params.set('categoryId', categoryId + '');
         }
 
         return this.http.get<ITask[]>(this.url + '/tasks', { params });
     }
 
-    public getTask(id) {
+    public getTask(id: number): Observable<ITask> {
         return this.http.get<ITask>(this.url + `/tasks/${id}`);
     }
 
-    public getTasksByCategories(categories, lastSeen, batchSize): Observable<ITask[]> {
-        let params = new HttpParams()
-            .set('offset', lastSeen + '')
-            .set('limit', batchSize + '');
-
-        if (categories) {
-            params = params
-                .set('categories', categories);
-        }
-
-        return this.http.get<ITask[]>(this.url + '/tasks/categories', { params });
-    }
-
-    public getUserTasks(filter?, lastSeen?, batchSize?): Observable<ITask[]> {
+    public getTasksForManager(filter, lastSeen?: number, batchSize?: number): Observable<ITask[]> {
         let params = new HttpParams()
             .set('offset', lastSeen + '')
             .set('limit', batchSize + '');
 
         if (filter) {
             params = params
-                .set('category', filter.category)
+                .set('categories', JSON.stringify(filter.categories))
+                .set('pattern', filter.pattern);
+        }
+
+        return this.http.get<ITask[]>(this.url + '/tasks/getTasksForManager', { params });
+    }
+
+    public getUserTasks(filter?, lastSeen?: number, batchSize?: number): Observable<ITask[]> {
+        let params = new HttpParams()
+            .set('offset', lastSeen + '')
+            .set('limit', batchSize + '');
+
+        if (filter) {
+            params = params
+                .set('categories', JSON.stringify(filter.categories))
                 .set('status', filter.status)
                 .set('startDate', filter.startDate)
                 .set('endDate', filter.endDate)
@@ -59,15 +60,37 @@ export class TaskService {
         return this.http.get<ITask[]>(this.url + '/tasks/getUserTasks', { params });
     }
 
-    public updateTask(taskId: number, model: ITask) {
+    public getTasksForAdmin(filter?, lastSeen?: number, batchSize?: number): Observable<ITask[]> {
+        let params = new HttpParams()
+            .set('offset', lastSeen + '')
+            .set('limit', batchSize + '');
+
+        if (filter) {
+            params = params
+                .set('usersIds', JSON.stringify(filter.users))
+                .set('categories', JSON.stringify(filter.categories))
+                .set('status', filter.status)
+                .set('startDate', filter.startDate)
+                .set('endDate', filter.endDate)
+                .set('pattern', filter.pattern);
+        }
+
+        return this.http.get<ITask[]>(this.url + '/tasks/tasksForAdmin', { params });
+    }
+
+    public updateTask(taskId: number, model: ITask): Observable<ITask> {
         return this.http.put<ITask>(this.url + `/tasks/${taskId}`, model);
     }
 
-    public addTask(task: ITask) {
+    public updateTaskStatus(taskId: number, newStatus: number): Observable<ITask> {
+        return this.http.put<ITask>(this.url + `/tasks/${taskId}/updateStatus`, {status: newStatus});
+    }
+
+    public addTask(task: ITask): Observable<ITask> {
         return this.http.post<ITask>(this.url + '/tasks', task);
     }
 
-    public deleteTask(taskId: number) {
+    public deleteTask(taskId: number): Observable<void> {
         return this.http.delete<void>(this.url + `/tasks/${taskId}`);
     }
 }

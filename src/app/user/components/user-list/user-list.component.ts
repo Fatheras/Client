@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { IUser } from '../../models/User';
 
 @Component({
     selector: 'app-user-list',
@@ -6,10 +7,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent {
-    @Input() users;
-    @Output() changeRole: EventEmitter<number> = new EventEmitter<number>();
+    @Input() public users: IUser[];
+    @Output() public changeRole: EventEmitter<number> = new EventEmitter<number>();
 
-    save($event) {
+    public save($event) {
         this.changeRole.emit($event);
     }
 }

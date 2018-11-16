@@ -14,11 +14,11 @@ export class PrivateOfficeComponent implements OnInit {
 
   constructor(private roleService: RoleService) { }
 
-  public change() {
+  public change(): void {
 
   }
 
-  public toggle() {
+  public toggle(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
 

@@ -1,12 +1,15 @@
+import { IUser } from '../../user/models/User';
+
 export interface ITask {
     id?: number;
     title: string;
     cost: number;
     status?: string;
-    category: number;
+    categoryId: number;
     people: number;
     time: string;
     description: string;
-    owner?: number;
+    ownerId?: number;
+    user?: IUser;
     countOfDeals?: number;
 }

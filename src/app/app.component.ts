@@ -8,7 +8,7 @@ import { AuthenticationService } from './+authentication/services/authentication
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, DoCheck {
-  public isLoggedIn;
+  public isLoggedIn: boolean;
 
   constructor(public http: HttpClient, private authService: AuthenticationService) {}
 

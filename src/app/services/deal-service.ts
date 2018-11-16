@@ -11,7 +11,7 @@ export class DealService {
     constructor(private http: HttpClient) {
     }
 
-    public addDeal(token, taskId) {
-        return this.http.post(this.url + '/deals', {token, taskId});
+    public addDeal(taskId: number) {
+        return this.http.post(this.url + '/deals', {taskId});
     }
 }

@@ -6,11 +6,11 @@ import { Router } from '@angular/router';
 
 
 @Component({
-    selector: 'app-task',
-    templateUrl: './task.component.html',
-    styleUrls: ['./task.component.css'],
+    selector: 'app-all-task',
+    templateUrl: './all-task.component.html',
+    styleUrls: ['./all-task.component.css'],
 })
-export class TaskComponent implements OnInit {
+export class AllTaskComponent implements OnInit {
     @Input() public task: ITask;
     @Output() public deleteTask: EventEmitter<number> = new EventEmitter<number>();
 

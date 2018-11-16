@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IUser } from '../../../user/models/User';
-import { UserService } from '../../../../app/user/services/user.service';
+import { UserService } from '../../../user/services/user.service';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 
 @Component({
@@ -9,13 +10,14 @@ import { UserService } from '../../../../app/user/services/user.service';
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-
   public users: IUser[];
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private _flashMessagesService: FlashMessagesService) { }
 
-  public changeRole(user, role) {
-    this.userService.updateUserRole(user, role).subscribe();
+  public changeRole(event): void {
+    this.userService.updateUserRole(event.userId, event.newRole).subscribe(() => {
+      this._flashMessagesService.show('Role successfuly changed!', { timeout: 1000 });
+    });
   }
 
   ngOnInit(): void {

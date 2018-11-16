@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { ActualTaskRoutingModule } from './routes/actual-task-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { ActualTaskComponent } from './actual-task.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { CategoryComponent } from './components/category/category/category.component';
@@ -16,7 +15,7 @@ import { TaskComponent } from './components/task/task.component';
 @NgModule({
   entryComponents: [
     WarnDialogComponent
-    ],
+  ],
   declarations: [
     WarnDialogComponent,
     TaskComponent,
@@ -36,6 +35,6 @@ import { TaskComponent } from './components/task/task.component';
   exports: [
     ActualTaskComponent,
     CategoryListComponent,
-  ]
+  ],
 })
 export class ActualTaskModule { }

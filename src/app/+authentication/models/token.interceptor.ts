@@ -17,12 +17,16 @@ export class TokenInterceptor implements HttpInterceptor {
     constructor(public tokenService: TokenService, public route: Router) { }
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const newRequest = request.clone({
-            setHeaders: {
-                Authorization: this.tokenService.Token
-            }
-        });
+        if (this.tokenService.Token) {
+            const newRequest = request.clone({
+                setHeaders: {
+                    Authorization: this.tokenService.Token
+                }
+            });
 
-        return next.handle(newRequest);
+            return next.handle(newRequest);
+        }
+
+        return next.handle(request);
     }
 }

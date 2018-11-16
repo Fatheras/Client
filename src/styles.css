@@ -9,6 +9,22 @@ body { margin: 0; font-family: 'Roboto', sans-serif; }
     flex-wrap: wrap;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3f51b5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f51b5;
+}
+
 /*!
  * animate.css -http://daneden.me/animate
  * Version - 3.7.0

@@ -13,11 +13,27 @@ export class CategoryService {
     constructor(private http: HttpClient) {
     }
 
-    getAllCategories(): Observable<ICategory[]> {
+    public getManagerCategories(): Observable<ICategory[]> {
+        return this.http.get<ICategory[]>(`${this.url}/manager/getAllManagerCategories`);
+    }
+
+    public getAllCategories(): Observable<ICategory[]> {
         return this.http.get<ICategory[]>(`${this.url}/categories`);
     }
 
-    getCategory(id: number): Observable<ICategory> {
+    public getCategory(id: number): Observable<ICategory> {
         return this.http.get<ICategory>(`${this.url}/categories/${id}`);
+    }
+
+    public getCategoriesWithStatistic(): Observable<ICategory[]> {
+        return this.http.get<ICategory[]>(`${this.url}/categories/getCategoriesWithStatistic`);
+    }
+
+    public addCategory(categoryName: string, managers): Observable<ICategory> {
+        return this.http.post<ICategory>(`${this.url}/categories`, {managers: JSON.stringify(managers), categoryName} );
+    }
+
+    public deleteCategory(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.url}/categories/${id}`);
     }
 }

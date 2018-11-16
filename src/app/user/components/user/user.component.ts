@@ -12,14 +12,14 @@ export class UserComponent implements OnInit {
     @Input() public user: IUser;
     @Output() public changeRole = new EventEmitter<any>();
 
-    public userRole = new FormControl('');
+    public userRole: FormControl = new FormControl('');
     public roles = roles;
 
     ngOnInit(): void {
         this.userRole.setValue(this.user.role);
     }
 
-    public save() {
+    public save(): void {
         this.changeRole.emit(
             {
                 userId: this.user.id,
@@ -28,7 +28,7 @@ export class UserComponent implements OnInit {
         );
     }
 
-    public cancel() {
+    public cancel(): void {
         this.userRole.setValue(this.user.role);
     }
 }

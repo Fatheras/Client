@@ -10,7 +10,7 @@ export class CategoryListComponent {
     @Input() public categories: ICategory[];
     @Output() public categoryChanged: EventEmitter<ICategory> = new EventEmitter();
 
-    public change(category: ICategory) {
+    public change(category: ICategory): void {
         this.categoryChanged.emit(category);
     }
 }

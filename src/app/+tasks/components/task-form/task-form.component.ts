@@ -5,6 +5,7 @@ import { interval } from 'rxjs';
 import { ICategory } from '../../../models/Category';
 import { ITask } from '../../models/task';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-task-form',
@@ -25,28 +26,28 @@ export class TaskFormComponent implements OnInit {
         this._task = {
             title: this.taskForm.controls['title'].value,
             description: this.taskForm.controls['description'].value,
-            category: this.taskForm.controls['category'].value,
+            categoryId: this.taskForm.controls['categoryId'].value,
             people: this.taskForm.controls['people'].value,
             cost: this.taskForm.controls['cost'].value,
-            time: this.taskForm.controls['time'].value,
+            time: moment(this.taskForm.controls['time'].value).format('YYYY-MM-DD kk:mm:ss'),
         };
 
         return this._task;
     }
 
-    @Output() public submit: EventEmitter<ITask> = new EventEmitter<ITask>();
+    @Output() public sub: EventEmitter<ITask> = new EventEmitter<ITask>();
 
-    public minWhen: Date;
+    public minTime: Date;
 
     public currentTime = new Date(new Date().getTime() + 1000 * 60 * 60);
 
     public taskForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-        category: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+        categoryId: new FormControl('', [Validators.required, Validators.maxLength(255)]),
         people: new FormControl('', [Validators.required, Validators.max(5), Validators.min(1), Validators.pattern('^[0-9]*$')]),
         description: new FormControl('', [Validators.required, Validators.maxLength(255)]),
         time: new FormControl(this.currentTime.toISOString(), [Validators.required, this.whenValidator.bind(this)]),
-        cost: new FormControl(1, [Validators.required, Validators.pattern(/^[^0.]\d*\.?\d*$/)]),
+        cost: new FormControl(1, [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
     });
 
     public matcher = new MyErrorStateMatcher();
@@ -57,17 +58,21 @@ export class TaskFormComponent implements OnInit {
 
     ngOnInit(): void {
         let day: Date = new Date();
-        this.minWhen = new Date(day.getFullYear(), day.getMonth(), day.getDate(), day.getHours() + 1, day.getMinutes());
+        this.minTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), day.getHours() + 1, day.getMinutes());
+
+        this.taskForm.controls['time'].patchValue(
+            new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1, day.getHours(), day.getMinutes())
+        );
 
         interval(1000).subscribe(() => {
             day = new Date();
-            this.minWhen = new Date(day.getFullYear(), day.getMonth(), day.getDate(), day.getHours() + 1, day.getMinutes());
-            this.taskForm.controls['when'].updateValueAndValidity();
+            this.minTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), day.getHours() + 1, day.getMinutes());
+            this.taskForm.controls['time'].updateValueAndValidity();
         });
     }
 
     private whenValidator(control: FormControl) {
-        if (this && control.value && this.minWhen && new Date(control.value).getTime() < this.minWhen.getTime()) {
+        if (this && control.value && this.minTime && new Date(control.value).getTime() < this.minTime.getTime()) {
             return {
                 whenErr: true,
             };
@@ -77,6 +82,6 @@ export class TaskFormComponent implements OnInit {
     }
 
     public send() {
-        this.submit.emit(this.task);
+        this.sub.emit(this.task);
     }
 }

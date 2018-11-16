@@ -10,19 +10,19 @@ import { AuthenticationService } from '../+authentication/services/authenticatio
 export class NavBarComponent {
     constructor(public route: Router, private authService: AuthenticationService) {}
 
-    public moveToAddTask() {
+    public moveToAddTask(): void {
         this.route.navigate(['tasks', 'add']);
     }
 
-    public moveToProfile() {
+    public moveToProfile(): void {
         this.route.navigate(['/profile']);
     }
 
-    public moveToTasks() {
+    public moveToTasks(): void {
         this.route.navigate(['category/all/tasks']);
     }
 
-    public logOut() {
+    public logOut(): void {
         this.authService.logOut();
     }
 }

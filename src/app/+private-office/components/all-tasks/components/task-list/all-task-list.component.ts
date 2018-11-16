@@ -1,13 +1,12 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { TaskService } from '../../../../../+tasks/services/task.service';
-import { ITask } from 'src/app/+tasks/models/Task';
+import { ITask } from '../../../../../+tasks/models/Task';
 
 @Component({
-    selector: 'app-task-list',
-    templateUrl: './task-list.component.html',
-    styleUrls: ['./task-list.component.css'],
+    selector: 'app-all-task-list',
+    templateUrl: './all-task-list.component.html',
+    styleUrls: ['./all-task-list.component.css'],
 })
-export class TaskListComponent implements OnInit {
+export class AllTaskListComponent implements OnInit {
     @Input() public tasks: ITask[];
     @Output() public deleteTask: EventEmitter<number> = new EventEmitter<number>();
 
@@ -15,7 +14,7 @@ export class TaskListComponent implements OnInit {
 
     }
 
-    delete(taskId) {
+    public delete(taskId: number): void {
         this.deleteTask.emit(taskId);
     }
 

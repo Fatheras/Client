@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Router } from '@angular/router';
+import { ITask } from '../../../+tasks/models/Task';
 
 @Component({
     selector: 'app-add-task',
@@ -12,12 +13,11 @@ export class AddTaskComponent implements OnInit {
 
     }
 
-    public addTask(task) {
+    public addTask(task: ITask): void {
         this.taskService.addTask(task).subscribe(() => {
             this.router.navigate(['category', 'all', 'tasks']);
         });
     }
-
 
     ngOnInit(): void { }
 }

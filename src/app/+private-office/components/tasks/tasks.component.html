@@ -19,8 +19,8 @@
                     </mat-form-field>
 
                     <mat-form-field class="filter_field">
-                        <mat-select (selectionChange)="filterChange()" placeholder="Category" [formControl]="filterForm.controls['category']" multiple>
-                            <mat-option *ngFor="let category of categories" [value]="category.name">
+                        <mat-select (selectionChange)="filterChange()" placeholder="Category" [formControl]="filterForm.controls['categories']" multiple>
+                            <mat-option *ngFor="let category of categories" [value]="category.id">
                                 {{category.name}}
                             </mat-option>
                         </mat-select>
