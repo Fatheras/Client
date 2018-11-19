@@ -1,4 +1,4 @@
-.task-container {
+  .task-container {
     height: 300px;
     width: 80%;
     margin: 0px;
@@ -29,6 +29,7 @@
   }
   
   .task_time {
+    width: 150px;
     margin-right: 20px;
     font-size: 12px;
   }

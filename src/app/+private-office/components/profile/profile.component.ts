@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MyErrorStateMatcher } from '../../../models/errors/error.matcher';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { UserService } from '../../../../app/user/services/user.service';
+import { UserService } from '../../../user/services/user.service';
 import { IUser } from '../../../user/models/User';
 
 @Component({

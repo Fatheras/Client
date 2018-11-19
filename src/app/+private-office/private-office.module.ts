@@ -16,13 +16,28 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { NewTasksComponent } from './components/new-tasks/new-tasks.component';
 import { SearchComponent } from '../search/search.component';
 import { AllTasksComponent } from './components/all-tasks/all-tasks.component';
+import { FlashMessagesModule } from 'angular2-flash-messages';
+import { NewTaskListComponent } from './components/new-tasks/components/task-list/new-task-list.component';
+import { NewTaskComponent } from './components/new-tasks/components/task/new-task.component';
+import { AllTaskComponent } from './components/all-tasks/components/task/all-task.component';
+import { AllTaskListComponent } from './components/all-tasks/components/task-list/all-task-list.component';
+import { ApproveDialogComponent } from '../dialogs/approve-dialog/approve-dialog.component';
 
 @NgModule({
+  entryComponents: [
+    ApproveDialogComponent
+  ],
   declarations: [
+    ApproveDialogComponent,
     AllTasksComponent,
     SearchComponent,
     NewTasksComponent,
     CategoriesComponent,
+    AllTaskComponent,
+    AllTaskListComponent,
+    NewTaskComponent,
+    NewTasksComponent,
+    NewTaskListComponent,
     TaskComponent,
     TaskListComponent,
     TasksComponent,
@@ -37,6 +52,7 @@ import { AllTasksComponent } from './components/all-tasks/all-tasks.component';
     ReactiveFormsModule,
     PrivateOfficeRoutingModule,
     MaterialModule,
+    FlashMessagesModule.forRoot(),
     CommonModule,
   ],
 })

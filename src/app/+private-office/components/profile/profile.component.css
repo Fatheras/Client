@@ -1,14 +1,14 @@
-  .profile_title {
+.profile_title {
     margin-bottom: 20px;
     font-weight: 400;
-  }
+}
 
-  .profile_field{
-      display: block;
-      width: 400px;
-  }
+.profile_field{
+    display: block;
+    width: 400px;
+}
 
-  .form_btn {
+.form_btn {
     width: 200px;
     height: 40px;
     background-color: #3f51b5;

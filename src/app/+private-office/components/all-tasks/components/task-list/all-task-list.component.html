@@ -1,0 +1,4 @@
+
+<div class="wrap-container">
+    <app-all-task (deleteTask)="delete($event)" *ngFor="let task of tasks" class="animated fadeIn task-wrap-container" [task]="task"></app-all-task>
+</div>

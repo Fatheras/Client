@@ -22,6 +22,8 @@ import { RoleGuardService } from './+authentication/services/role-guard.service'
 import { RoleService } from './+authentication/services/role.service';
 import { TasksModule } from './+tasks/tasks.module';
 import { CategoryResolver } from './services/category-resolver.service';
+import { ManagerService } from './user/services/manager.service';
+import { FlashMessagesModule } from 'angular2-flash-messages';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,7 @@ import { CategoryResolver } from './services/category-resolver.service';
     },
     CategoryService,
     DealService,
+    ManagerService,
     CategoryResolver
   ],
   bootstrap: [AppComponent]

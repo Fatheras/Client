@@ -14,9 +14,9 @@ import { switchMap, tap } from 'rxjs/operators';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
-  public matcher = new MyErrorStateMatcher();
+  public matcher: MyErrorStateMatcher = new MyErrorStateMatcher();
 
-  public registForm = new FormGroup({
+  public registForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(255)]),
     passwords: this.fb.group({
       password: new FormControl('', [Validators.required, Validators.maxLength(255)]),
@@ -29,7 +29,7 @@ export class RegistrationComponent {
 
   }
 
-  public signUp() {
+  public signUp(): void {
 
     let user: IUser;
 
@@ -55,7 +55,7 @@ export class RegistrationComponent {
       );
   }
 
-  public signIn() {
+  public signIn(): void {
     this.router.navigate([`/authorization`]);
   }
 

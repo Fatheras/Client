@@ -5,8 +5,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationRoutingModule } from './routes/authentication-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [

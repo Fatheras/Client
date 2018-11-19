@@ -1,4 +1,4 @@
-<form (ngSubmit)="send()" [formGroup]="taskForm" class="task-form" action="">
+<form (submit)="send()" [formGroup]="taskForm" class="task-form" action="">
     <mat-form-field class="title_field">
         <input matInput placeholder="Title*" [formControl]="taskForm.controls['title']" [errorStateMatcher]="matcher">
         <mat-error *ngIf="taskForm.controls['title'].hasError('required')">
@@ -35,7 +35,7 @@
         </mat-form-field>
 
         <mat-form-field class="category_field">
-            <mat-select placeholder="Category*" [formControl]="taskForm.controls['category']" [errorStateMatcher]="matcher">
+            <mat-select placeholder="Category*" [formControl]="taskForm.controls['categoryId']" [errorStateMatcher]="matcher">
                 <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -51,7 +51,7 @@
         </mat-form-field>
 
         <mat-form-field class="time_field">
-            <input matInput readonly [min]="mintime"  [owlDateTime]="dt" [owlDateTimeTrigger]="dt"  placeholder="time*" [formControl]="taskForm.controls['time']" [errorStateMatcher]="matcher">
+            <input matInput readonly [min]="minTime"  [owlDateTime]="dt" [owlDateTimeTrigger]="dt"  placeholder="Time*" [formControl]="taskForm.controls['time']" [errorStateMatcher]="matcher">
             <owl-date-time [hour12Timer]="false"  #dt></owl-date-time>
             <mat-error *ngIf="taskForm.controls['time'].hasError('timeErr')">
                 Date error.

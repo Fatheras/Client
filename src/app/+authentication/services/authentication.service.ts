@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { TokenService } from './token.service';
 import { RoleService } from './role.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthenticationService {
@@ -20,11 +21,11 @@ export class AuthenticationService {
         private roleService: RoleService
     ) { }
 
-    public signUp(user: IUser) {
-        return this.http.post<IUser>(`${this.url}/users/signup`, user);
+    public signUp(user: IUser): Observable<void> {
+        return this.http.post<void>(`${this.url}/users/signup`, user);
     }
 
-    public logIn(email: string, password: string) {
+    public logIn(email: string, password: string): Observable<IUser> {
         return this.http.post<any>(`${this.url}/users/login`, { email, password }).pipe(
             tap((data) => {
                 this.tokenService.Token = data.token;
@@ -34,13 +35,13 @@ export class AuthenticationService {
         );
     }
 
-    public logOut() {
+    public logOut(): void {
         localStorage.clear();
         this.router.navigate(['authorization']);
     }
 
     public isAuthenticated(): boolean {
-        const token = this.tokenService.Token;
+        const token: string = this.tokenService.Token;
 
         return !this.jwtHelper.isTokenExpired(token);
     }

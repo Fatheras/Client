@@ -5,12 +5,16 @@
         <span class="task_deals">{{task.countOfDeals}}/{{task.people}} people already accepted</span>
         <p class="task_description">{{task.description}}</p>
         <div>Status: {{task.status}}</div>
-        <div>Category: {{task.category}}</div>
+        <div>Category: {{task.category.name}}</div>
+        <div>User: {{ task.user.firstName + " " + task.user.lastName }}</div>
     </div>
 
     <div class="task_bottom">
         <div class="price-time-container">
-            <div class="task_time">{{task.time}}</div>
+            <div class="task_time">
+                <div>Created: {{task.createdAt | date:'y/M/d'}}</div>
+                <div>When: {{task.time | date:'y/M/d'}}</div>
+            </div>
             <div class="task_price">{{task.cost}}$</div>
         </div>
 

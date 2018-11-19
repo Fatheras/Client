@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { IUser } from '../models/User';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     public getUser(): Observable<IUser> {
-        return this.http.get<IUser>(this.url + '/users');
+        return this.http.get<IUser>(this.url + '/users/me');
     }
 
     public updateUser(user: IUser, password, newPassword): Observable<IUser> {
@@ -28,14 +28,18 @@ export class UserService {
             });
     }
 
-    public updateUserRole(userId: number, newRole): Observable<IUser> {
-        return this.http.put<IUser>(this.url + `/users/${userId}/updateRole`,
+    public updateUserRole(userId: number, role): Observable<IUser> {
+        return this.http.put<IUser>(this.url + `/users/${userId}/changeRole`,
             {
-                newRole
+                role
             });
     }
 
     public getAllUsersWithStatistic(): Observable<IUser[]> {
         return this.http.get<IUser[]>(this.url + '/users/statistic');
+    }
+
+    public getAllUsers(): Observable<IUser[]> {
+        return this.http.get<IUser[]>(this.url + '/users');
     }
 }

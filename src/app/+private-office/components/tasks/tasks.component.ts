@@ -4,7 +4,6 @@ import { CategoryService } from '../../../services/category.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import * as moment from 'moment';
-import { debounceTime } from 'rxjs/operators';
 import { ITask } from '../../../+tasks/models/Task';
 import { ICategory } from '../../../models/Category';
 import { status } from '../../../models/status';
@@ -35,7 +34,7 @@ export class TasksComponent implements OnInit {
 
     public filterForm = new FormGroup({
         status: new FormControl(''),
-        category: new FormControl(''),
+        categories: new FormControl(''),
         start: new FormControl(''),
         end: new FormControl(''),
         pattern: new FormControl('')
@@ -45,13 +44,13 @@ export class TasksComponent implements OnInit {
 
     }
 
-    search(pattern) {
+    public search(pattern): void {
         this.filterForm.controls['pattern'].setValue(pattern);
 
         this.filterChange();
     }
 
-    filterChange() {
+    public filterChange(): void {
         this.tasks = [];
         this.infiniteScroll.ngOnDestroy();
         this.infiniteScroll.setup();
@@ -70,12 +69,9 @@ export class TasksComponent implements OnInit {
         });
     }
 
-    getUserTasks() {
-        const category = this.categories.find((el, i, arr) => {
-            return el.name === this.filterForm.controls['category'].value;
-        });
-
-        const categoryId = category ? category.id : '';
+    public getUserTasks(): void {
+        const categoriesFormValue  = this.filterForm.controls['categories'].value;
+        const categories =  categoriesFormValue ? categoriesFormValue : '';
 
         const _status = status.find((el, i, arr) => {
             return el.viewValue === this.filterForm.controls['status'].value;
@@ -90,7 +86,7 @@ export class TasksComponent implements OnInit {
 
         const filter = {
             status: statusId,
-            category: categoryId,
+            categories,
             startDate: start ? moment(start).format('YYYY-MM-DD kk:mm:ss') : '',
             endDate: end ? moment(end).format('YYYY-MM-DD kk:mm:ss') : '',
             pattern: pattern ? pattern : ''
@@ -101,27 +97,27 @@ export class TasksComponent implements OnInit {
         });
     }
 
-    public startDateChange() {
+    public startDateChange(): void {
         this.minDate = new Date(this.start.nativeElement.value);
     }
 
-    public endDateChange() {
+    public endDateChange(): void {
         this.maxDate = new Date(this.end.nativeElement.value);
     }
 
-    public updateTask() {
+    public updateTask(): void {
         this.router.navigate(['tasks', 'edit']);
     }
 
-    public deleteTask(taskId) {
-        this.taskService.deleteTask(taskId).subscribe(() => {
+    public deleteTask(taskId): void {
+        this.taskService.deleteTask(taskId).subscribe((data) => {
             this.tasks = this.tasks.filter((task: ITask, index, arr) => {
                 return task.id !== taskId;
             });
         });
     }
 
-    public reset() {
+    public reset(): void {
         this.filterForm.reset();
 
         this.tasks = [];

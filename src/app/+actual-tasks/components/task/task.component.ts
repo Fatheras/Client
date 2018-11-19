@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
 import { WarnDialogComponent } from '../../../dialogs/warn-dialog/warn-dialog.component';
 import { status } from '../../../models/status';
 import { ITask } from '../../../+tasks/models/Task';
@@ -16,17 +15,17 @@ export class TaskComponent implements OnInit {
   public countOfUsers: number;
 
 
-  constructor(public dialog: MatDialog, private router: Router) {
+  constructor(public dialog: MatDialog) {
 
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.task.status = status.find((el, index, arr) => {
       return el.value === +this.task.status;
     }).viewValue;
   }
 
-  openDialog(): void {
+  public openDialog(): void {
     const dialogRef = this.dialog.open(WarnDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -36,7 +35,7 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  public accept() {
+  public accept(): void {
     this.openDialog();
   }
 }

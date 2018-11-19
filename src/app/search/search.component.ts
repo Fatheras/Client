@@ -8,14 +8,14 @@ import { debounceTime } from 'rxjs/operators';
     styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-    public pattern = new FormControl('');
+    public pattern: FormControl = new FormControl('');
 
-    @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
+    @Output() public searchChange: EventEmitter<string> = new EventEmitter<string>();
 
     ngOnInit(): void {
         this.pattern.valueChanges.pipe(
             debounceTime(500),
-        ).subscribe((data) => {
+        ).subscribe(() => {
             this.searchChange.emit(this.pattern.value);
         });
     }

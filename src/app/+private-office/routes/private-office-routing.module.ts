@@ -10,11 +10,13 @@ import { CategoriesComponent } from '../components/categories/categories.compone
 import { NewTasksComponent } from '../components/new-tasks/new-tasks.component';
 import { Role } from '../../models/Role';
 import { AllTasksComponent } from '../components/all-tasks/all-tasks.component';
+import { CategoryResolver } from '../../services/category-resolver.service';
 
 
 const privateOfficeRoutes: Routes = [
   {
     path: '', component: PrivateOfficeComponent, canActivate: [AuthenticationGuardService],
+    // resolve: { categories: CategoryResolver },
     children: [
       { path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuardService] },
       {
