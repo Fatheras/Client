@@ -10,4 +10,8 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
   constructor(public http: HttpClient, private router: Router) { }
+
+  f() {
+    alert(2);
+  }
 }
