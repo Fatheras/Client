@@ -1,0 +1,15 @@
+<div class="approve-dialog">
+  <h1 mat-dialog-title>Hi</h1>
+  <div class="approve-content" mat-dialog-content>
+    <div><span class="approve_info">Title:</span> {{task.title}}</div>
+    <div><span class="approve_info">Description:</span> {{task.description}}</div>
+    <div><span class="approve_info">People:</span> {{task.people}}</div>
+    <div><span class="approve_info">Price:</span> {{task.cost}}$</div>
+    <div><span class="approve_info">Created:</span> {{task.createdAt | date:'y/M/d'}}</div>
+    <div><span class="approve_info">Category:</span> {{task.category.name}}</div>
+  </div>
+  <div class="btn-container" mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Decline</button>
+    <button mat-button (click)="onOkClick()" cdkFocusInitial>Approve</button>
+  </div>
+</div>

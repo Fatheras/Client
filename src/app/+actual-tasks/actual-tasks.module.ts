@@ -1,35 +1,40 @@
 import { NgModule } from '@angular/core';
-import { TaskComponent } from './components/task/task/task.component';
-import { TaskListComponent } from './components/task/task-list/task-list.component';
 import { ActualTaskRoutingModule } from './routes/actual-task-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { ActualTaskComponent } from './actual-task.component';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { CategoryComponent } from './components/category/category/category.component';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { WarnDialogComponent } from '../dialogs/warn-dialog/warn-dialog.component';
+import { TaskListComponent } from './components/task-list/task-list.component';
+import { TaskComponent } from './components/task/task.component';
 
 @NgModule({
+  entryComponents: [
+    WarnDialogComponent
+  ],
   declarations: [
+    WarnDialogComponent,
     TaskComponent,
     CategoryComponent,
     TaskListComponent,
     ActualTaskComponent,
-    CategoryListComponent
+    CategoryListComponent,
   ],
   imports: [
-    BrowserModule,
+    NgxMaterialTimepickerModule.forRoot(),
+    InfiniteScrollModule,
     CommonModule,
     MaterialModule,
-    ActualTaskRoutingModule
+    ReactiveFormsModule,
+    ActualTaskRoutingModule,
   ],
   exports: [
-    TaskComponent,
-    TaskListComponent,
     ActualTaskComponent,
-    CategoryListComponent
-  ]
-
+    CategoryListComponent,
+  ],
 })
 export class ActualTaskModule { }

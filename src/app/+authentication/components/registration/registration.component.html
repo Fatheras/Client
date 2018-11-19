@@ -1,6 +1,6 @@
 <form (submit)="signUp()" class="authorization-container" [formGroup]="registForm">
     <h2 class="authorization_title">SIGN UP</h2>
-
+    
     <mat-form-field>
         <input matInput placeholder="Email*" [formControl]="registForm.controls['email']" [errorStateMatcher]="matcher">
         <mat-error *ngIf="registForm.controls['email'].hasError('required')">
@@ -47,6 +47,10 @@
             This is too big length.
         </mat-error>
     </mat-form-field>
+
+    <mat-error *ngIf="registForm.hasError('badRequest')">
+        User has already exist.
+    </mat-error>
 
     <div class="authorization_sign-container">
         <button class="sign-container_up" mat-button (click)="signIn()">SIGN IN</button>

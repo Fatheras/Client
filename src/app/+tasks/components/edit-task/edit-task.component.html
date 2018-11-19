@@ -1,0 +1,8 @@
+<div class="update-task-container">
+    <app-task-form [task]="task" (sub)="editTask($event)">
+        <div class="edit-btn-container">
+            <button type="submit" class="update-btn">OK</button>
+            <button (click)="cancel()" type="button" class="delete-btn">Cancel</button>
+        </div>   
+    </app-task-form>
+</div>

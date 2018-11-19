@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter, Input, AfterContentInit } from '@angular/core';
-import { ICategory } from 'src/app/+actual-tasks/models/Category';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { ICategory } from 'src/app/models/Category';
 
 @Component({
     selector: 'app-category',
@@ -7,11 +7,10 @@ import { ICategory } from 'src/app/+actual-tasks/models/Category';
     styleUrls: ['./category.component.css']
 })
 export class CategoryComponent {
-
     @Input() public category: ICategory;
-    url: string;
-    @Output() categoryChanged: EventEmitter<ICategory> = new EventEmitter();
-    change() {
+    @Output() public categoryChanged: EventEmitter<ICategory> = new EventEmitter();
+
+    public change(): void {
         this.categoryChanged.emit(this.category);
     }
 }

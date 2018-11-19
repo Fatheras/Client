@@ -1,7 +1,8 @@
 .nav-container{
- display: flex; 
- justify-content: space-between;
- padding: 0px 3%; 
+    display: flex; 
+    justify-content: space-between;
+    padding: 0px 3%; 
+    height: 75px;
 }
 
 .left-navbar{
