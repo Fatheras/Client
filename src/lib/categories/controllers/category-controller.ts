@@ -19,6 +19,11 @@ export class CategoryController {
         const tasks: ITask[] = await TaskService.getAllTasks();
 
         categories.map((category, i, arr) => {
+            category.statistic = {
+                count: 0,
+                open: 0,
+            };
+
             category.statistic!.count = tasks.filter((task, index, array) => {
                 return task.categoryId === category.id;
             })!.length;
@@ -44,10 +49,17 @@ export class CategoryController {
 
     public static async deleteCategory(req: Request, res: Response): Promise<void> {
         const id: number = parseInt(req.params.id, 10);
-        const result: number = await CategoryService.deleteCategory(id);
+        const tasks: ITask[] = await TaskService.getAllTasksByCategory(id);
+        const hasOpenTasks: boolean = tasks.some((task) => task.status === Status.Open);
+
+        if (hasOpenTasks) {
+            throw new CustomError(404);
+        }
+
+        const result = await CategoryService.deleteCategory(id);
 
         if (result) {
-            res.sendStatus(200);
+            res.status(200).send();
         } else {
             throw new CustomError(400);
         }
@@ -55,12 +67,12 @@ export class CategoryController {
 
     public static async addCategory(req: Request, res: Response): Promise<void> {
         const model: ICategory = {
-            name: req.body.name,
+            name: req.body.categoryName,
         };
 
         const category: ICategory = await CategoryService.addCategory(model);
 
-        const categoryManagersIds: any = req.body.categoryManagersIds.split(",");
+        const categoryManagersIds: any = JSON.parse(req.body.managers);
 
         await CategoryManagerService.subscribeCategoryManagers(categoryManagersIds, category.id!);
 

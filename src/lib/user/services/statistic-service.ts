@@ -14,7 +14,7 @@ export default class StatisticService {
         const stat: any = await Task.findAll({
             attributes: ["status", [sequelize.fn("COUNT", "*"), "count"]],
             where: {
-                owner: id,
+                ownerId: id,
             },
             group: ["status"],
         });

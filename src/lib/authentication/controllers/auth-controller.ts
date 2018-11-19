@@ -37,7 +37,7 @@ export class AuthController {
                         expiresIn: "30 days",
                     });
 
-                    return res.json({ token });
+                    return res.json({ token, role: user.role });
                 });
             } catch (error) {
                 return next(error);

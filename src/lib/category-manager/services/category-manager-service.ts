@@ -1,5 +1,6 @@
 import { CategoryManager, ICategoryManager } from "../models/category-manager";
 import { FindOptions } from "sequelize";
+import { Category, ICategory } from "../../categories/models/category";
 
 export class CategoryManagerService {
 
@@ -12,7 +13,7 @@ export class CategoryManagerService {
         await CategoryManager.bulkCreate(categoryManagers);
     }
 
-    public static async getAllManagersCategories(userId: number): Promise<number[]> {
+    public static async getAllManagerCategoriesIds(userId: number): Promise<number[]> {
         const options: FindOptions<object> = {
             attributes: ["categoryId"],
             where: {
@@ -23,5 +24,21 @@ export class CategoryManagerService {
 
         return (await CategoryManager.findAll(options) as any[])
             .map((category, index, categories) => category.categoryId);
+    }
+
+    public static async getAllManagerCategories(userId: number): Promise<ICategoryManager[]> {
+        const options: FindOptions<object> = {
+            attributes: ["categoryId"],
+            where: {
+                userId,
+            },
+            include: [{
+                model: Category,
+            }],
+            subQuery: false,
+            group: "categoryId",
+        };
+
+        return await CategoryManager.findAll(options);
     }
 }

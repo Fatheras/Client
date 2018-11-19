@@ -5,6 +5,7 @@ import CustomError from "../../tools/error";
 import { Status } from "../models/status";
 import DealService from "../../deals/services/deal-service";
 import { User } from "../../user/models/user";
+import { Category } from "../../categories/models/category";
 
 export default class TaskService {
     public static async addTask(task: ITask) {
@@ -13,6 +14,7 @@ export default class TaskService {
 
     public static async getTask(id: number): Promise<ITask> {
         const task: ITask | null = await Task.findById(id, {
+            raw: true,
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
@@ -20,7 +22,7 @@ export default class TaskService {
                 model: Deal, attributes: [],
             }],
             group: ["Task.id"],
-            raw: true,
+            subQuery: false,
         });
 
         if (task) {
@@ -78,18 +80,23 @@ export default class TaskService {
 
     public static async getUserTasks(query: any, userId: number): Promise<ITask[]> {
         const options: FindOptions<object> = {
+            attributes: {
+                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
+            },
             offset: +query.offset,
             limit: +query.limit,
             order: [["time", "ASC"]],
             where: {
                 ownerId: userId,
             },
-            attributes: {
-                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
-            },
-            include: [{
-                model: Deal, attributes: [],
-            }],
+            include: [
+                {
+                    model: Deal, attributes: [],
+                },
+                {
+                    model: Category,
+                },
+            ],
             group: ["Task.id"],
             subQuery: false,
         };
@@ -103,9 +110,9 @@ export default class TaskService {
                 });
         }
 
-        if (query.categories) {
+        if (query.categories.length) {
             Object.assign(options.where, {
-                category:
+                categoryId:
                 {
                     [Op.in]: query.categories,
                 },
@@ -141,15 +148,24 @@ export default class TaskService {
 
     public static async getTasksForAdmin(query: any): Promise<ITask[]> {
         const options: FindOptions<object> = {
+            attributes: {
+                include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
+            },
             order: [["time", "ASC"]],
             where: {
-                status: {
-                    [Op.not]: Status.Declined,
-                },
+
             },
-            include: [{
-                model: User, attributes: ["firstName", "lastName"],
-            }],
+            include: [
+                {
+                    model: Deal, attributes: [],
+                },
+                {
+                    model: User,
+                },
+                {
+                    model: Category,
+                },
+            ],
             group: ["Task.id"],
             subQuery: false,
         };
@@ -162,7 +178,7 @@ export default class TaskService {
             Object.assign(options, { limit: +query.limit });
         }
 
-        if (query.categories) {
+        if (query.categories.length) {
             Object.assign(options.where, {
                 categoryId:
                 {
@@ -175,15 +191,36 @@ export default class TaskService {
             Object.assign(options.where, { status: +query.status });
         }
 
-        if (query.time) {
+        if (query.startDate && query.endDate) {
             Object.assign(options.where, {
                 time: {
                     [Op.between]: [query.startDate, query.endDate],
                 },
             });
+        } else if (query.startDate) {
+            Object.assign(options.where, {
+                time: {
+                    [Op.gt]: query.startDate,
+                },
+            });
+        } else if (query.endDate) {
+            Object.assign(options.where, {
+                time: {
+                    [Op.lt]: query.endDate,
+                },
+            });
         }
 
-        if (query.usersIds) {
+        if (query.pattern) {
+            Object.assign(options.where,
+                {
+                    title: {
+                        [Op.like]: query.pattern + "%",
+                    },
+                });
+        }
+
+        if (query.usersIds.length) {
             Object.assign(options.where, {
                 ownerId:
                     { [Op.in]: query.usersIds },
@@ -191,6 +228,22 @@ export default class TaskService {
         }
 
         return Task.findAll(options);
+    }
+
+    public static async getAllTasksByCategory(categoryId: number): Promise<ITask[]> {
+        const tasks: ITask[] = await Task.findAll(
+            {
+                where: {
+                    categoryId,
+                },
+            },
+        );
+
+        if (tasks) {
+            return tasks;
+        } else {
+            throw new CustomError(400);
+        }
     }
 
     public static async getTasksForManager(query: any, categories: number[]): Promise<ITask[]> {
@@ -204,17 +257,36 @@ export default class TaskService {
                 },
                 status: Status.OnReview,
             },
+            include: [
+                {
+                    model: User, attributes: ["firstName", "lastName"],
+                },
+                {
+                    model: Category,
+                },
+            ],
             subQuery: false,
         };
 
-        if (query.selectedCategories) {
+        if (query.categories.length) {
             options.where = {
                 categoryId:
                 {
-                    [Op.in]: query.selectedCategories,
+                    [Op.in]: query.categories,
                 },
+                status: Status.OnReview,
             };
         }
+
+        if (query.pattern) {
+            Object.assign(options.where,
+                {
+                    title: {
+                        [Op.like]: query.pattern + "%",
+                    },
+                });
+        }
+
         return Task.findAll(options);
     }
 
@@ -242,7 +314,7 @@ export default class TaskService {
 
         if (query.categories) {
             Object.assign(options.where, {
-                categoryId:
+                category:
                 {
                     [Op.in]: query.categories,
                 },
@@ -253,10 +325,10 @@ export default class TaskService {
             Object.assign(options.where, { status: query.status });
         }
 
-        if (query.ownerIds) {
+        if (query.owners) {
             Object.assign(options.where, {
                 ownerId: {
-                    [Op.in]: query.ownerIds,
+                    [Op.in]: query.owners,
                 },
             });
         }

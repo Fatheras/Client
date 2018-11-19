@@ -1,7 +1,7 @@
 import Sequelize from "sequelize";
 import db from "../../db/models/db";
 import { User, IUser } from "../../user/models/user";
-import { ICategory } from "../../categories/models/category";
+import { ICategory, Category } from "../../categories/models/category";
 
 export interface ITask {
     id?: number;
@@ -14,11 +14,8 @@ export interface ITask {
     description: string;
     ownerId: number;
     people: number;
+    user?: IUser;
     countOfDeals?: number;
-}
-
-interface ITaskUser extends ITask {
-    user: IUser;
 }
 
 export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("task", {
@@ -31,7 +28,7 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
         type: Sequelize.STRING,
         validate: {
             notEmpty: true,
-            len: [3, 30],
+            len: [3, 255],
         },
     },
     cost: {
@@ -72,3 +69,15 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
 
 Task.belongsTo(User, { foreignKey: "ownerId" });
 User.hasMany(Task, { foreignKey: "ownerId" });
+
+Task.belongsTo(Category, {
+    foreignKey: "categoryId",
+     onDelete: "CASCADE",
+     constraints: false,
+});
+
+Category.hasMany(Task, {
+     onDelete: "CASCADE",
+      constraints: false,
+    foreignKey: "categoryId",
+});
