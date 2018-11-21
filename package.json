@@ -31,8 +31,10 @@
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
+    "redis": "^2.8.0",
     "sequelize": "^4.39.0",
     "sequelize-cli": "^4.1.1",
+    "socket.io": "^2.1.1",
     "winston": "^3.1.0"
   },
   "devDependencies": {
@@ -48,7 +50,9 @@
     "@types/passport": "^0.4.6",
     "@types/passport-jwt": "^3.0.1",
     "@types/passport-local": "^1.0.33",
+    "@types/redis": "^2.8.8",
     "@types/sequelize": "^4.27.28",
+    "@types/socket.io": "^2.1.0",
     "nodemon": "^1.18.4",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",

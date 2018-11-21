@@ -15,7 +15,17 @@ class TaskRouter {
     }
 
     public routes() {
-        this.router.get("/tasksForAdmin", CheckRoleMiddleware.checkRole(Role.Admin), TaskController.getTasksForAdmin);
+        this.router.get("/tasksForAdmin", CheckRoleMiddleware.checkRole(Role.Admin),
+            CheckParamsMiddleware.validateParamsJoi(joi.object().keys({
+                offset: joi.number().integer().min(0),
+                limit: joi.number().integer().min(1),
+                categories: joi.array(),
+                usersIds: joi.array(),
+                pattern: joi.string().min(1),
+                status: joi.number().integer().positive().min(1).max(5),
+                startDate: joi.string(),
+                endDate: joi.string(),
+            })), TaskController.getTasksForAdmin);
         this.router.put("/:id/updateStatus",
             CheckRoleMiddleware.checkRole(Role.Manager, Role.Admin),
             handleError(TaskController.updateTaskStatus),
