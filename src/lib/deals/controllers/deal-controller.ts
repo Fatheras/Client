@@ -66,7 +66,15 @@ export class DealController {
         const task: ITask = await TaskService.getTask(deal.taskId);
 
         if (task.countOfDeals! < task.people) {
-            deal = await DealService.addDeal(deal);
+            if (task.countOfDeals! === task.people - 1) {
+                deal = await DealService.addDeal(deal);
+
+                task.status = Status.Pending;
+
+                await TaskService.updateTask(deal.taskId, task);
+            } else {
+                deal = await DealService.addDeal(deal);
+            }
 
             if (deal) {
                 res.status(200).send(deal);
@@ -75,7 +83,7 @@ export class DealController {
             }
         } else if (task.countOfDeals! === task.people && task.status !== Status.Pending) {
             task.status = Status.Pending;
-
+            
             await TaskService.updateTask(deal.taskId, task);
 
             throw new CustomError(400);

@@ -24,14 +24,6 @@ export class TaskController {
     public static async getTasksForAdmin(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
 
-        if (req.query.categories) {
-            req.query.categories = JSON.parse(req.query.categories);
-        }
-
-        if (req.query.usersIds) {
-            req.query.usersIds = JSON.parse(req.query.usersIds);
-        }
-
         tasks = await TaskService.getTasksForAdmin(req.query);
 
         res.status(200).send(tasks);

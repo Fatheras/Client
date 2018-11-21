@@ -87,6 +87,7 @@ export default class TaskService {
             limit: +query.limit,
             order: [["time", "ASC"]],
             where: {
+                status: Status.Open,
                 ownerId: userId,
             },
             include: [
@@ -178,7 +179,7 @@ export default class TaskService {
             Object.assign(options, { limit: +query.limit });
         }
 
-        if (query.categories.length) {
+        if (query.categories) {
             Object.assign(options.where, {
                 categoryId:
                 {
@@ -220,7 +221,7 @@ export default class TaskService {
                 });
         }
 
-        if (query.usersIds.length) {
+        if (query.usersIds) {
             Object.assign(options.where, {
                 ownerId:
                     { [Op.in]: query.usersIds },
