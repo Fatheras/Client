@@ -51,10 +51,6 @@ export class TaskController {
             }
         }
 
-        if (req.query.categories) {
-            req.query.categories = JSON.parse(req.query.categories);
-        }
-
         tasks = await TaskService.getTasksForManager(req.query, categories);
 
         res.status(200).send(tasks);
@@ -62,8 +58,6 @@ export class TaskController {
 
     public static async getUserTasks(req: Request, res: Response): Promise<void> {
         let tasks: ITask[];
-
-        req.query.categories = JSON.parse(req.query.categories);
 
         const token: string = req.headers.authorization!;
         const user: IUser = await UserService.getUserByToken(token);

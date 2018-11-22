@@ -4,7 +4,7 @@ import sequelize, { FindOptions, Op } from "sequelize";
 import CustomError from "../../tools/error";
 import { Status } from "../models/status";
 import DealService from "../../deals/services/deal-service";
-import { User } from "../../user/models/user";
+import { User, IUser } from "../../user/models/user";
 import { Category } from "../../categories/models/category";
 
 export default class TaskService {
@@ -46,7 +46,7 @@ export default class TaskService {
         const deals: IDeal[] = await DealService.getUserDeals(userId);
         const taskIds: number[] = deals.map((el, i, arr) => el.taskId);
 
-        const options: FindOptions<object> = {
+        const options: FindOptions<ITask> = {
             offset: +query.offset,
             limit: +query.limit,
             order: [["time", "ASC"]],
@@ -79,7 +79,7 @@ export default class TaskService {
     }
 
     public static async getUserTasks(query: any, userId: number): Promise<ITask[]> {
-        const options: FindOptions<object> = {
+        const options: FindOptions<ITask> = {
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
@@ -111,7 +111,7 @@ export default class TaskService {
                 });
         }
 
-        if (query.categories.length) {
+        if (query.categories) {
             Object.assign(options.where, {
                 categoryId:
                 {
@@ -120,7 +120,7 @@ export default class TaskService {
             });
         }
 
-        if (+query.status) {
+        if (query.status) {
             Object.assign(options.where, { status: query.status });
         }
 
@@ -148,10 +148,12 @@ export default class TaskService {
     }
 
     public static async getTasksForAdmin(query: any): Promise<ITask[]> {
-        const options: FindOptions<object> = {
+        const options: FindOptions<ITask> = {
             attributes: {
                 include: [[sequelize.fn("COUNT", sequelize.col("deals.id")), "countOfDeals"]],
             },
+            offset: +query.offset,
+            limit: +query.limit,
             order: [["time", "ASC"]],
             where: {
 
@@ -171,14 +173,6 @@ export default class TaskService {
             subQuery: false,
         };
 
-        if (+query.offset) {
-            Object.assign(options, { offset: +query.offset });
-        }
-
-        if (+query.limit) {
-            Object.assign(options, { limit: +query.limit });
-        }
-
         if (query.categories) {
             Object.assign(options.where, {
                 categoryId:
@@ -188,14 +182,14 @@ export default class TaskService {
             });
         }
 
-        if (+query.status) {
-            Object.assign(options.where, { status: +query.status });
+        if (query.status) {
+            Object.assign(options.where, { status: query.status });
         }
 
         if (query.startDate && query.endDate) {
             Object.assign(options.where, {
                 time: {
-                    [Op.between]: [query.startDate, query.endDate],
+                    [Op.between]: [new Date(query.startDate), new Date(query.endDate)],
                 },
             });
         } else if (query.startDate) {
@@ -248,7 +242,7 @@ export default class TaskService {
     }
 
     public static async getTasksForManager(query: any, categories: number[]): Promise<ITask[]> {
-        const options: FindOptions<object> = {
+        const options: FindOptions<ITask> = {
             offset: +query.offset,
             limit: +query.limit,
             order: [["time", "ASC"]],
@@ -269,7 +263,7 @@ export default class TaskService {
             subQuery: false,
         };
 
-        if (query.categories.length) {
+        if (query.categories) {
             options.where = {
                 categoryId:
                 {
@@ -292,9 +286,9 @@ export default class TaskService {
     }
 
     public static async getUsersTasks(query: any): Promise<ITask[]> {
-        const options: FindOptions<object> = {
-            offset: +query.offset,
-            limit: +query.limit,
+        const options: FindOptions<ITask> = {
+            offset: query.offset,
+            limit: query.limit,
             order: [["time", "ASC"]],
             where: {},
             include: [{
@@ -322,7 +316,7 @@ export default class TaskService {
             });
         }
 
-        if (+query.status) {
+        if (query.status) {
             Object.assign(options.where, { status: query.status });
         }
 

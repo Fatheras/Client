@@ -14,7 +14,7 @@ export class CategoryManagerService {
     }
 
     public static async getAllManagerCategoriesIds(userId: number): Promise<number[]> {
-        const options: FindOptions<object> = {
+        const options: FindOptions<ICategoryManager> = {
             attributes: ["categoryId"],
             where: {
                 userId,
@@ -27,7 +27,7 @@ export class CategoryManagerService {
     }
 
     public static async getAllManagerCategories(userId: number): Promise<ICategoryManager[]> {
-        const options: FindOptions<object> = {
+        const options: FindOptions<ICategoryManager> = {
             attributes: ["categoryId"],
             where: {
                 userId,

@@ -10,39 +10,59 @@ export interface ICategoryManager {
     category?: ICategory;
 }
 
-export const CategoryManager: Sequelize.Model<ICategoryManager, object> =
-    db.define<ICategoryManager, object>("category_manager", {
+export const CategoryManager: Sequelize.Model<ICategoryManager, ICategoryManager> =
+    db.define<ICategoryManager, ICategoryManager>("category_manager", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-        },
-        categoryId: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: Category,
-                key: "id",
-            },
-            notEmpty: true,
+            autoIncrement: true,
         },
         userId: {
             type: Sequelize.INTEGER,
+            allowNull: false,
             references: {
                 model: User,
                 key: "id",
             },
-            notEmpty: true,
+            validate: {
+                notEmpty: true,
+            },
+        },
+        categoryId: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            references: {
+                model: Category,
+                key: "id",
+            },
+            validate: {
+                notEmpty: true,
+            },
         },
 
     },
-        { timestamps: false },
+        {
+            indexes: [
+                {
+                    unique: true,
+                    fields: ["categoryId", "userId"],
+                },
+            ],
+            timestamps: false,
+        },
     );
 
 CategoryManager.belongsTo(Category, {
-     onDelete: "CASCADE",
-     constraints: false,
+    onDelete: "CASCADE",
+    constraints: false,
     foreignKey: "categoryId",
 });
 Category.hasMany(CategoryManager, {
-     onDelete: "CASCADE",
-     constraints: false,
+    onDelete: "CASCADE",
+    constraints: false,
 });
+
+CategoryManager.belongsTo(User, {
+    foreignKey: "userId",
+});
+User.hasMany(CategoryManager);
