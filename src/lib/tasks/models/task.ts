@@ -18,39 +18,59 @@ export interface ITask {
     countOfDeals?: number;
 }
 
-export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("task", {
+export const Task: Sequelize.Model<ITask, ITask> = db.define<ITask, ITask>("task", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
     title: {
+        allowNull: false,
         type: Sequelize.STRING,
         validate: {
             notEmpty: true,
-            len: [3, 255],
+            len: [1, 255],
         },
     },
     cost: {
+        allowNull: false,
         type: Sequelize.DOUBLE,
+        validate: {
+            notEmpty: true,
+        },
     },
     status: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         validate: {
             notEmpty: true,
         },
     },
     categoryId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
+        validate: {
+            notEmpty: true,
+        },
     },
     time: {
-        type: Sequelize.TIME,
+        allowNull: false,
+        type: Sequelize.DATE,
+        validate: {
+            notEmpty: true,
+        },
     },
     description: {
         type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+            len: [1, 255],
+        },
     },
     ownerId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
             model: User,
             key: "id",
@@ -59,9 +79,11 @@ export const Task: Sequelize.Model<ITask, object> = db.define<ITask, object>("ta
     },
     people: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         validate: {
+            max: 5,
+            min: 1,
             notEmpty: true,
-            len: [1, 5],
         },
     },
 },
@@ -72,12 +94,12 @@ User.hasMany(Task, { foreignKey: "ownerId" });
 
 Task.belongsTo(Category, {
     foreignKey: "categoryId",
-     onDelete: "CASCADE",
-     constraints: false,
+    onDelete: "CASCADE",
+    constraints: false,
 });
 
 Category.hasMany(Task, {
-     onDelete: "CASCADE",
-      constraints: false,
+    onDelete: "CASCADE",
+    constraints: false,
     foreignKey: "categoryId",
 });

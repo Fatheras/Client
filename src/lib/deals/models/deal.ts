@@ -9,7 +9,7 @@ export interface IDeal {
     taskId: number;
 }
 
-export const Deal = db.define<IDeal, object>("deal", {
+export const Deal: Sequelize.Model<IDeal, IDeal> = db.define<IDeal, IDeal>("deal", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -17,6 +17,7 @@ export const Deal = db.define<IDeal, object>("deal", {
     },
     userId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
             model: User,
             key: "id",
@@ -25,6 +26,7 @@ export const Deal = db.define<IDeal, object>("deal", {
     },
     taskId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
             model: Task,
             key: "id",
@@ -32,6 +34,14 @@ export const Deal = db.define<IDeal, object>("deal", {
         validate: { notEmpty: true },
     },
 },
+    {
+        indexes: [
+            {
+                unique: true,
+                fields: ["userId", "taskId"],
+            },
+        ],
+    },
 );
 
 Deal.belongsTo(Task, { foreignKey: "taskId" });

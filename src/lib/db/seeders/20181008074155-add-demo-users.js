@@ -15,7 +15,7 @@ module.exports = {
           password: faker.internet.password(),
           role: faker.random.number({ min: 1, max: 3 }),
           createdAt: new Date(),
-          updatedAt: new Date(),
+          updatedAt: new Date(),  
         },
       );
     }

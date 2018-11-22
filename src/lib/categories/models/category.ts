@@ -12,7 +12,7 @@ export interface ICategoryStatistic {
     open: number;
 }
 
-export const Category = db.define<ICategory, object>("category", {
+export const Category: Sequelize.Model<ICategory, ICategory> = db.define<ICategory, ICategory>("category", {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -20,7 +20,10 @@ export const Category = db.define<ICategory, object>("category", {
     },
     name: {
         type: Sequelize.STRING,
+        unique: true,
+        allowNull: false,
         validate: {
+            len: [1, 255],
             notEmpty: true,
         },
     },

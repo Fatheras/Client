@@ -21,37 +21,54 @@ export interface IUserStatistic {
     count: number;
 }
 
-export const User: Sequelize.Model<IUser, object> = db.define<IUser, object>("user", {
+export const User: Sequelize.Model<IUser, IUser> = db.define<IUser, IUser>("user", {
     id: {
         type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
     },
     firstName: {
         type: Sequelize.STRING,
         validate: {
-            len: [3, 20],
+            len: [1, 255],
         },
     },
     lastName: {
         type: Sequelize.STRING,
+        validate: {
+            len: [1, 255],
+        },
     },
     phone: {
         type: Sequelize.STRING,
+        allowNull: false,
         validate: {
+            notEmpty: true,
             len: [4, 15],
         },
     },
     email: {
         type: Sequelize.STRING,
-        notEmpty: true,
+        unique: true,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+        },
     },
     password: {
+        unique: true,
         type: Sequelize.STRING,
-        notEmpty: true,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+        },
     },
     role: {
         type: Sequelize.INTEGER,
-        notEmpty: true,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+        },
     },
 },
 );

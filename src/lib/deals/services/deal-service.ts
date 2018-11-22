@@ -59,12 +59,4 @@ export default class DealService {
             },
         });
     }
-
-    public static async getDealsByCategory(categoryId: number) {
-        return Deal.findAll({
-            where: {
-                categoryId,
-            },
-        });
-    }
 }

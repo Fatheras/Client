@@ -21,12 +21,6 @@ export class SocketIo {
 
             client.set(userId, socket.id);
 
-            // this.users.push(
-            // {
-            //     id: userId,
-            //     value: socket.id,
-            // });
-
             socket.on("subscription", async (taskId: number) => {
                 socket.broadcast.emit("subscription", await TaskService.getTask(taskId));
             });
@@ -37,8 +31,6 @@ export class SocketIo {
                 const subscriber: IUser = await UserService.getUserByToken(info.token);
 
                 const task: ITask = await TaskService.getTask(info.taskId);
-
-                // const socketId = this.users.find((user) => user.id === task.ownerId).value;
 
                 client.get(task.ownerId.toString(), (err, socketId) => {
                     if (err) {
@@ -51,7 +43,6 @@ export class SocketIo {
 
             socket.on("disconnect", () => {
                 client.del(userId);
-                // this.users = this.users.filter((user) => user.value !== socket.id);
             });
         });
     }

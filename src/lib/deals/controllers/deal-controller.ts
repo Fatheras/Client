@@ -83,7 +83,7 @@ export class DealController {
             }
         } else if (task.countOfDeals! === task.people && task.status !== Status.Pending) {
             task.status = Status.Pending;
-            
+
             await TaskService.updateTask(deal.taskId, task);
 
             throw new CustomError(400);
