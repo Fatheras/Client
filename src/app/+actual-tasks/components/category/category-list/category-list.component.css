@@ -1,0 +1,14 @@
+.category-list-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  list-style: none; 
+  height: 40px;
+}
+
+.category {
+  width: 200px;
+  text-align: center;
+  margin-right: 20px;
+}
+

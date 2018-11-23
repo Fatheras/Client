@@ -1,0 +1,14 @@
+.task-wrap-container{
+    width: 30%;
+    height: 80%;
+    padding: 6px;
+}
+
+.wrap-container{
+    padding: 0px 30px;
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+

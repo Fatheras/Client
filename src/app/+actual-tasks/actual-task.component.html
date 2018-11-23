@@ -1,0 +1,8 @@
+<app-category-list [categories]="categories" (categoryChanged)="getCurrentCategory($event)"></app-category-list>
+<div class="tasks-wrapper">
+    <h2 class="category-title" *ngIf="currentCategory">{{currentCategory.name}} TASKS</h2>
+    <div class="app-task-list" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50" (scrolled)="getAllTasks(currentCategory.id)" [scrollWindow]="false">
+        <app-task-list (accept)="addDeal($event)" [tasks]="tasks" ></app-task-list>
+    </div>
+</div>
+ 

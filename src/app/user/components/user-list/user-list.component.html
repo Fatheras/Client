@@ -1,0 +1,5 @@
+<div class="users-container">
+    <div *ngFor="let user of users">
+        <app-user (changeRole)="save($event)"  [user]="user"></app-user>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="new-tasks">
+    <h1 class="tasks_title">New Tasks</h1>
+    <app-search (searchChange)="search($event)"></app-search>
+    <div class="new-task-container">
+        <div class="tasks-container" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
+            (scrolled)="getTasksByCategories()" [scrollWindow]="false">
+            <app-new-task-list (changeStatus)="change($event)" [tasks]="tasks"></app-new-task-list>
+        </div>
+        <div class="filter-bar-container">
+            <h2 class="filter_title">FILTER BAR</h2>
+            <div class="filter-bar">
+                <mat-form-field class="filter_field">
+                    <mat-select (selectionChange)="categoryChange()" placeholder="Category" [formControl]="categoriesControl" multiple>
+                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                            {{category.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</div>

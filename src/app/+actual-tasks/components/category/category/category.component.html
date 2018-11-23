@@ -1,0 +1,4 @@
+<a [routerLink]="['/category', (category.id || 'all'), 'tasks']" routerLinkActive="active" (click)="change()"
+    [routerLinkActiveOptions]="{exact: true}">
+    <div class="container_link">{{category.name}}</div>
+</a>

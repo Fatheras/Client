@@ -1,0 +1,27 @@
+<mat-toolbar class="nav-container" color="primary">
+    <div class="left-navbar">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon class="nav_burger" aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button (click)="moveToProfile()" mat-menu-item>
+                <mat-icon>face</mat-icon>
+                <span>My Office</span>
+            </button>
+            <button (click)="moveToTasks()" mat-menu-item>
+                <mat-icon>ballot</mat-icon>
+                <span>Tasks</span>
+            </button>
+            <button (click)="logOut()" mat-menu-item>
+                <mat-icon>input</mat-icon>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
+        <span>TASK.COM</span>
+    </div>
+
+    <button (click)="moveToAddTask()" class="nav_add-btn" mat-button matSuffix mat-icon-button aria-label="Clear">
+        <mat-icon>add</mat-icon>
+    </button>
+
+</mat-toolbar>
